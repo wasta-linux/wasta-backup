@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>565</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="changeDeviceButton">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>10</y>
+      <width>91</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="targetDeviceDisp">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>10</y>
+      <width>161</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>15</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Backup Device:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>10</y>
+      <width>491</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <italic>true</italic>
+     </font>
+    </property>
+    <property name="text">
+     <string>The USB device with the most free space has been automatically chosen for the backup.  To choose a different device, make sure it is plugged in and click &quot;Change&quot;.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="backupRestoreWidget">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>881</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::North</enum>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <property name="documentMode">
+     <bool>false</bool>
+    </property>
+    <property name="tabsClosable">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="backupTab">
+     <attribute name="title">
+      <string>Backup</string>
+     </attribute>
+     <widget class="QPushButton" name="backupButton">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>110</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Backup</string>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>10</y>
+        <width>561</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Wasta Backup makes version backups of data to an external USB device.</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="backupIncludeLabel">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>50</y>
+        <width>531</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Picture, Music, and Video files will NOT be backed up!  Those files must be backed up in a different way!</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cancelBackupButton">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>160</y>
+        <width>111</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Cancel Backup</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="restoreTab">
+     <attribute name="title">
+      <string>Restore</string>
+     </attribute>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>191</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Restore what?</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="restorePrevRadio">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>221</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Restore Previous Version</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <property name="autoRepeat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="restoreDelRadio">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>221</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Restore Deleted File</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="restoreAllRadio">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>211</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Restore ALL Backup Data</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="frame">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>221</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>60</y>
+         <width>141</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>of File or Folder</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>110</y>
+         <width>141</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>or Folder</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QStackedWidget" name="restorePageWidget">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>0</y>
+        <width>631</width>
+        <height>251</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="restorePrevPage">
+       <widget class="QLabel" name="prevDateTimeLabel">
+        <property name="geometry">
+         <rect>
+          <x>-10</x>
+          <y>80</y>
+          <width>131</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Restore previous version from:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="prevItemLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>15</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>File to Restore:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="prevItem">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>411</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="selectPrevItemButton">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>10</y>
+          <width>81</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Select</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="prevListCombo">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>90</y>
+          <width>251</width>
+          <height>27</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="Line" name="line_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>601</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="prevFileRadio">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>40</y>
+          <width>61</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>File</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="prevFolderRadio">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>40</y>
+          <width>81</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Folder</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="restoreDelPage">
+       <widget class="QListWidget" name="delList">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>60</y>
+          <width>351</width>
+          <height>191</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="delListLabel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>70</y>
+          <width>121</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Deleted Files or Folders to Restore:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(use ctrl + click to select more than 1 item to restore)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="delFolder">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>10</y>
+          <width>371</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="selectDelFolderButton">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>10</y>
+          <width>81</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Select</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="delFolderLabel">
+        <property name="geometry">
+         <rect>
+          <x>-20</x>
+          <y>15</y>
+          <width>181</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Folder of Deleted Item:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="Line" name="line_3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>601</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="restoreAllPage">
+       <widget class="QLabel" name="restoreAllLabel">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>571</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <italic>true</italic>
+         </font>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;WARNING!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restore ALL Backup Data is normally done &lt;span style=&quot; font-weight:600;&quot;&gt;only when transferring Backup Data to a new computer.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Backup Data will replace data that is currently on the computer. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="restoreAllCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>161</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>enable Restore ALL</string>
+        </property>
+       </widget>
+       <widget class="Line" name="line_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>461</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="machineCombo">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>170</y>
+          <width>151</width>
+          <height>27</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="machineLabel">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>140</y>
+          <width>181</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Machine to Restore ALL Backup Data From:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="restoreButton">
+      <property name="geometry">
+       <rect>
+        <x>720</x>
+        <y>80</y>
+        <width>151</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Restore</string>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cancelRestoreButton">
+      <property name="geometry">
+       <rect>
+        <x>720</x>
+        <y>125</y>
+        <width>151</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Cancel Restore</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="openRestoreFolderButton">
+      <property name="geometry">
+       <rect>
+        <x>720</x>
+        <y>190</y>
+        <width>151</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Open Restore Folder</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="undoLastRestoreButton">
+      <property name="geometry">
+       <rect>
+        <x>720</x>
+        <y>220</y>
+        <width>151</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Undo Last Restore</string>
+      </property>
+     </widget>
+     <zorder>frame</zorder>
+     <zorder>label_7</zorder>
+     <zorder>restorePrevRadio</zorder>
+     <zorder>restoreDelRadio</zorder>
+     <zorder>restoreAllRadio</zorder>
+     <zorder>restorePageWidget</zorder>
+     <zorder>restoreButton</zorder>
+     <zorder>cancelRestoreButton</zorder>
+     <zorder>openRestoreFolderButton</zorder>
+     <zorder>undoLastRestoreButton</zorder>
+    </widget>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>251</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="messageOutput">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>349</y>
+      <width>621</width>
+      <height>181</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>390</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Messages:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="viewLogButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>500</y>
+      <width>99</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>View Log File</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuAdvanced">
+     <property name="title">
+      <string>Advanced...</string>
+     </property>
+     <widget class="QMenu" name="menuFile_Selection">
+      <property name="title">
+       <string>Backup File Selection</string>
+      </property>
+      <addaction name="actionBackupOnlyImportant"/>
+     </widget>
+     <addaction name="menuFile_Selection"/>
+    </widget>
+    <addaction name="actionAbout"/>
+    <addaction name="menuAdvanced"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionBackupOnlyImportant">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Only Backup Important Files (Default)</string>
+   </property>
+   <property name="iconText">
+    <string>Only Backup Important Files (Default)</string>
+   </property>
+   <property name="toolTip">
+    <string>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</string>
+   </property>
+   <property name="statusTip">
+    <string>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</string>
+   </property>
+   <property name="whatsThis">
+    <string>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

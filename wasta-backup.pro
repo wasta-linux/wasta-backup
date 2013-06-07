@@ -19,3 +19,6 @@ HEADERS  += mainwindow.h
 FORMS    += mainwindow.ui
 
 CONFIG += qtestlib
+
+OTHER_FILES += \
+    README.txt

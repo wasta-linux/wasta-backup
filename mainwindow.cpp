@@ -18,11 +18,13 @@ bool processCanceled;
 QString configDir;
 QVector<QStringList> backupDirList(10); //initialize with 10 entries: a "few" extra can be added, later trimmed down to correct size
 QVector<QStringList> restItemList(10);
+QStringList restItems;
+
 QString targetDevice;
 QString machine = QHostInfo::localHostName();
 QFile logFile;
 QFile useBackupIncludeFilterFile;
-QString renameTime;
+QString renameText;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -258,7 +260,7 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.1.3 2013-06-07</h3>"
+    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.1.4 2013-06-07</h3>"
                        "<p>Wasta Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
                        "<p>Restore possibilities include restoring previous versions of files or folders as well as restoring deleted files or folders from the backup device."
                        " In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time."
@@ -344,6 +346,7 @@ void MainWindow::on_backupRestoreWidget_currentChanged(int index)
         ui->restorePrevRadio->setChecked(1);
         on_restorePrevRadio_clicked();
     }
+    ui->progressBar->setVisible(0);
 }
 
 void MainWindow::on_cancelBackupButton_clicked()
@@ -365,8 +368,8 @@ void MainWindow::on_cancelRestoreButton_clicked()
 
     processCanceled = true;
     ui->cancelRestoreButton->setEnabled(0);
-    ui->messageOutput->append("\nCanceling Restore...! Return from pkill: " + QString::number(systemReturn));
-    writeLog("Canceling Restore...!");
+    ui->messageOutput->append("\nCanceling Restore...!");
+    writeLog("Canceling Restore...! Return from pkill: " + QString::number(systemReturn));
     ui->messageOutput->moveCursor(QTextCursor::End);
 }
 
@@ -409,7 +412,6 @@ void MainWindow::on_backupButton_clicked()
     QString targetDir = targetDevice + "/wasta-backup/" + machine;
 
     int progress = 10;
-
     ui->progressBar->setValue(progress);
 
     QString rdiffReturn;
@@ -441,22 +443,18 @@ void MainWindow::on_backupButton_clicked()
             if (processCanceled) {
                 break; // break out of backup loop
             }
-
             // Remove old backups
             QString olderThan = backupDirList[i].value(4);
             if (olderThan.trimmed() != "") {
                 QString rdiffCommand = "rdiff-backup " + stdParms + " --remove-older-than " + olderThan + " --force '" + dest + "'";
                 rdiffReturn = shellRun(rdiffCommand,false);
             }
-
             if (processCanceled) {
                 break; // break out of backup loop
             }
-
             progress = progress + 10;
             ui->progressBar->setValue(progress);
         }
-
     }
 
     if ( !processCanceled ) {
@@ -554,7 +552,6 @@ void MainWindow::on_selectPrevItemButton_clicked()
     ui->prevListCombo->setEnabled(0);
     ui->prevDateTimeLabel->setEnabled(0);
 
-
     ui->restoreButton->setEnabled(0);
     ui->openRestoreFolderButton->setEnabled(0);
 
@@ -640,23 +637,32 @@ void MainWindow::on_selectPrevItemButton_clicked()
     restItemList.resize(0);
     restItemList.resize(10);
 
+    int startIncDate;
+    QString restItemTime;
+    int listCount = 0;
+
     for ( int i = 1; i <= incCount; i++) {
-        // increment listing lines format: "   FileName.ext.yyyy-MM-ddTHH:mm:ss-HH:mm.TYPE  Display Date
-        // TYPE=dir means directory, TYPE=diff.gz means file
-        // Second HH:mm are timezone adjustments.
+        // throw away items indicating missing
+        startIncDate = incList.value(i).lastIndexOf(QRegExp("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"));
+        restItemTime = incList.value(i).mid(startIncDate,25);
 
-        int startIncDate = incList.value(i).lastIndexOf(QRegExp("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"));
+        if ( incList.value(i).mid(startIncDate + 25,8) != ".missing" ) {
+            // increment listing lines format: "   FileName.ext.yyyy-MM-ddTHH:mm:ss-HH:mm.TYPE  Display Date
+            // TYPE=dir means directory, TYPE=diff.gz means file
+            // Second HH:mm are timezone adjustments.
 
-        QString restItemTime = incList.value(i).mid(startIncDate,25);
-
-        restItemList[i-1].insert(0, restItemName);
-        restItemList[i-1].insert(1, restItemTime);
-        ui->prevListCombo->insertItem(i-1,"Date: " + restItemTime.mid(0,10) + "   Time: " + restItemTime.mid(11,5));
+            restItemList[listCount].insert(0, restItemName);
+            restItemList[listCount].insert(1, restItemTime);
+            ui->prevListCombo->insertItem(listCount,"Date: " + restItemTime.mid(0,10) + "   Time: " + restItemTime.mid(11,5));
+            listCount++;
+        } else {
+            writeLog("missing increment thrown away: " + incList.value(i));
+        }
     }
 
     // make sure most current is default selection (LAST entry)
 
-    ui->prevListCombo->setCurrentIndex(incCount - 1);
+    ui->prevListCombo->setCurrentIndex(listCount -1);
     ui->prevListCombo->setEnabled(1);
     ui->prevDateTimeLabel->setEnabled(1);
     ui->restoreButton->setEnabled(1);
@@ -721,7 +727,6 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     shellCommand = "rdiff-backup --compare-at-time now '" + missingDir + "' '" + targetDevice + "/wasta-backup/" + machine + missingDir + "' | grep 'deleted: ' | { grep -v '/' || true; }";
     shellReturn = shellRun(shellCommand,false);
-    QMessageBox::information(this,"Title","command: " + shellCommand + " return: " + shellReturn);
 
     // loop through results of compare-at-time now
     QStringList compList = shellReturn.split("\n");
@@ -830,10 +835,17 @@ void MainWindow::on_restoreButton_clicked()
     QString rdiffReturn;
     int row;
 
+    //clear restItem list;
+    restItems.clear();
+
     ui->restoreButton->setEnabled(0);
     ui->changeDeviceButton->setEnabled(0);
     ui->backupTab->setEnabled(0);
     ui->cancelRestoreButton->setEnabled(1);
+
+    int progress = 10;
+    ui->progressBar->setValue(progress);
+    ui->progressBar->setVisible(1);
 
     // clear visibal parts of message output window
     ui->messageOutput->append("\n\n\n\n\n\n\n\n\n\n");
@@ -850,9 +862,13 @@ void MainWindow::on_restoreButton_clicked()
         // restore PREV
         row = ui->prevListCombo->currentIndex();
 
-        renameTime = QDate::currentDate().toString("yyyy-MM-dd") + "-" + QTime::currentTime().toString("HH:mm:ss");
+        renameText = "-SAVE-" + QDate::currentDate().toString("yyyy-MM-dd") + "-" + QTime::currentTime().toString("HH:mm:ss");
 
+        // renameRestore will take care of adding to restItems list for undo
         renameRestoreItem(restItemList[row].value(0),restItemList[row].value(1));
+
+        progress = progress + 10;
+        ui->progressBar->setValue(progress);
     }
         break; // break case 0
 
@@ -875,6 +891,12 @@ void MainWindow::on_restoreButton_clicked()
                     if (processCanceled) {
                         break; // break out of for loop;
                     }
+                    // if NOT canceled, add to restItems list for undo
+                    restItems.append(restItemList[row].value(0));
+
+                    progress = progress + 10;
+                    ui->progressBar->setValue(progress);
+
                 } else {
                     //Item Exists: no restore
                     QTest::qWait(1);
@@ -895,7 +917,7 @@ void MainWindow::on_restoreButton_clicked()
         // restore ALL
         machine = ui->machineCombo->currentText();
 
-        renameTime = QDate::currentDate().toString("yyyy-MM-dd") + "-" + QTime::currentTime().toString("HH:mm:ss");
+        renameText = "-SAVE-" + QDate::currentDate().toString("yyyy-MM-dd") + "-" + QTime::currentTime().toString("HH:mm:ss");
         // reset restItemList
         restItemList.resize(0);
         restItemList.resize(10);
@@ -908,11 +930,18 @@ void MainWindow::on_restoreButton_clicked()
             restItemList[row].insert(0, destDir);
             restItemList[row].insert(1, "now");
 
+            // renameRestore will take care of adding to restItems list for undo
             renameRestoreItem(destDir, "now");
+
+            if (processCanceled) {
+                break; // break out of for loop
+            }
+            progress = progress + 10;
+            ui->progressBar->setValue(progress);
         }
     }
         break; // break case 2
-    }
+    } // end case
 
     if ( !processCanceled ) {
         ui->messageOutput->append("\nRestore Complete");
@@ -924,24 +953,29 @@ void MainWindow::on_restoreButton_clicked()
         ui->messageOutput->moveCursor(QTextCursor::End);
     }
 
+
+    ui->progressBar->setValue(100);
+
     ui->cancelRestoreButton->setEnabled(0);
     ui->restoreButton->setEnabled(1);
     ui->changeDeviceButton->setEnabled(1);
     ui->backupTab->setEnabled(1);
+    ui->undoLastRestoreButton->setEnabled(1);
 }
 
 void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
 {
     ui->messageOutput->append("Restoring " + originalItem + "....\n");
 
+    QString newItem;
+
     if ( QFile::exists(originalItem) ) {
-        QString newItem;
 
         if ( originalItem.mid(originalItem.length()-1,1) == "/" ) {
             // rename current item (trim off trailing "/" from destDir
-            newItem = originalItem.mid(0,originalItem.length()-1) + "-SAVE-" + renameTime;
+            newItem = originalItem.mid(0,originalItem.length()-1) + renameText;
         } else {
-            newItem = originalItem + "-SAVE-" + renameTime;
+            newItem = originalItem + renameText;
         }
 
         QDir path(originalItem);
@@ -968,6 +1002,9 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
             if (processCanceled) {
                 return;
             }
+            // don't add to restItems if canceled, otherwise add for later undo
+            // adding new item so know what to get rid of later
+            restItems.append(newItem);
         } else {
             //backup not found on backup device: no restore done
             QTest::qWait(1);
@@ -1031,6 +1068,72 @@ void MainWindow::on_restoreAllCheck_stateChanged(int arg1)
         ui->machineLabel->setEnabled(0);
         ui->openRestoreFolderButton->setEnabled(0);
     }
+}
+
+void MainWindow::on_undoLastRestoreButton_clicked()
+{
+    QMessageBox::information(this,"Title","RestItems 0: " + restItems.value(0) +
+                             "\nRestItems 1: " + restItems.value(1) +
+                             "\nRestItems 2: " + restItems.value(2) +
+                             "\nRestItems 3: " + restItems.value(3) +
+                             "\nRestItems 4: " + restItems.value(4) +
+                             "\nRestItems 5: " + restItems.value(5));
+    QString itemName;
+    QString origItemName;
+
+    foreach (itemName, restItems) {
+        // check if end of item matches renameText (indicating need to delete current plus restore renamed item)
+        if ( itemName.endsWith(renameText)) {
+            origItemName = itemName;
+            origItemName.chop(renameText.length());
+            QMessageBox::information(this,"Title","itemName: " + itemName + " origItemName: " + origItemName);
+
+            // check that item exists first (could have been deleted?), then delete origItem, then rename item to origItem
+            if ( QFile::exists(itemName)) {
+
+                QFileInfo item;
+                item.setFile(itemName);
+
+                if ( item.isFile() ) {
+                    // file processing
+                    if ( QFile::remove(origItemName) ) {
+                        if ( QFile::rename(itemName, origItemName) ) {
+                            // remove and rename successful
+                            QMessageBox::information(this,"Title","success in remove and rename FILE!");
+                        } else {
+                            // rename unsuccessful
+                            QMessageBox::information(this,"Title","removed FILE but failed to rename!");
+                        }
+                    } else {
+                        // remove unsuccessful
+                        QMessageBox::information(this,"Title","remove FILE failed so no rename attempted!");
+                    }
+
+                } else {
+                    // item exists and is folder
+                    if ( removeDir(origItemName) ) {
+                        QDir directory;
+                        directory.setPath(itemName);
+                        // now rename
+                        if ( directory.rename(itemName, origItemName) ) {
+                            QMessageBox::information(this,"Title","success in remove and rename DIR!");
+                        } else {
+                            QMessageBox::information(this,"Title","removed DIR but failed to rename!");
+                        }
+                    } else {
+                        QMessageBox::information(this,"Title","remove DIR failed so no rename attempted!");
+                    }
+                }
+            } else {
+                // file doesn't exist: can't remove and rename for undo
+                QMessageBox::information(this,"Title","backup item doesn't exist so no remove and rename attempted!");
+            }
+
+        } else {
+            // no rename, just delete.
+            // else (no renameText at end of item) then was just a restored 'delete', so undo just deletes current.
+        }
+    } // foreach
 }
 
 // ##########################################################################
@@ -1156,4 +1259,28 @@ void MainWindow::setPreferredDestination()
         QMessageBox::information(this, "No Device Found", "No device found to backup to!  Please insert a USB device and click 'Change'.");
         writeLog("No target device found.");
     }
+}
+
+bool MainWindow::removeDir(const QString & dirName)
+{
+    // taken from web
+    bool result;
+    QDir dir(dirName);
+
+    if (dir.exists(dirName)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeDir(info.absoluteFilePath());
+            }
+            else {
+                result = QFile::remove(info.absoluteFilePath());
+            }
+
+            if (!result) {
+                return result;
+            }
+        }
+        result = dir.rmdir(dirName);
+    }
+    return result;
 }

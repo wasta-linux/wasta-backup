@@ -291,23 +291,23 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="restorePrevPage">
        <widget class="QLabel" name="prevDateTimeLabel">
         <property name="geometry">
          <rect>
-          <x>-10</x>
+          <x>0</x>
           <y>80</y>
           <width>131</width>
-          <height>51</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="text">
          <string>Restore previous version from:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -412,9 +412,9 @@
        <widget class="QListWidget" name="delList">
         <property name="geometry">
          <rect>
-          <x>120</x>
+          <x>130</x>
           <y>60</y>
-          <width>351</width>
+          <width>341</width>
           <height>191</height>
          </rect>
         </property>

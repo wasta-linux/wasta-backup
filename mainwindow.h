@@ -60,6 +60,10 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void on_undoLastRestoreButton_clicked();
+
+    bool removeDir(const QString & dirName);
+
 private:
     Ui::MainWindow *ui;
 };

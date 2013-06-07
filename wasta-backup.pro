@@ -21,4 +21,4 @@ FORMS    += mainwindow.ui
 CONFIG += qtestlib
 
 OTHER_FILES += \
-    README.htm
+    README.txt

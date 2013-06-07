@@ -459,7 +459,7 @@ void MainWindow::on_backupButton_clicked()
 
     if ( !processCanceled ) {
         ui->messageOutput->append("\nBackup Complete");
-        writeLog("Backup complete.");
+        writeLog("Backup Complete");
         ui->messageOutput->moveCursor(QTextCursor::End);
     } else {
         ui->messageOutput->append("\nBackup Canceled!");
@@ -841,6 +841,8 @@ void MainWindow::on_restoreButton_clicked()
     ui->restoreButton->setEnabled(0);
     ui->changeDeviceButton->setEnabled(0);
     ui->backupTab->setEnabled(0);
+    ui->restTypeFrame->setEnabled(0);
+    ui->restorePageWidget->setEnabled(0);
     ui->cancelRestoreButton->setEnabled(1);
 
     int progress = 10;
@@ -961,11 +963,15 @@ void MainWindow::on_restoreButton_clicked()
     ui->changeDeviceButton->setEnabled(1);
     ui->backupTab->setEnabled(1);
     ui->undoLastRestoreButton->setEnabled(1);
+    ui->restTypeFrame->setEnabled(1);
+    ui->restorePageWidget->setEnabled(1);
+
 }
 
 void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
 {
     ui->messageOutput->append("Restoring " + originalItem + "....\n");
+    writeLog("Restoring " + originalItem);
 
     QString newItem;
 
@@ -1072,12 +1078,25 @@ void MainWindow::on_restoreAllCheck_stateChanged(int arg1)
 
 void MainWindow::on_undoLastRestoreButton_clicked()
 {
-    QMessageBox::information(this,"Title","RestItems 0: " + restItems.value(0) +
-                             "\nRestItems 1: " + restItems.value(1) +
-                             "\nRestItems 2: " + restItems.value(2) +
-                             "\nRestItems 3: " + restItems.value(3) +
-                             "\nRestItems 4: " + restItems.value(4) +
-                             "\nRestItems 5: " + restItems.value(5));
+    ui->restoreButton->setEnabled(0);
+    ui->changeDeviceButton->setEnabled(0);
+    ui->backupTab->setEnabled(0);
+    ui->restoreTab->setEnabled(0);
+    ui->undoLastRestoreButton->setEnabled(0);
+
+    // clear visibal parts of message output window
+    ui->messageOutput->append("\n\n\n\n\n\n\n\n\n\n");
+    ui->messageOutput->append("Starting undo last restore from " + ui->targetDeviceDisp->text() + " device...\n");
+    ui->messageOutput->moveCursor(QTextCursor::End);
+    writeLog("Starting Undo Last Restore");
+    QTest::qWait(2000);
+
+    ui->progressBar->setVisible(1);
+    ui->progressBar->setValue(0);
+
+    int progress = 10;
+    ui->progressBar->setValue(progress);
+
     QString itemName;
     QString origItemName;
 
@@ -1086,7 +1105,11 @@ void MainWindow::on_undoLastRestoreButton_clicked()
         if ( itemName.endsWith(renameText)) {
             origItemName = itemName;
             origItemName.chop(renameText.length());
-            QMessageBox::information(this,"Title","itemName: " + itemName + " origItemName: " + origItemName);
+
+            ui->messageOutput->append("Undoing restore of " + origItemName + "....\n");
+            ui->messageOutput->moveCursor(QTextCursor::End);
+            writeLog("Undoing restore of " + origItemName);
+            QTest::qWait(2000);
 
             // check that item exists first (could have been deleted?), then delete origItem, then rename item to origItem
             if ( QFile::exists(itemName)) {
@@ -1099,14 +1122,26 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                     if ( QFile::remove(origItemName) ) {
                         if ( QFile::rename(itemName, origItemName) ) {
                             // remove and rename successful
-                            QMessageBox::information(this,"Title","success in remove and rename FILE!");
+                            ui->messageOutput->append("....Done.\n");
+                            ui->messageOutput->moveCursor(QTextCursor::End);
+                            writeLog("File " + origItemName + " replaced from saved version " + itemName + ".");
+                            progress = progress + 10;
+                            ui->progressBar->setValue(progress);
                         } else {
                             // rename unsuccessful
-                            QMessageBox::information(this,"Title","removed FILE but failed to rename!");
+                            ui->messageOutput->append("\n !!!ERROR!!!\n");
+                            writeLog("ERROR: File " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            QTest::qWait(1);
+                            QMessageBox::warning(this,"Error","ERROR: File " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            break; // foreach
                         }
                     } else {
                         // remove unsuccessful
-                        QMessageBox::information(this,"Title","remove FILE failed so no rename attempted!");
+                        ui->messageOutput->append("\n !!!ERROR!!!\n");
+                        writeLog("ERROR: File " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        QTest::qWait(1);
+                        QMessageBox::warning(this,"Error","ERROR: File " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        break; // foreach
                     }
 
                 } else {
@@ -1116,24 +1151,103 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                         directory.setPath(itemName);
                         // now rename
                         if ( directory.rename(itemName, origItemName) ) {
-                            QMessageBox::information(this,"Title","success in remove and rename DIR!");
+                            // rename successful
+                            ui->messageOutput->append("....Done.\n");
+                            ui->messageOutput->moveCursor(QTextCursor::End);
+                            writeLog("Folder " + origItemName + " replaced from saved version " + itemName + ".");
+                            progress = progress + 10;
+                            ui->progressBar->setValue(progress);
                         } else {
-                            QMessageBox::information(this,"Title","removed DIR but failed to rename!");
+                            //rename unsucessful
+                            ui->messageOutput->append("\n !!!ERROR!!!\n");
+                            writeLog("ERROR: Folder " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            QTest::qWait(1);
+                            QMessageBox::warning(this,"Error","ERROR: Folder " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            break; // foreach
                         }
                     } else {
-                        QMessageBox::information(this,"Title","remove DIR failed so no rename attempted!");
+                        // remove unsucessful (no rename attempted)
+                        ui->messageOutput->append("\n !!!ERROR!!!\n");
+                        writeLog("ERROR: Folder " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        QTest::qWait(1);
+                        QMessageBox::warning(this,"Error","ERROR: Folder " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        break; // foreach
                     }
                 }
             } else {
                 // file doesn't exist: can't remove and rename for undo
-                QMessageBox::information(this,"Title","backup item doesn't exist so no remove and rename attempted!");
+                ui->messageOutput->append("\n !!!ERROR!!!\n");
+                writeLog("ERROR: Item " + itemName + " doesn't exist so no undo restore possible!");
+                QTest::qWait(1);
+                QMessageBox::warning(this,"Error","ERROR: Item " + itemName + " doesn't exist so no undo restore possible!");
+                break; // foreach
             }
-
         } else {
-            // no rename, just delete.
             // else (no renameText at end of item) then was just a restored 'delete', so undo just deletes current.
-        }
+            ui->messageOutput->append("Undoing restore of " + itemName + "....\n");
+            QTest::qWait(2000);
+            ui->messageOutput->moveCursor(QTextCursor::End);
+
+            if ( QFile::exists(itemName)) {
+                QFileInfo item;
+                item.setFile(itemName);
+
+                if ( item.isFile() ) {
+                    // file delete
+                    if ( QFile::remove(itemName) ) {
+                        // success deleting
+                        ui->messageOutput->append("....Done.\n");
+                        writeLog("File " + itemName + " deleted.");
+                        ui->messageOutput->moveCursor(QTextCursor::End);
+                        progress = progress + 10;
+                        ui->progressBar->setValue(progress);
+                    } else {
+                        // remove FILE failed
+                        ui->messageOutput->append("\n !!!ERROR!!!\n");
+                        writeLog("ERROR: File " + itemName + " unable to be removed!!!");
+                        QTest::qWait(1);
+                        QMessageBox::warning(this,"Error","ERROR: File " + itemName + " unable to be removed!!!");
+                        break; // foreach
+                    }
+                } else {
+                    // folder delete
+                    if ( removeDir(itemName) ) {
+                        // success deleting
+                        ui->messageOutput->append("....Done.\n");
+                        ui->messageOutput->moveCursor(QTextCursor::End);
+                        writeLog("Folder " + itemName + " deleted.");
+                        progress = progress + 10;
+                        ui->progressBar->setValue(progress);
+                    } else {
+                        // remove FOLDER failed
+                        ui->messageOutput->append("\n !!!ERROR!!!\n");
+                        writeLog("ERROR: Folder " + itemName + " unable to be removed!!!");
+                        QTest::qWait(1);
+                        QMessageBox::warning(this,"Error","ERROR: Folder " + itemName + " unable to be removed!!!");
+                        break; // foreach
+                    }
+                }
+            } else {
+                // item doesn't exist can't delete
+                ui->messageOutput->append("\n !!!ERROR!!!\n");
+                writeLog("ERROR: Item " + itemName + " doesn't exist so no need to undo restore!");
+                QTest::qWait(1);
+                QMessageBox::warning(this,"Error","ERROR: Item " + itemName + " doesn't exist so no need to undo restore!");
+                break; // foreach
+            }
+        } // end else (no renameText at end of item)
+
     } // foreach
+
+    ui->messageOutput->append("\nUndo Last Restore Complete");
+    ui->messageOutput->moveCursor(QTextCursor::End);
+    writeLog("Undo Last Restore Complete");
+    ui->progressBar->setValue(100);
+
+    ui->changeDeviceButton->setEnabled(1);
+    ui->backupTab->setEnabled(1);
+    ui->restoreTab->setEnabled(1);
+
 }
 
 // ##########################################################################
@@ -1264,7 +1378,7 @@ void MainWindow::setPreferredDestination()
 bool MainWindow::removeDir(const QString & dirName)
 {
     // taken from web
-    bool result;
+    bool result = false;
     QDir dir(dirName);
 
     if (dir.exists(dirName)) {

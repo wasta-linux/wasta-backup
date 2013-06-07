@@ -175,71 +175,7 @@
      <attribute name="title">
       <string>Restore</string>
      </attribute>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>191</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Restore what?</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="restorePrevRadio">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>221</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Restore Previous Version</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-      <property name="autoRepeat">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="restoreDelRadio">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>100</y>
-        <width>221</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Restore Deleted File</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="restoreAllRadio">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>150</y>
-        <width>211</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Restore ALL Backup Data</string>
-      </property>
-     </widget>
-     <widget class="QFrame" name="frame">
+     <widget class="QFrame" name="restTypeFrame">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -254,10 +190,68 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
+      <widget class="QRadioButton" name="restoreAllRadio">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>140</y>
+         <width>211</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Restore ALL Backup Data</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="restoreDelRadio">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>211</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Restore Deleted File</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>110</y>
+         <width>141</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>or Folder</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="restorePrevRadio">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>211</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Restore Previous Version</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
       <widget class="QLabel" name="label_6">
        <property name="geometry">
         <rect>
-         <x>40</x>
+         <x>50</x>
          <y>60</y>
          <width>141</width>
          <height>16</height>
@@ -267,17 +261,23 @@
         <string>of File or Folder</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="label_7">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>110</y>
-         <width>141</width>
-         <height>16</height>
+         <x>10</x>
+         <y>10</y>
+         <width>131</width>
+         <height>17</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
-        <string>or Folder</string>
+        <string>Restore what?</string>
        </property>
       </widget>
      </widget>
@@ -634,16 +634,6 @@
        <string>Undo Last Restore</string>
       </property>
      </widget>
-     <zorder>frame</zorder>
-     <zorder>label_7</zorder>
-     <zorder>restorePrevRadio</zorder>
-     <zorder>restoreDelRadio</zorder>
-     <zorder>restoreAllRadio</zorder>
-     <zorder>restorePageWidget</zorder>
-     <zorder>restoreButton</zorder>
-     <zorder>cancelRestoreButton</zorder>
-     <zorder>openRestoreFolderButton</zorder>
-     <zorder>undoLastRestoreButton</zorder>
     </widget>
    </widget>
    <widget class="QProgressBar" name="progressBar">

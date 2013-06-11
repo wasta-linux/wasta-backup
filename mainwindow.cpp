@@ -260,7 +260,7 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.1.4 2013-06-07</h3>"
+    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.1-6 2013-06-11</h3>"
                        "<p>Wasta Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
                        "<p>Restore possibilities include restoring previous versions of files or folders as well as restoring deleted files or folders from the backup device."
                        " In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time."
@@ -564,7 +564,7 @@ void MainWindow::on_selectPrevItemButton_clicked()
         // open file dialog
         restItemName = QFileDialog::getOpenFileName(this, tr("Select File or Folder"),
                                                     "/home/" + userID);
-        restoreFolder = restItemName.mid(0,restItemName.lastIndexOf("/"));
+        restoreFolder = restItemName.mid(0,restItemName.lastIndexOf("/"));      
     } else {
         // open directory dialog
         // add trailing "/"
@@ -582,13 +582,12 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     ui->openRestoreFolderButton->setEnabled(1);
 
-    // below not true: because can be deleted from current but still exist in backups.  so, need to cut apart to find backup dir in restItemName, then do a rdiff: will return 0 nicely if no backups found (current or increment).
     // first, find if backup dir exists.
 
     bool backupFound = false;
 
     // this loop checks if restItemName is part of backups, based on backupDirs (needed or else rdiff-backup will return error if file not part of a backup)
-    QString backupDir;
+    QString backupDir = "";
 
     for ( int i = 0; i < backupDirList.count(); i++ ) {
         backupDir = backupDirList[i].value(1).replace("$HOME",getenv("HOME"));
@@ -612,6 +611,12 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     // now lets process!
 
+    //re-initialize restItemList
+    restItemList.resize(0);
+    restItemList.resize(10);
+
+    // get increments
+
     rdiffCommand = "rdiff-backup -l '" + targetItem + "'";
     rdiffReturn = shellRun(rdiffCommand,false);
 
@@ -623,23 +628,11 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     incCount = lineSplit.value(1).toInt();
 
-    if ( incCount == 0) {
-        // No previous versions.  Give message
-        QTest::qWait(1);
-        QMessageBox::information(this, "No Items Found", "No previous versions of item:\n\n" + restItemName + "\n\nfound in backups on " + ui->targetDeviceDisp->text() + " device.");
-        writeLog("No previous versions of item: " + restItemName + " found on " + ui->targetDeviceDisp->text() + "device.");
-        return;
-    }
-
     //Now, load up increment listings
-
-    //re-initialize restItemList
-    restItemList.resize(0);
-    restItemList.resize(10);
 
     int startIncDate;
     QString restItemTime;
-    int listCount = 0;
+    int prevItemCount = 0;
 
     for ( int i = 1; i <= incCount; i++) {
         // throw away items indicating missing
@@ -651,21 +644,45 @@ void MainWindow::on_selectPrevItemButton_clicked()
             // TYPE=dir means directory, TYPE=diff.gz means file
             // Second HH:mm are timezone adjustments.
 
-            restItemList[listCount].insert(0, restItemName);
-            restItemList[listCount].insert(1, restItemTime);
-            ui->prevListCombo->insertItem(listCount,"Date: " + restItemTime.mid(0,10) + "   Time: " + restItemTime.mid(11,5));
-            listCount++;
+            restItemList[prevItemCount].insert(0, restItemName);
+            restItemList[prevItemCount].insert(1, restItemTime);
+            ui->prevListCombo->insertItem(prevItemCount,"Date: " + restItemTime.mid(0,10) + "   Time: " + restItemTime.mid(11,5));
+            prevItemCount++;
         } else {
             writeLog("missing increment thrown away: " + incList.value(i));
         }
     }
 
-    // make sure most current is default selection (LAST entry)
+    // last, check CURRENT backup as compared to directory for previous version (so will be last entry if found)
 
-    ui->prevListCombo->setCurrentIndex(listCount -1);
-    ui->prevListCombo->setEnabled(1);
-    ui->prevDateTimeLabel->setEnabled(1);
-    ui->restoreButton->setEnabled(1);
+    // traditional "diff" to compare the two.
+    rdiffCommand = "diff '" + restItemName + "' '" + targetItem + "' | { grep -v 'Common subdirectories:' || true; }";
+    rdiffReturn = shellRun(rdiffCommand, false);
+
+    if ( rdiffReturn.trimmed() != "" ) {
+        // some difference, so list current item from backup as a previous item: would be most current so list last
+        restItemList[prevItemCount].insert(0, restItemName);
+        restItemList[prevItemCount].insert(1, "now");
+        QFileInfo currentInfo;
+        currentInfo.setFile(targetItem);
+        // get date and time for display
+        QString modifiedDate = currentInfo.lastModified().toString("yyyy-MM-dd");
+        QString modifiedTime = currentInfo.lastModified().toString("hh:mm");
+        ui->prevListCombo->insertItem(prevItemCount, "Date: " + modifiedDate + "   Time: " + modifiedTime);
+        prevItemCount++;
+    }
+
+    if ( prevItemCount > 0 ) {
+        ui->prevListCombo->setCurrentIndex(prevItemCount -1);
+        ui->prevListCombo->setEnabled(1);
+        ui->prevDateTimeLabel->setEnabled(1);
+        ui->restoreButton->setEnabled(1);
+
+    } else {
+        QTest::qWait(1);
+        QMessageBox::information(this, "No Items Found", "No previous versions of item:\n\n" + restItemName + "\n\nfound in backups on " + ui->targetDeviceDisp->text() + " device.");
+        writeLog("No previous versions of item: " + restItemName + " found in backups on " + ui->targetDeviceDisp->text() + " device.");
+    }
 }
 
 void MainWindow::on_selectDelFolderButton_clicked()

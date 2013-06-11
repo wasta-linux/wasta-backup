@@ -276,13 +276,13 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_changeDeviceButton_clicked()
 {
-    // need to fix!!!! to handle /media/akiverson plus /media!
-
     ui->progressBar->setVisible(0);
     ui->backupButton->setEnabled(0);
     ui->restoreTab->setEnabled(0);
     ui->targetDeviceDisp->setText("");
     QString startTarget;
+
+    // need to fix!!!! to handle /media/akiverson plus /media!
 
     // if current device has user ID in it, then newer
     if ( targetDevice.indexOf(userID) > 0 ) {
@@ -1321,7 +1321,7 @@ void MainWindow::setPreferredDestination()
     ui->restoreTab->setEnabled(0);
 
     // this will account for filesystems under /media (so will include /media/username for ubuntu 12.10 and newer)
-    shellCommand = "df -P -x iso9660   |   grep /media/   |   cut -c 57-";
+    shellCommand = "df -P -x iso9660 | grep /media/ | awk '{print substr($0, index($0, $6))}'";
     shellReturn = shellRun(shellCommand, false);
 
     QStringList deviceList = shellReturn.split("\n");
@@ -1335,10 +1335,10 @@ void MainWindow::setPreferredDestination()
         // subtract 1 because the ls command returned a trailing \n
         for (int i=0; i<(deviceList.count() - 1); i++)
         {
-            //check if writeable
+            //check if writable
             QFileInfo mediaDir(deviceList.value(i));
             if ( mediaDir.isWritable() ) {
-                writeLog(deviceList.value(i) + " is writeable.");
+                writeLog(deviceList.value(i) + " is writable.");
 
                 //get free space
                 shellCommand = "df -P '" + deviceList.value(i) + "/' | tail -1 | awk '{print $4}'";
@@ -1349,7 +1349,7 @@ void MainWindow::setPreferredDestination()
                     biggestSize = currentSize;
                 }
             } else {
-                writeLog(deviceList.value(i) + " is NOT writeable.");
+                writeLog(deviceList.value(i) + " is NOT writable.");
             }
         }
         if ( currentSize > 0 ) {
@@ -1361,9 +1361,9 @@ void MainWindow::setPreferredDestination()
             ui->backupButton->setEnabled(1);
             ui->restoreTab->setEnabled(1);
         } else {
-            // no writeable devices found
+            // no writable devices found
             QTest::qWait(1);
-            QMessageBox::information(this, "No Device Found", "No Writeable USB device found to backup to!  Please insert USB device and click 'Change'!");
+            QMessageBox::information(this, "No Device Found", "No Writable USB device found to backup to!  Please insert USB device and click 'Change'!");
             writeLog("A target device found, but not writeable.");
 
         }

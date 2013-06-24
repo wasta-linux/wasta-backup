@@ -12,7 +12,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QStringList arguments, QWidget *parent = 0);
     ~MainWindow();
     
 private slots:
@@ -63,6 +63,9 @@ private slots:
     void on_undoLastRestoreButton_clicked();
 
     bool removeDir(const QString & dirName);
+
+    void setTargetDevice(QString inputDir);
+
 
 private:
     Ui::MainWindow *ui;

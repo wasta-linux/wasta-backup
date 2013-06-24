@@ -21,4 +21,12 @@ FORMS    += mainwindow.ui
 CONFIG += qtestlib
 
 OTHER_FILES += \
-    README.txt
+    README.txt \
+    wasta-base.png \
+    wasta-backup-usb-autolaunch.sh \
+    wasta-backup-udev.sh \
+    wasta-backup.xcf \
+    wasta-backup.rules \
+    wasta-backup.png \
+    wasta-backup.desktop \
+    control

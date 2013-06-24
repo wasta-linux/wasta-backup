@@ -1,0 +1,9 @@
+
+[Desktop Entry]
+Name=Wasta Backup
+Comment=Simple Data Backup Tool
+Exec=wasta-backup
+Terminal=false
+Type=Application
+Icon=wasta-backup
+Categories=Application;Qt;Utility;

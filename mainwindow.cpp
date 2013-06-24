@@ -20,13 +20,17 @@ QVector<QStringList> backupDirList(10); //initialize with 10 entries: a "few" ex
 QVector<QStringList> restItemList(10);
 QStringList restItems;
 
-QString targetDevice;
+QString targetDevice = "";
 QString machine = QHostInfo::localHostName();
 QFile logFile;
 QFile useBackupIncludeFilterFile;
+QString prevBackupDevice;
+QString prevBackupDate;
+QFile prevBackupDevFile;
+QFile prevBackupDateFile;
 QString renameText;
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -147,6 +151,34 @@ MainWindow::MainWindow(QWidget *parent) :
         useBackupIncludeFilterFile.close();
     }
 
+    // Check for prevBackupDev file
+    prevBackupDevFile.setFileName(configDir + "prevBackupDevice.txt");
+
+    if ( !prevBackupDevFile.exists() ) {
+        // create it ... but leave empty
+        prevBackupDevFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
+        writeLog("No " + prevBackupDevFile.fileName() + ": creating it (empty).");
+
+        QTextStream stream(&prevBackupDevFile);
+        stream << "";
+        stream.flush();
+        prevBackupDevFile.close();
+    }
+
+    // Check for prevBackupDate file
+    prevBackupDateFile.setFileName(configDir + "prevBackupDate.txt");
+
+    if ( !prevBackupDateFile.exists() ) {
+        // create it ... but leave empty
+        prevBackupDateFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
+        writeLog("No " + prevBackupDateFile.fileName() + ": creating it (empty).");
+
+        QTextStream stream(&prevBackupDateFile);
+        stream << "";
+        stream.flush();
+        prevBackupDateFile.close();
+    }
+
     // Launch Main Window
     ui->setupUi(this);
 
@@ -179,7 +211,47 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->prevListCombo->setEnabled(0);
     ui->restorePageWidget->setCurrentIndex(0);
 
-    setPreferredDestination();
+    // Load up prevBackupDev file
+    prevBackupDevFile.open(QIODevice::ReadOnly);
+    QTextStream prevBackupDevStream(&prevBackupDevFile);
+    prevBackupDevice = prevBackupDevStream.readLine();
+    prevBackupDevStream.flush();
+    prevBackupDevFile.close();
+
+    // Load up prevBackupDate file
+    prevBackupDateFile.open(QIODevice::ReadOnly);
+    QTextStream prevBackupDateStream(&prevBackupDateFile);
+    prevBackupDate = prevBackupDateStream.readLine();
+    prevBackupDateStream.flush();
+    prevBackupDateFile.close();
+
+    // check for passed argument: if found, means wasta-backup launched by udev
+    //   in this case, set passed argument as target device
+    if ( arguments.value(1) != "" ) {
+        QFileInfo argumentInfo(arguments.value(1) + "/wasta-backup");
+        if ( argumentInfo.isWritable() ) {
+            writeLog("Wasta-backup started with argument: " + arguments.value(1) + " setting as target device.");
+            ui->messageOutput->append("USB device attached: " + arguments.value(1).mid(arguments.value(1).lastIndexOf("/") + 1) + "\n");
+            setTargetDevice(arguments.value(1));
+        }
+    }
+
+    if ( targetDevice == "" ) {
+        // if argument exists above, but not writable, will get to here also
+        // check if prev backup writable, if so, set as target device
+        QFileInfo prevBackupInfo(prevBackupDevice + "/wasta-backup");
+        if ( prevBackupInfo.isWritable() ) {
+            //use it
+            writeLog("Previous backup location found: " + prevBackupDevice + " setting as target device.");
+            ui->messageOutput->append("Previous backup device found: " + prevBackupDevice.mid(prevBackupDevice.lastIndexOf("/") + 1) + "\n");
+            setTargetDevice(prevBackupDevice);
+        } else {
+            // use logic to determine preferred destination
+            writeLog("No argument or previous backup location found.  Calling setPreferredDestination to set target device.");
+            ui->messageOutput->append("Previous backup device not found: " + prevBackupDevice.mid(prevBackupDevice.lastIndexOf("/") + 1) + "\n");
+            setPreferredDestination();
+        }
+    }
 
     // load up backupDirs array
     int i = 0;
@@ -225,7 +297,7 @@ MainWindow::MainWindow(QWidget *parent) :
     } else {
         ui->actionBackupOnlyImportant->setChecked(0);
         ui->backupIncludeLabel->setText("ALL Files (including Pictures, Music, and Videos) will be included in the Backup.");
-    }
+    } 
 }
 
 MainWindow::~MainWindow()
@@ -260,26 +332,224 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.1-6 2013-06-11</h3>"
+    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.9-0 2013-06-24</h3>"
                        "<p>Wasta Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
-                       "<p>Restore possibilities include restoring previous versions of files or folders as well as restoring deleted files or folders from the backup device."
+                       "<p>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup device."
                        " In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time."
                        "<p>Additionally, a 'Restore ALL' option is available that will replace all data on the computer from the backup device."
-                       "<p>Settings are stored in a user's ~/.config/wasta-backup/ directory:"
+                       "<p>The following configurable settings are stored in a user's ~/.config/wasta-backup/ directory:"
                        "<ul>"
                        "<li><p><b>backupDirs.txt:</b> specifies directories to backup and other parameters such as number of versions to keep</li>"
                        "<li><p><b>backupInclude.txt:</b> specifies file extensions to backup (so media extensions, etc., will be politely ignored)</li>"
-                       "<li><p><b>useBackupIncludeFilter.txt:</b> determines whether or not backupInclude.txt is used</li>"
                        "</ul>"
                        );
 }
 
+void MainWindow::setPreferredDestination()
+{
+    QString shellCommand;
+    QString shellReturn;
+
+    // wipe targetDevice
+    ui->targetDeviceDisp->setText("");
+    ui->backupButton->setEnabled(0);
+    ui->restoreTab->setEnabled(0);
+
+    // this will account for filesystems under /media (so will include /media/username for ubuntu 12.10 and newer)
+    shellCommand = "df -P -x iso9660 | grep /media/ | awk '{print substr($0, index($0, $6))}'";
+    shellReturn = shellRun(shellCommand, false);
+
+    QStringList deviceList = shellReturn.split("\n");
+
+    if ( deviceList.count() > 1 ) {
+
+        int biggestSize = 0;
+        int wastaBiggestSize = 0;
+        int currentSize = 0;
+        int bestDevice = -1;
+        int wastaFound = 0;
+
+        // subtract 1 because the ls command returned a trailing \n
+        for (int i=0; i<(deviceList.count() - 1); i++)
+        {
+            //check if writable
+            QFileInfo mediaDir(deviceList.value(i));
+            if ( mediaDir.isWritable() ) {
+                writeLog(deviceList.value(i) + " is writable.");
+
+                // check for wasta-backup folder.  if found, keep track (and count of found wasta-backup folders).
+                // If only 1 wasta-backup folder found, choose it (regardless of space).
+                //If more than 1 wasta-backup folder, pick one with most remaining space.
+                //if no wasta-backup folders found, pick largest device
+
+                //get free space
+                shellCommand = "df -P '" + deviceList.value(i) + "/' | tail -1 | awk '{print $4}'";
+                QString temp2 = shellRun(shellCommand, false);
+                currentSize = temp2.toInt();
+
+                QFileInfo wastaDir(deviceList.value(i) + "/wasta-backup");
+                if ( wastaDir.exists() ) {
+                    wastaFound ++;
+                    writeLog(deviceList.value(i) + " has existing wasta-backup folder.");
+                    if (currentSize >= wastaBiggestSize) {
+                        bestDevice = i;
+                        wastaBiggestSize= currentSize;
+                    }
+                }
+
+                // keep track which is biggestSize in case no wastaFound
+                if (( wastaFound == 0 ) & ( currentSize >= biggestSize )) {
+                    bestDevice = i;
+                    biggestSize = currentSize;
+                }
+            } else {
+                writeLog(deviceList.value(i) + " is NOT writable.");
+            }
+        }
+
+        if ( bestDevice >= 0 ) {
+            // valid device found, set it
+            setTargetDevice(deviceList.value(bestDevice));
+//            targetDevice = deviceList.value(bestDevice);
+//            ui->targetDeviceDisp->setText(targetDevice.mid(targetDevice.lastIndexOf("/") + 1));
+//            writeLog("Target device auto-set to: " + targetDevice);
+//            ui->backupButton->setEnabled(1);
+//            ui->restoreTab->setEnabled(1);
+
+//            // write messages based on results
+//            if ( wastaFound == 1 ) {
+//                ui->messageOutput->append("\n\n\n\n\n");
+//                ui->messageOutput->append("Existing backup found on device: " + ui->targetDeviceDisp->text());
+//                ui->messageOutput->append("Automatically chosen and ready for backup.");
+//                ui->messageOutput->append("\n\n\n\n\n");
+//                ui->messageOutput->moveCursor(QTextCursor::End);
+//                writeLog(targetDevice + " has existing wasta-backup folder: automatically chosen and ready for backup.");
+//            } else if ( wastaFound > 1 ) {
+//                // if more than 1, say that one with most size chosen.
+//                ui->messageOutput->append("\n\n\n\n\n");
+//                ui->messageOutput->append("More than 1 existing backup found");
+//                ui->messageOutput->append("Device: " + ui->targetDeviceDisp->text() + " automatically chosen and ready for backup since it has the most free space remaining.");
+//                ui->messageOutput->append("\n\n\n\n\n");
+//                ui->messageOutput->moveCursor(QTextCursor::End);
+//                writeLog(targetDevice + " has existing wasta-backup folder: automatically chosen and ready for backup since it has the most free space remaining.");
+//            } else {
+//                // if more than 1, say that one with most size chosen.
+//                ui->messageOutput->append("\n\n\n\n\n");
+//                ui->messageOutput->append("No existing backup found");
+//                ui->messageOutput->append("Device: " + ui->targetDeviceDisp->text() + " automatically chosen and ready for backup since it has the most free space remaining.");
+//                ui->messageOutput->append("Since first backup, may take some time to complete.");
+//                ui->messageOutput->append("\n\n\n\n\n");
+//                ui->messageOutput->moveCursor(QTextCursor::End);
+//                writeLog(targetDevice + " automatically chosen and ready for backup since it has the most free space remaining (no existing wasta-backup folder found).");
+//            }
+        } else {
+            // no writable devices found
+            QTest::qWait(1);
+            QMessageBox::information(this, "No Device Found", "No Writable USB device found to backup to!  Please insert USB device and click 'Change'!");
+            writeLog("A target device found, but not writeable.");
+        }
+
+    } else {
+        // no devices found
+        QTest::qWait(1);
+        QMessageBox::information(this, "No Device Found", "No device found to backup to!  Please insert a USB device and click 'Change'.");
+        writeLog("No target device found.");
+    }
+}
+
+void MainWindow::setTargetDevice(QString inputDir)
+{
+
+    // ok, has to have /media at first level OR have a wasta-backup folder (maybe have one more subfolder be wasta-backup)?
+    // if no existing wasta-backup folder, then trim it back to mount directory.
+    // if wasta-backup folder found, trim it back to the folder directly preceding wasta-backup directory.
+
+    QString shellCommand;
+    QString shellReturn;
+    QString newTarget = "";
+
+    int wastaLocation = inputDir.indexOf("/wasta-backup",0);
+    if (wastaLocation >=0 ) {
+        // we found an existing backup location, trim string to it (in case user selected a deeper level)
+        newTarget = inputDir.mid(0,wastaLocation);
+        writeLog("Existing wasta-backup found in " + inputDir + ".  NewTarget " + newTarget);
+    } else {
+        // see if inputDir + "/wasta-backup" exists, use it if so
+        QFileInfo wastaInfo(inputDir + "/wasta-backup");
+        if (wastaInfo.exists()) {
+            // we found existing backup location, so set newTarget
+            newTarget = inputDir;
+            writeLog("Existing wasta-backup found in subfolder of " + inputDir + ".  NewTarget " + newTarget);
+        } else if ( inputDir.indexOf("/media",0) == 0 ) {
+            // no existing backup location found (give message), but valid "new" location since has "/media" at beginning.
+            // trim folder to mount point (so wasta-backup folder created at root of drive).
+            shellCommand = "df -P | grep /media/ | awk '{print substr($0, index($0, $6))}'";
+            shellReturn = shellRun(shellCommand, false);
+
+            QStringList mountList = shellReturn.split("\n");
+            QString mountItem;
+
+            foreach (mountItem, mountList) {
+                if ( (!mountItem.isEmpty()) & (inputDir.indexOf(mountItem) == 0) ) {
+                    // mount found for new backup: trim string to use it (set new backup to root of drive)
+                    newTarget = mountItem;
+                    writeLog("No existing wasta-backup found in " + inputDir + ".  But valid new target " + mountItem);
+                    break; // foreach loop
+                }
+            } // foreach
+        }  // else if
+    } // else
+
+    if ( ! newTarget.isEmpty() ) {
+        // confirm writable, then set
+        QFileInfo newTargetInfo(newTarget);
+        if ( newTargetInfo.isWritable() ) {
+            targetDevice = newTarget;
+
+            ui->targetDeviceDisp->setText(newTarget.mid(newTarget.lastIndexOf("/") + 1));
+
+            writeLog("Updating targetDevice: " + targetDevice);
+            ui->backupButton->setEnabled(1);
+            ui->restoreTab->setEnabled(1);
+
+            QFileInfo existingBackupInfo(newTarget + "/wasta-backup");
+            if ( existingBackupInfo.exists() ) {
+                //existing backup: display message
+                ui->messageOutput->append("Existing backup found on device: " + ui->targetDeviceDisp->text() + "\n");
+                ui->messageOutput->append("Ready for backup");
+                ui->messageOutput->append("\n\n\n\n");
+                ui->messageOutput->moveCursor(QTextCursor::End);
+                writeLog(targetDevice + " has existing backup and ready for backup.");
+
+            } else {
+                //new backup: display message
+                ui->messageOutput->append("No existing backup found on device: " + ui->targetDeviceDisp->text() + "\n");
+                ui->messageOutput->append("Ready for first backup (may take some time to complete)");
+                ui->messageOutput->append("\n\n\n\n");
+                ui->messageOutput->moveCursor(QTextCursor::End);
+                writeLog(targetDevice + " doesn't have existing backup but ready for first backup.");
+            }
+
+        } else {
+            // newTarget not writable, give error
+            QTest::qWait(1);
+            QMessageBox::warning(this, "Choose Again", "Chosen directory " + newTarget + " is not writable.  Backup Device not changed.");
+            writeLog("User can't write to newTarget: " + newTarget);
+            // targetDevice and ui.targetDevice.Disp remain unchanged
+        }
+
+    } else {
+        // no newTarget found to be used.
+        QTest::qWait(1);
+        QMessageBox::warning(this, "Choose Again", inputDir + " not a valid backup device.  Try again.");
+        writeLog(inputDir + " not a valid backup device.");
+    }
+}
+
+
 void MainWindow::on_changeDeviceButton_clicked()
 {
     ui->progressBar->setVisible(0);
-    ui->backupButton->setEnabled(0);
-    ui->restoreTab->setEnabled(0);
-    ui->targetDeviceDisp->setText("");
     QString startTarget;
 
     // need to fix!!!! to handle /media/akiverson plus /media!
@@ -292,51 +562,13 @@ void MainWindow::on_changeDeviceButton_clicked()
         // on 12.04: USB mounted to /media/mount-name
         startTarget = "/media";
     }
-
-    targetDevice = "";
-
     // file utility to select device.... but trim to just be /media/xxxxx
     QString dirName = QFileDialog::getExistingDirectory(this, tr("Choose Backup Device"),
                                                         startTarget,
                                                         QFileDialog::ShowDirsOnly
                                                         | QFileDialog::DontResolveSymlinks);
-
-    // only want XXX from /media/XXX/yyy/zzz type selection
-    QStringList dirList = dirName.split("/");
-
-    if ( dirList.value(1) != "media" ) {
-        QTest::qWait(1);
-        QMessageBox::warning(this, "Choose Again", "No USB device selected.  Try again.");
-        writeLog(dirName + " not a USB device.");
-    } else {
-        // Ensure selected device writeable
-        QProcess *process = new QProcess();
-        process->start("sh", QStringList() << "-c" << "if [ -w '" + dirName + "' ]; then echo yes; fi");
-        process->waitForFinished();
-        QString temp = process->readAll();
-
-        if ( !temp.isEmpty() ) {
-
-            //device writeable: set as targetDevice
-            if ( dirList.value(2) == userID ) {
-                // on 12.10 +: USB mounted to /media/userid/mount-name
-                targetDevice = "/" + dirList.value(1) + "/" + dirList.value(2) + "/" + dirList.value(3);
-                ui->targetDeviceDisp->setText(dirList.value(3));
-            } else {
-                // on 12.04: USB mounted to /media/mount-name
-                targetDevice = "/" + dirList.value(1) + "/" + dirList.value(2);
-                ui->targetDeviceDisp->setText(dirList.value(2));
-            }
-            writeLog("Chosen USB Device: " + targetDevice);
-
-            ui->backupButton->setEnabled(1);
-            ui->restoreTab->setEnabled(1);
-        } else {
-            QTest::qWait(1);
-            QMessageBox::warning(this, "Choose Again", "Cannot use selected device for backups.  Try again.");
-            writeLog("User can't write to directory: " + dirName);
-        }
-    }
+    ui->messageOutput->append("\n\n\n\n\n");
+    setTargetDevice(dirName);
 }
 
 void MainWindow::on_backupRestoreWidget_currentChanged(int index)
@@ -404,8 +636,8 @@ void MainWindow::on_backupButton_clicked()
 
     // clear visibal parts of message output window
     ui->messageOutput->append("\n\n\n\n\n\n\n\n\n\n");
-    ui->messageOutput->moveCursor(QTextCursor::End);
     ui->messageOutput->append("Starting backup to " + ui->targetDeviceDisp->text() + " device...\n");
+    ui->messageOutput->moveCursor(QTextCursor::End);
     writeLog("Starting backup to " + ui->targetDeviceDisp->text());
     QTest::qWait(2000);
 
@@ -457,10 +689,37 @@ void MainWindow::on_backupButton_clicked()
         }
     }
 
+    // regardless of canceled or not, need to sync hdd (thanks to Justin)
+    rdiffReturn = shellRun("sync",false);
+
+    // recommended to do it twice
+    rdiffReturn = shellRun("sync",false);
+
     if ( !processCanceled ) {
         ui->messageOutput->append("\nBackup Complete");
         writeLog("Backup Complete");
         ui->messageOutput->moveCursor(QTextCursor::End);
+
+        //update prevBackupDevFile info
+        QString fileText = targetDevice;
+        prevBackupDevFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
+        writeLog("Updating " + prevBackupDevFile.fileName() + ": value: " + fileText);
+
+        QTextStream devStream(&prevBackupDevFile);
+        devStream << fileText;
+        devStream.flush();
+        prevBackupDevFile.close();
+
+        //update prevBackupDateFile info
+        fileText = QDate::currentDate().toString("yyyy-MM-dd");
+        prevBackupDateFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
+        writeLog("Updating " + prevBackupDateFile.fileName() + ": value: " + fileText);
+
+        QTextStream dateStream(&prevBackupDateFile);
+        dateStream << fileText;
+        dateStream.flush();
+        prevBackupDateFile.close();
+
     } else {
         ui->messageOutput->append("\nBackup Canceled!");
         writeLog("Backup Canceled!");
@@ -1325,71 +1584,6 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
     ui->messageOutput->moveCursor(QTextCursor::End);
 
     return shellReturn;
-}
-
-void MainWindow::setPreferredDestination()
-{
-    QString shellCommand;
-    QString shellReturn;
-
-    // wipe targetDevice
-    ui->targetDeviceDisp->setText("");
-    ui->backupButton->setEnabled(0);
-    ui->restoreTab->setEnabled(0);
-
-    // this will account for filesystems under /media (so will include /media/username for ubuntu 12.10 and newer)
-    shellCommand = "df -P -x iso9660 | grep /media/ | awk '{print substr($0, index($0, $6))}'";
-    shellReturn = shellRun(shellCommand, false);
-
-    QStringList deviceList = shellReturn.split("\n");
-
-    if ( deviceList.count() > 1 ) {
-
-        int biggestSize = 0;
-        int currentSize = 0;
-        int biggestDevice = 0;
-
-        // subtract 1 because the ls command returned a trailing \n
-        for (int i=0; i<(deviceList.count() - 1); i++)
-        {
-            //check if writable
-            QFileInfo mediaDir(deviceList.value(i));
-            if ( mediaDir.isWritable() ) {
-                writeLog(deviceList.value(i) + " is writable.");
-
-                //get free space
-                shellCommand = "df -P '" + deviceList.value(i) + "/' | tail -1 | awk '{print $4}'";
-                QString temp2 = shellRun(shellCommand, false);
-                currentSize = temp2.toInt();
-                if ( currentSize >= biggestSize) {
-                    biggestDevice = i;
-                    biggestSize = currentSize;
-                }
-            } else {
-                writeLog(deviceList.value(i) + " is NOT writable.");
-            }
-        }
-        if ( currentSize > 0 ) {
-            // Finally, return preferred device for backup
-            // only display mount name for displaly
-            targetDevice = deviceList.value(biggestDevice);
-            ui->targetDeviceDisp->setText(targetDevice.mid(targetDevice.lastIndexOf("/") + 1));
-            writeLog("Target device auto-set to: " + ui->targetDeviceDisp->text());
-            ui->backupButton->setEnabled(1);
-            ui->restoreTab->setEnabled(1);
-        } else {
-            // no writable devices found
-            QTest::qWait(1);
-            QMessageBox::information(this, "No Device Found", "No Writable USB device found to backup to!  Please insert USB device and click 'Change'!");
-            writeLog("A target device found, but not writeable.");
-
-        }
-    } else {
-        // no devices found
-        QTest::qWait(1);
-        QMessageBox::information(this, "No Device Found", "No device found to backup to!  Please insert a USB device and click 'Change'.");
-        writeLog("No target device found.");
-    }
 }
 
 bool MainWindow::removeDir(const QString & dirName)

@@ -61,8 +61,8 @@
      <rect>
       <x>400</x>
       <y>10</y>
-      <width>491</width>
-      <height>51</height>
+      <width>231</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -72,7 +72,7 @@
      </font>
     </property>
     <property name="text">
-     <string>The USB device with the most free space has been automatically chosen for the backup.  To choose a different device, make sure it is plugged in and click &quot;Change&quot;.</string>
+     <string>To choose a different device, make sure it is connected and click &quot;Change&quot;.</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -663,7 +663,7 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>390</y>
+      <y>405</y>
       <width>101</width>
       <height>21</height>
      </rect>

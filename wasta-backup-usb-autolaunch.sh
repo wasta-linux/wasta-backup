@@ -25,7 +25,7 @@ then
     xhost local:$USB_OWNER
     export DISPLAY=:0
 
-    su $USB_OWNER -c "/data/8-ai-appData/qt/build-wasta-backup-Desktop_qt4-Release/wasta-backup \"$USB_MOUNT\"" &
+    su $USB_OWNER -c "wasta-backup \'$USB_MOUNT\'" &
 fi
 
 exit 0

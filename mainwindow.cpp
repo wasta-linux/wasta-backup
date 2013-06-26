@@ -182,6 +182,12 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     // Launch Main Window
     ui->setupUi(this);
 
+    // set app icon (used in 'About')
+    QIcon wastaIcon;
+    wastaIcon.addFile("/usr/share/icons/hicolor/512x512/apps/wasta-backup.png");
+
+    this->setWindowIcon(wastaIcon);
+
     // set location to center of primary screen
     QRect screenGeometry = QApplication::desktop()->availableGeometry(QApplication::desktop()->primaryScreen());
     int x = (screenGeometry.width()  - this->width()) / 2;
@@ -332,7 +338,7 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.9-0 2013-06-24</h3>"
+    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.9-1 2013-06-26</h3>"
                        "<p>Wasta Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
                        "<p>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup device."
                        " In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time."
@@ -689,10 +695,10 @@ void MainWindow::on_backupButton_clicked()
         }
     }
 
-    // regardless of canceled or not, need to sync hdd (thanks to Justin)
+    // regardless of canceled or not, need to sync hdd (this ensures all written to disk: thanks to jl)
     rdiffReturn = shellRun("sync",false);
 
-    // recommended to do it twice
+    // recommended to do it twice (also thanks to jl :)
     rdiffReturn = shellRun("sync",false);
 
     if ( !processCanceled ) {

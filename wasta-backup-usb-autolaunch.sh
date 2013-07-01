@@ -8,6 +8,8 @@
 #       wasta-backup on the device owner's x display server.
 #
 #   2013-06-24: Initial script
+#   2013-06-28: updated to apply gtk+ style (needed for Ubuntu, for some
+#       reason works correctly w/o that on Mint)
 #
 # ==============================================================================
 
@@ -25,7 +27,7 @@ then
     xhost local:$USB_OWNER
     export DISPLAY=:0
 
-    su $USB_OWNER -c "wasta-backup \'$USB_MOUNT\'" &
+    su $USB_OWNER -c "wasta-backup \"$USB_MOUNT\" -style gtk+" &
 fi
 
 exit 0

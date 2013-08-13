@@ -13,9 +13,11 @@
 #include <QDesktopWidget>
 
 QString userID;
+QString userHome;
 QString restoreFolder;
 bool processCanceled;
 QString configDir;
+QString logDir;
 QVector<QStringList> backupDirList(10); //initialize with 10 entries: a "few" extra can be added, later trimmed down to correct size
 QVector<QStringList> restItemList(10);
 QStringList restItems;
@@ -35,17 +37,33 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     userID = getenv("USER");
+    userHome = getenv("HOME");
 
-    configDir = "/home/" + userID + "/.config/wasta-backup/";
+    // Ensure configDir exists
+    configDir = userHome + "/.config/wasta-backup/";
 
-    QDir logPath(configDir + "logs/");
+    QDir configPath(configDir);
+
+    if ( !configPath.exists() ) {
+        configPath.mkpath(configDir);
+    }
+
+    //Ensure logDir exists
+    logDir = userHome + "/.cache/wasta-backup/logs/";
+
+    QDir logPath(logDir);
 
     if ( !logPath.exists() ) {
-        logPath.mkpath(configDir + "logs/");
+        logPath.mkpath(logDir);
     }
 
     // set current log
-    logFile.setFileName(logPath.absolutePath() + "/" + QDateTime::currentDateTime().date().toString("yyyy-MM-dd") + "-wasta-backup.log");
+    logFile.setFileName(logPath.absolutePath() + "/" + QDateTime::currentDateTime().date().toString("yyyy-MM-dd") +
+                        "-wasta-backup.log");
+
+    // legacy: remove .config/wasta-backup/logs/ directory (until version 0.9.2, but don't want going forward)
+    removeDir(configDir + "logs/");
+
     writeLog("===========================================\n"
              "== wasta-backup started                  ==\n"
              "===========================================");
@@ -55,12 +73,12 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     QString fileName;
 
     foreach (fileName, logList) {
-        QFileInfo info(configDir + "logs/" + fileName);
+        QFileInfo info(logDir + fileName);
 
         // check if created more than 1 year ago
         if (  info.created().operator <( QDateTime::currentDateTime().addMonths(-12) )) {
             // if so, delete
-            QFile::remove(configDir + "logs/" + fileName);
+            QFile::remove(logDir + fileName);
         }
     }
 
@@ -249,12 +267,13 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         if ( prevBackupInfo.isWritable() ) {
             //use it
             writeLog("Previous backup location found: " + prevBackupDevice + " setting as target device.");
-            ui->messageOutput->append("Previous backup device found: " + prevBackupDevice.mid(prevBackupDevice.lastIndexOf("/") + 1) + "\n");
+            //ui->messageOutput->append("Previous backup device found: " + prevBackupDevice.mid(prevBackupDevice.lastIndexOf("/") + 1) + "\n");
             setTargetDevice(prevBackupDevice);
         } else {
             // use logic to determine preferred destination
             writeLog("No argument or previous backup location found.  Calling setPreferredDestination to set target device.");
-            ui->messageOutput->append("Previous backup device not found: " + prevBackupDevice.mid(prevBackupDevice.lastIndexOf("/") + 1) + "\n");
+            ui->messageOutput->append("Previous backup device not found: " +
+                                      prevBackupDevice.mid(prevBackupDevice.lastIndexOf("/") + 1) + "\n");
             setPreferredDestination();
         }
     }
@@ -338,7 +357,7 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.9-2 2013-07-01</h3>"
+    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.9.3 2013-08-12</h3>"
                        "<p>Wasta Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
                        "<p>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup device."
                        " In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time."
@@ -416,38 +435,6 @@ void MainWindow::setPreferredDestination()
         if ( bestDevice >= 0 ) {
             // valid device found, set it
             setTargetDevice(deviceList.value(bestDevice));
-//            targetDevice = deviceList.value(bestDevice);
-//            ui->targetDeviceDisp->setText(targetDevice.mid(targetDevice.lastIndexOf("/") + 1));
-//            writeLog("Target device auto-set to: " + targetDevice);
-//            ui->backupButton->setEnabled(1);
-//            ui->restoreTab->setEnabled(1);
-
-//            // write messages based on results
-//            if ( wastaFound == 1 ) {
-//                ui->messageOutput->append("\n\n\n\n\n");
-//                ui->messageOutput->append("Existing backup found on device: " + ui->targetDeviceDisp->text());
-//                ui->messageOutput->append("Automatically chosen and ready for backup.");
-//                ui->messageOutput->append("\n\n\n\n\n");
-//                ui->messageOutput->moveCursor(QTextCursor::End);
-//                writeLog(targetDevice + " has existing wasta-backup folder: automatically chosen and ready for backup.");
-//            } else if ( wastaFound > 1 ) {
-//                // if more than 1, say that one with most size chosen.
-//                ui->messageOutput->append("\n\n\n\n\n");
-//                ui->messageOutput->append("More than 1 existing backup found");
-//                ui->messageOutput->append("Device: " + ui->targetDeviceDisp->text() + " automatically chosen and ready for backup since it has the most free space remaining.");
-//                ui->messageOutput->append("\n\n\n\n\n");
-//                ui->messageOutput->moveCursor(QTextCursor::End);
-//                writeLog(targetDevice + " has existing wasta-backup folder: automatically chosen and ready for backup since it has the most free space remaining.");
-//            } else {
-//                // if more than 1, say that one with most size chosen.
-//                ui->messageOutput->append("\n\n\n\n\n");
-//                ui->messageOutput->append("No existing backup found");
-//                ui->messageOutput->append("Device: " + ui->targetDeviceDisp->text() + " automatically chosen and ready for backup since it has the most free space remaining.");
-//                ui->messageOutput->append("Since first backup, may take some time to complete.");
-//                ui->messageOutput->append("\n\n\n\n\n");
-//                ui->messageOutput->moveCursor(QTextCursor::End);
-//                writeLog(targetDevice + " automatically chosen and ready for backup since it has the most free space remaining (no existing wasta-backup folder found).");
-//            }
         } else {
             // no writable devices found
             QTest::qWait(1);
@@ -499,7 +486,8 @@ void MainWindow::setTargetDevice(QString inputDir)
                 if ( (!mountItem.isEmpty()) & (inputDir.indexOf(mountItem) == 0) ) {
                     // mount found for new backup: trim string to use it (set new backup to root of drive)
                     newTarget = mountItem;
-                    writeLog("No existing wasta-backup found in " + inputDir + ".  But valid new target " + mountItem);
+                    writeLog("No existing wasta-backup found in " + inputDir +
+                             ".  But valid new target " + mountItem);
                     break; // foreach loop
                 }
             } // foreach
@@ -521,7 +509,8 @@ void MainWindow::setTargetDevice(QString inputDir)
             QFileInfo existingBackupInfo(newTarget + "/wasta-backup");
             if ( existingBackupInfo.exists() ) {
                 //existing backup: display message
-                ui->messageOutput->append("Existing backup found on device: " + ui->targetDeviceDisp->text() + "\n");
+                ui->messageOutput->append("Existing backup found on device: " +
+                                          ui->targetDeviceDisp->text() + "\n");
                 ui->messageOutput->append("Ready for backup");
                 ui->messageOutput->append("\n\n\n\n");
                 ui->messageOutput->moveCursor(QTextCursor::End);
@@ -529,7 +518,8 @@ void MainWindow::setTargetDevice(QString inputDir)
 
             } else {
                 //new backup: display message
-                ui->messageOutput->append("No existing backup found on device: " + ui->targetDeviceDisp->text() + "\n");
+                ui->messageOutput->append("No existing backup found on device: " +
+                                          ui->targetDeviceDisp->text() + "\n");
                 ui->messageOutput->append("Ready for first backup (may take some time to complete)");
                 ui->messageOutput->append("\n\n\n\n");
                 ui->messageOutput->moveCursor(QTextCursor::End);
@@ -539,7 +529,8 @@ void MainWindow::setTargetDevice(QString inputDir)
         } else {
             // newTarget not writable, give error
             QTest::qWait(1);
-            QMessageBox::warning(this, "Choose Again", "Chosen directory " + newTarget + " is not writable.  Backup Device not changed.");
+            QMessageBox::warning(this, "Choose Again", "Chosen directory " + newTarget +
+                                 " is not writable.  Backup Device not changed.");
             writeLog("User can't write to newTarget: " + newTarget);
             // targetDevice and ui.targetDevice.Disp remain unchanged
         }
@@ -551,7 +542,6 @@ void MainWindow::setTargetDevice(QString inputDir)
         writeLog(inputDir + " not a valid backup device.");
     }
 }
-
 
 void MainWindow::on_changeDeviceButton_clicked()
 {
@@ -589,25 +579,24 @@ void MainWindow::on_backupRestoreWidget_currentChanged(int index)
 
 void MainWindow::on_cancelBackupButton_clicked()
 {
-    int systemReturn;
-    systemReturn = system("pkill rdiff-backup");
-
-    processCanceled = true;
-    ui->cancelBackupButton->setEnabled(0);
-    ui->messageOutput->append("\nCanceling Backup...!");
-    writeLog("Canceling Backup...! Return from pkill: " + QString::number(systemReturn));
-    ui->messageOutput->moveCursor(QTextCursor::End);
+    cancelProcess();
 }
 
 void MainWindow::on_cancelRestoreButton_clicked()
+{
+    cancelProcess();
+}
+
+void MainWindow::cancelProcess()
 {
     int systemReturn;
     systemReturn = system("pkill rdiff-backup");
 
     processCanceled = true;
     ui->cancelRestoreButton->setEnabled(0);
-    ui->messageOutput->append("\nCanceling Restore...!");
-    writeLog("Canceling Restore...! Return from pkill: " + QString::number(systemReturn));
+    ui->cancelBackupButton->setEnabled(0);
+    ui->messageOutput->append("\nCanceling!");
+    writeLog("Canceling! Return from pkill: " + QString::number(systemReturn));
     ui->messageOutput->moveCursor(QTextCursor::End);
 }
 
@@ -676,7 +665,8 @@ void MainWindow::on_backupButton_clicked()
                 path.mkpath(dest);
             }
             // Backup
-            rdiffReturn = shellRun("rdiff-backup " + parms + " '" + source + "' '" + dest + "'",true);
+            rdiffReturn = shellRun("rdiff-backup " + parms + " '" + source +
+                                   "' '" + dest + "'",true);
 
             if (processCanceled) {
                 break; // break out of backup loop
@@ -684,7 +674,8 @@ void MainWindow::on_backupButton_clicked()
             // Remove old backups
             QString olderThan = backupDirList[i].value(4);
             if (olderThan.trimmed() != "") {
-                QString rdiffCommand = "rdiff-backup " + stdParms + " --remove-older-than " + olderThan + " --force '" + dest + "'";
+                QString rdiffCommand = "rdiff-backup " + stdParms + " --remove-older-than " +
+                        olderThan + " --force '" + dest + "'";
                 rdiffReturn = shellRun(rdiffCommand,false);
             }
             if (processCanceled) {
@@ -694,12 +685,6 @@ void MainWindow::on_backupButton_clicked()
             ui->progressBar->setValue(progress);
         }
     }
-
-    // regardless of canceled or not, need to sync hdd (this ensures all written to disk: thanks to jl)
-    rdiffReturn = shellRun("sync",false);
-
-    // recommended to do it twice (also thanks to jl :)
-    rdiffReturn = shellRun("sync",false);
 
     if ( !processCanceled ) {
         ui->messageOutput->append("\nBackup Complete");
@@ -731,6 +716,15 @@ void MainWindow::on_backupButton_clicked()
         writeLog("Backup Canceled!");
         ui->messageOutput->moveCursor(QTextCursor::End);
     }
+
+    // reset processCanceled so won't report as canceled for sync commands
+    processCanceled = false;
+
+    // regardless of canceled or not, need to sync hdd (this ensures all written to disk: thanks to jl)
+    rdiffReturn = shellRun("sync",false);
+
+    // recommended to do it twice (also thanks to jl :)
+    rdiffReturn = shellRun("sync",false);
 
     ui->progressBar->setValue(100);
 
@@ -851,7 +845,8 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     bool backupFound = false;
 
-    // this loop checks if restItemName is part of backups, based on backupDirs (needed or else rdiff-backup will return error if file not part of a backup)
+    // this loop checks if restItemName is part of backups, based on backupDirs
+    //  (needed or else rdiff-backup will return error if file not part of a backup)
     QString backupDir = "";
 
     for ( int i = 0; i < backupDirList.count(); i++ ) {
@@ -867,7 +862,8 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     if ( !backupFound ) {
         QTest::qWait(1);
-        QMessageBox::information(this, "Not Found", restItemName + "\n\nNot part of backups on " + ui->targetDeviceDisp->text() + " device.");
+        QMessageBox::information(this, "Not Found", restItemName + "\n\nNot part of backups on " +
+                                 ui->targetDeviceDisp->text() + " device.");
         writeLog("Backup of " + restItemName + " not found on device " + targetDevice);
         return;
     }
@@ -911,7 +907,8 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
             restItemList[prevItemCount].insert(0, restItemName);
             restItemList[prevItemCount].insert(1, restItemTime);
-            ui->prevListCombo->insertItem(prevItemCount,"Date: " + restItemTime.mid(0,10) + "   Time: " + restItemTime.mid(11,5));
+            ui->prevListCombo->insertItem(prevItemCount,"Date: " + restItemTime.mid(0,10) +
+                                          "   Time: " + restItemTime.mid(11,5));
             prevItemCount++;
         } else {
             writeLog("missing increment thrown away: " + incList.value(i));
@@ -945,8 +942,10 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     } else {
         QTest::qWait(1);
-        QMessageBox::information(this, "No Items Found", "No previous versions of item:\n\n" + restItemName + "\n\nfound in backups on " + ui->targetDeviceDisp->text() + " device.");
-        writeLog("No previous versions of item: " + restItemName + " found in backups on " + ui->targetDeviceDisp->text() + " device.");
+        QMessageBox::information(this, "No Items Found", "No previous versions of item:\n\n" + restItemName +
+                                 "\n\nfound in backups on " + ui->targetDeviceDisp->text() + " device.");
+        writeLog("No previous versions of item: " + restItemName + " found in backups on " +
+                 ui->targetDeviceDisp->text() + " device.");
     }
 }
 
@@ -973,13 +972,15 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     QString incDir = "";
 
-    // this loop sets up search Target dir, based on backupDirs (needed so know where to place in the "rdiff-backup-data/increments" folder.
+    // this loop sets up search Target dir, based on backupDirs
+    //  (needed so know where to place in the "rdiff-backup-data/increments" folder.)
     for ( int i = 0; i < backupDirList.count(); i++ ) {
         QString backupDir = backupDirList[i].value(1).replace("$HOME",getenv("HOME"));
 
         if ( missingDir.indexOf(backupDir) == 0) {
             // backup dir found! cut apart target to add in rdiff-backup-data folder to search.
-            incDir = targetDevice + "/wasta-backup/" + machine + backupDir + "/rdiff-backup-data/increments" + missingDir.mid(backupDir.length(),-1);
+            incDir = targetDevice + "/wasta-backup/" + machine + backupDir +
+                    "/rdiff-backup-data/increments" + missingDir.mid(backupDir.length(),-1);
             writeLog("Set increment Dir to: " + incDir);
             break;  // break out of for loop;
         }
@@ -987,7 +988,8 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     if ( incDir == "" ) {
         QTest::qWait(1);
-        QMessageBox::information(this, "Not Found", "Backup of " + missingDir + " not found on device " + targetDevice);
+        QMessageBox::information(this, "Not Found", "Backup of " + missingDir +
+                                 " not found on device " + targetDevice);
         writeLog("Backup of " + missingDir + " not found on device " + targetDevice);
         return;
     }
@@ -1007,7 +1009,8 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     // first, check CURRENT backup as compared to directory for missing items.
 
-    shellCommand = "rdiff-backup --compare-at-time now '" + missingDir + "' '" + targetDevice + "/wasta-backup/" + machine + missingDir + "' | grep 'deleted: ' | { grep -v '/' || true; }";
+    shellCommand = "rdiff-backup --compare-at-time now '" + missingDir + "' '" + targetDevice +
+            "/wasta-backup/" + machine + missingDir + "' | grep 'deleted: ' | { grep -v '/' || true; }";
     shellReturn = shellRun(shellCommand,false);
 
     // loop through results of compare-at-time now
@@ -1092,7 +1095,8 @@ void MainWindow::on_selectDelFolderButton_clicked()
                     folderDesc = "";
                 }
 
-                ui->delList->insertItem(restItemCount, restItemTime.mid(0,10) + "  " + restItemTime.mid(11,5) + "  -  " + restItemNameDisp + folderDesc);
+                ui->delList->insertItem(restItemCount, restItemTime.mid(0,10) + "  " + restItemTime.mid(11,5) +
+                                        "  -  " + restItemNameDisp + folderDesc);
                 restItemCount++;
             }
             prevFileName = restItemName;
@@ -1106,7 +1110,8 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     } else {
         QTest::qWait(1);
-        QMessageBox::information(this, tr("None Found"), "No deleted items found on " + ui->targetDeviceDisp->text() + " in backup folder for restore");
+        QMessageBox::information(this, tr("None Found"), "No deleted items found on " +
+                                 ui->targetDeviceDisp->text() + " in backup folder for restore");
         writeLog("No deleted items found on " + ui->targetDeviceDisp->text() + " in backup folder for restore");
     }
 }
@@ -1146,7 +1151,8 @@ void MainWindow::on_restoreButton_clicked()
         // restore PREV
         row = ui->prevListCombo->currentIndex();
 
-        renameText = "-SAVE-" + QDate::currentDate().toString("yyyy-MM-dd") + "-" + QTime::currentTime().toString("HH:mm:ss");
+        renameText = "-SAVE-" + QDate::currentDate().toString("yyyy-MM-dd") +
+                "-" + QTime::currentTime().toString("HH:mm:ss");
 
         // renameRestore will take care of adding to restItems list for undo
         renameRestoreItem(restItemList[row].value(0),restItemList[row].value(1));
@@ -1170,7 +1176,9 @@ void MainWindow::on_restoreButton_clicked()
 
                 // double check item DOESN't exist before restore
                 if ( !QFile::exists(restItemList[row].value(0)) ) {
-                    rdiffCommand = "rdiff-backup --restore-as-of " + restItemList[row].value(1) + " '" + targetDevice + "/wasta-backup/" + machine + restItemList[row].value(0) + "' '" + restItemList[row].value(0) + "'";
+                    rdiffCommand = "rdiff-backup --restore-as-of " + restItemList[row].value(1) +
+                            " '" + targetDevice + "/wasta-backup/" + machine + restItemList[row].value(0) +
+                            "' '" + restItemList[row].value(0) + "'";
                     rdiffReturn = shellRun(rdiffCommand,true);
                     if (processCanceled) {
                         break; // break out of for loop;
@@ -1184,7 +1192,8 @@ void MainWindow::on_restoreButton_clicked()
                 } else {
                     //Item Exists: no restore
                     QTest::qWait(1);
-                    QMessageBox::warning(this, "Error", "Item: " + restItemList[row].value(0) + " already exists.  NO RESTORE DONE!");
+                    QMessageBox::warning(this, "Error", "Item: " + restItemList[row].value(0) +
+                                         " already exists.  NO RESTORE DONE!");
                     writeLog("Item: " + restItemList[row].value(0) + " already exists.  NO RESTORE DONE!");
                     processCanceled = true;
                     break; // break out of for loop;
@@ -1201,7 +1210,8 @@ void MainWindow::on_restoreButton_clicked()
         // restore ALL
         machine = ui->machineCombo->currentText();
 
-        renameText = "-SAVE-" + QDate::currentDate().toString("yyyy-MM-dd") + "-" + QTime::currentTime().toString("HH:mm:ss");
+        renameText = "-SAVE-" + QDate::currentDate().toString("yyyy-MM-dd") + "-" +
+                QTime::currentTime().toString("HH:mm:ss");
         // reset restItemList
         restItemList.resize(0);
         restItemList.resize(10);
@@ -1272,8 +1282,10 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
         if ( !checkRename ) {
             //failed to rename
             QTest::qWait(1);
-            QMessageBox::warning(this, "Error", tr("Error in renaming item: ") + originalItem + tr(" to ") + newItem + tr(": is the item opened?"));
-            writeLog("Error in renaming item: " + originalItem + " to " + newItem + ": is the item opened?");
+            QMessageBox::warning(this, "Error", tr("Error in renaming item: ") + originalItem +
+                                 tr(" to ") + newItem + tr(": is the item opened?"));
+            writeLog("Error in renaming item: " + originalItem + " to " + newItem +
+                     ": is the item opened?");
             return;
         }
     }
@@ -1285,7 +1297,8 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
         QString backupItem = targetDevice + "/wasta-backup/" + machine + originalItem;
         if ( QFile::exists(backupItem)) {
             // do restore
-            QString rdiffCommand = "rdiff-backup --restore-as-of " + restoreTime + " '" + backupItem + "' '" + originalItem + "'";
+            QString rdiffCommand = "rdiff-backup --restore-as-of " + restoreTime + " '" +
+                    backupItem + "' '" + originalItem + "'";
             QString rdiffReturn = shellRun(rdiffCommand,true);
             if (processCanceled) {
                 return;
@@ -1296,7 +1309,8 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
         } else {
             //backup not found on backup device: no restore done
             QTest::qWait(1);
-            QMessageBox::warning(this, "Warning", "Item: " + originalItem + " not found on " + targetDevice + ".  NO RESTORE DONE!");
+            QMessageBox::warning(this, "Warning", "Item: " + originalItem + " not found on " +
+                                 targetDevice + ".  NO RESTORE DONE!");
             writeLog("Item: " + originalItem + " not found on " + targetDevice + ".  NO RESTORE DONE!");
             return;
         }
@@ -1368,7 +1382,8 @@ void MainWindow::on_undoLastRestoreButton_clicked()
 
     // clear visibal parts of message output window
     ui->messageOutput->append("\n\n\n\n\n\n\n\n\n\n");
-    ui->messageOutput->append("Starting undo last restore from " + ui->targetDeviceDisp->text() + " device...\n");
+    ui->messageOutput->append("Starting undo last restore from " +
+                              ui->targetDeviceDisp->text() + " device...\n");
     ui->messageOutput->moveCursor(QTextCursor::End);
     writeLog("Starting Undo Last Restore");
     QTest::qWait(2000);
@@ -1393,7 +1408,8 @@ void MainWindow::on_undoLastRestoreButton_clicked()
             writeLog("Undoing restore of " + origItemName);
             QTest::qWait(2000);
 
-            // check that item exists first (could have been deleted?), then delete origItem, then rename item to origItem
+            // check that item exists first (could have been deleted?),
+            // then delete origItem, then rename item to origItem
             if ( QFile::exists(itemName)) {
 
                 QFileInfo item;
@@ -1412,17 +1428,21 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                         } else {
                             // rename unsuccessful
                             ui->messageOutput->append("\n !!!ERROR!!!\n");
-                            writeLog("ERROR: File " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            writeLog("ERROR: File " + origItemName + " removed but " + itemName +
+                                     " unable to be renamed to " + origItemName + "!!!");
                             QTest::qWait(1);
-                            QMessageBox::warning(this,"Error","ERROR: File " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            QMessageBox::warning(this,"Error","ERROR: File " + origItemName + " removed but " +
+                                                 itemName + " unable to be renamed to " + origItemName + "!!!");
                             break; // foreach
                         }
                     } else {
                         // remove unsuccessful
                         ui->messageOutput->append("\n !!!ERROR!!!\n");
-                        writeLog("ERROR: File " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        writeLog("ERROR: File " + origItemName + " unable to be removed. " + itemName +
+                                 " not attempted to be renamed to " + origItemName + "!!!");
                         QTest::qWait(1);
-                        QMessageBox::warning(this,"Error","ERROR: File " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        QMessageBox::warning(this,"Error","ERROR: File " + origItemName + " unable to be removed. " +
+                                             itemName + " not attempted to be renamed to " + origItemName + "!!!");
                         break; // foreach
                     }
 
@@ -1442,17 +1462,23 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                         } else {
                             //rename unsucessful
                             ui->messageOutput->append("\n !!!ERROR!!!\n");
-                            writeLog("ERROR: Folder " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            writeLog("ERROR: Folder " + origItemName + " removed but " + itemName +
+                                     " unable to be renamed to " + origItemName + "!!!");
                             QTest::qWait(1);
-                            QMessageBox::warning(this,"Error","ERROR: Folder " + origItemName + " removed but " + itemName + " unable to be renamed to " + origItemName + "!!!");
+                            QMessageBox::warning(this,"Error","ERROR: Folder " + origItemName +
+                                                 " removed but " + itemName + " unable to be renamed to " +
+                                                 origItemName + "!!!");
                             break; // foreach
                         }
                     } else {
                         // remove unsucessful (no rename attempted)
                         ui->messageOutput->append("\n !!!ERROR!!!\n");
-                        writeLog("ERROR: Folder " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        writeLog("ERROR: Folder " + origItemName + " unable to be removed. " + itemName +
+                                 " not attempted to be renamed to " + origItemName + "!!!");
                         QTest::qWait(1);
-                        QMessageBox::warning(this,"Error","ERROR: Folder " + origItemName + " unable to be removed. " + itemName + " not attempted to be renamed to " + origItemName + "!!!");
+                        QMessageBox::warning(this,"Error","ERROR: Folder " + origItemName +
+                                             " unable to be removed. " + itemName +
+                                             " not attempted to be renamed to " + origItemName + "!!!");
                         break; // foreach
                     }
                 }
@@ -1461,11 +1487,13 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                 ui->messageOutput->append("\n !!!ERROR!!!\n");
                 writeLog("ERROR: Item " + itemName + " doesn't exist so no undo restore possible!");
                 QTest::qWait(1);
-                QMessageBox::warning(this,"Error","ERROR: Item " + itemName + " doesn't exist so no undo restore possible!");
+                QMessageBox::warning(this,"Error","ERROR: Item " + itemName +
+                                     " doesn't exist so no undo restore possible!");
                 break; // foreach
             }
         } else {
-            // else (no renameText at end of item) then was just a restored 'delete', so undo just deletes current.
+            // else (no renameText at end of item) then was just a restored 'delete'
+            // so undo just deletes current.
             ui->messageOutput->append("Undoing restore of " + itemName + "....\n");
             QTest::qWait(2000);
             ui->messageOutput->moveCursor(QTextCursor::End);
@@ -1488,7 +1516,8 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                         ui->messageOutput->append("\n !!!ERROR!!!\n");
                         writeLog("ERROR: File " + itemName + " unable to be removed!!!");
                         QTest::qWait(1);
-                        QMessageBox::warning(this,"Error","ERROR: File " + itemName + " unable to be removed!!!");
+                        QMessageBox::warning(this,"Error","ERROR: File " + itemName +
+                                             " unable to be removed!!!");
                         break; // foreach
                     }
                 } else {
@@ -1505,7 +1534,8 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                         ui->messageOutput->append("\n !!!ERROR!!!\n");
                         writeLog("ERROR: Folder " + itemName + " unable to be removed!!!");
                         QTest::qWait(1);
-                        QMessageBox::warning(this,"Error","ERROR: Folder " + itemName + " unable to be removed!!!");
+                        QMessageBox::warning(this,"Error","ERROR: Folder " + itemName +
+                                             " unable to be removed!!!");
                         break; // foreach
                     }
                 }
@@ -1514,7 +1544,8 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                 ui->messageOutput->append("\n !!!ERROR!!!\n");
                 writeLog("ERROR: Item " + itemName + " doesn't exist so no need to undo restore!");
                 QTest::qWait(1);
-                QMessageBox::warning(this,"Error","ERROR: Item " + itemName + " doesn't exist so no need to undo restore!");
+                QMessageBox::warning(this,"Error","ERROR: Item " + itemName +
+                                     " doesn't exist so no need to undo restore!");
                 break; // foreach
             }
         } // end else (no renameText at end of item)
@@ -1582,10 +1613,26 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
             ui->messageOutput->insertPlainText(". Done\n");
         }
     } else {
-        ui->messageOutput->append("\n !!!ERROR!!!\n");
         QTest::qWait(1);
-        QMessageBox::critical(this, "Error", "Error during shell process!! Error: " + QString::number(shellProcess->exitCode()) + " Command: " + command + " Message: " + shellReturn);
-        writeLog("Error during shell process!! Error: " + QString::number(shellProcess->exitCode()) + " Command: " + command + " Message: " + shellReturn);
+
+        // Handle certain errors, else give generic output
+        if ( shellReturn.indexOf("No space left on device") > -1) {
+            QMessageBox::critical(this, "Backup Device Full", "ERROR!! Backup device is FULL: " +
+                                  ui->targetDeviceDisp->text() + "\n\n Backup not complete!");
+            ui->messageOutput->append("\n !!!ERROR!!! Backup device is FULL: " +
+                                      ui->targetDeviceDisp->text());
+        } else {
+            // Standard message if no other error handled
+            QMessageBox::critical(this, "ERROR", "Error during shell process!!\n\nError: " +
+                                  QString::number(shellProcess->exitCode()) +"\n\nCommand: " +
+                                  command + "\n\nMessage: " + shellReturn);
+            ui->messageOutput->append("\n !!!ERROR!!!\n");
+        }
+        writeLog("Error during shell process!!\n\nError: " + QString::number(shellProcess->exitCode()) +
+                 "\n\nCommand: " + command + "\n\nMessage: " + shellReturn);
+
+        // set processCanceled so any remaining processes will be canceled also.
+        cancelProcess();
     }
     ui->messageOutput->moveCursor(QTextCursor::End);
 
@@ -1599,7 +1646,8 @@ bool MainWindow::removeDir(const QString & dirName)
     QDir dir(dirName);
 
     if (dir.exists(dirName)) {
-        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden |
+                                                    QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
             if (info.isDir()) {
                 result = removeDir(info.absoluteFilePath());
             }

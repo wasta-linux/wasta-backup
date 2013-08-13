@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # ==============================================================================
-# wasta-backup-udev.sh
-#
+# wasta-backup-udev
+
 #   This script launches wasta-backup-usb-autolaunch.  The reason for this
 #       wrapper script is because udev must not be held up or else the USB
 #       device is not ever mounted.  The mount needs to be finished to determine
@@ -10,9 +10,10 @@
 #       wasta-backup on.
 #
 #   2013-06-24: Initial script
+#   2013-08-12: removed .sh extension to comply with debian packaging standard
 #
 # ==============================================================================
 
-/bin/bash -c "/usr/bin/wasta-backup-usb-autolaunch.sh $*" &
+/bin/bash -c "/usr/bin/wasta-backup-usb-autolaunch $*" &
 
 exit 0

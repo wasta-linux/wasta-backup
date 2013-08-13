@@ -50,6 +50,8 @@ private slots:
 
     void on_cancelRestoreButton_clicked();
 
+    void cancelProcess();
+
     void on_openRestoreFolderButton_clicked();
 
     void on_restoreAllCheck_stateChanged(int arg1);

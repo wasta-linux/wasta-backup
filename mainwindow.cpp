@@ -105,8 +105,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "+ ignorecase:**.pdf\n"
                 "+ ignorecase:**.xml\n"
                 "+ ignorecase:**.htm*\n"
-                "+ ignorecase:**.od*\n"
-                "+ ignorecase:**.od*\n"
                 "\n"
                 "- **\n";
 
@@ -357,16 +355,19 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup version 0.9.3 2013-08-12</h3>"
+    QMessageBox::about(this,"About Wasta Backup","<h3>Wasta Backup</h3>"
                        "<p>Wasta Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
+                       "<p>Wasta Backup will auto-launch when a USB device with a previous Wasta Backup on it is inserted."
                        "<p>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup device."
                        " In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time."
                        "<p>Additionally, a 'Restore ALL' option is available that will replace all data on the computer from the backup device."
                        "<p>The following configurable settings are stored in a user's ~/.config/wasta-backup/ directory:"
                        "<ul>"
                        "<li><p><b>backupDirs.txt:</b> specifies directories to backup and other parameters such as number of versions to keep</li>"
-                       "<li><p><b>backupInclude.txt:</b> specifies file extensions to backup (so media extensions, etc., will be politely ignored)</li>"
+                       "<li><p><b>backupInclude.txt:</b> specifies file extensions to backup (so files with media extensions, etc., will be politely ignored)</li>"
                        "</ul>"
+                       "<p><b>Wasta Backup Website (bugs reports and source code):</b> "
+                       "<a href=\"https://bitbucket.org/rikshaw76/wasta-backup\">https://bitbucket.org/rikshaw76/wasta-backup</a>"
                        );
 }
 
@@ -1616,11 +1617,20 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
         QTest::qWait(1);
 
         // Handle certain errors, else give generic output
+
         if ( shellReturn.indexOf("No space left on device") > -1) {
             QMessageBox::critical(this, "Backup Device Full", "ERROR!! Backup device is FULL: " +
                                   ui->targetDeviceDisp->text() + "\n\n Backup not complete!");
             ui->messageOutput->append("\n !!!ERROR!!! Backup device is FULL: " +
                                       ui->targetDeviceDisp->text());
+        } else if ( shellReturn.indexOf("hard linking not supported by filesystem") > -1 ) {
+            // Hard Links are not able to be used on FAT or NTFS drives.  In this case, the
+            //   files are fully duplicated instead of linked.  Not an error.
+            shellReturn = "";
+            ui->messageOutput->moveCursor(QTextCursor::End);
+            if (giveFeedback) {
+                ui->messageOutput->insertPlainText(". Done\n");
+            }
         } else {
             // Standard message if no other error handled
             QMessageBox::critical(this, "ERROR", "Error during shell process!!\n\nError: " +

@@ -17,6 +17,8 @@ QString userHome;
 QString restoreFolder;
 bool processCanceled;
 QString configDir;
+QString backupConfigDir;
+QString configSave;
 QString logDir;
 QVector<QStringList> backupDirList(10); //initialize with 10 entries: a "few" extra can be added, later trimmed down to correct size
 QVector<QStringList> restItemList(10);
@@ -30,7 +32,8 @@ QString prevBackupDevice;
 QString prevBackupDate;
 QFile prevBackupDevFile;
 QFile prevBackupDateFile;
-QString renameText;
+QFile backupDirFile;
+QString renameText = "-SAVE-YYY-MM-DD";
 
 MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     QMainWindow(parent),
@@ -122,7 +125,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     }
 
     // Check for backupDirs file
-    QFile backupDirFile(configDir + "backupDirs.txt");
+    backupDirFile.setFileName(configDir + "backupDirs.txt");
 
     if ( !backupDirFile.exists() ) {
         // create it
@@ -233,19 +236,8 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     ui->prevListCombo->setEnabled(0);
     ui->restorePageWidget->setCurrentIndex(0);
 
-    // Load up prevBackupDev file
-    prevBackupDevFile.open(QIODevice::ReadOnly);
-    QTextStream prevBackupDevStream(&prevBackupDevFile);
-    prevBackupDevice = prevBackupDevStream.readLine();
-    prevBackupDevStream.flush();
-    prevBackupDevFile.close();
-
-    // Load up prevBackupDate file
-    prevBackupDateFile.open(QIODevice::ReadOnly);
-    QTextStream prevBackupDateStream(&prevBackupDateFile);
-    prevBackupDate = prevBackupDateStream.readLine();
-    prevBackupDateStream.flush();
-    prevBackupDateFile.close();
+    // load up config files
+    loadConfigFiles();
 
     // check for passed argument: if found, means wasta-backup launched by udev
     //   in this case, set passed argument as target device
@@ -276,51 +268,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         }
     }
 
-    // load up backupDirs array
-    int i = 0;
-
-    backupDirFile.open(QIODevice::ReadOnly);
-    QTextStream textStream(&backupDirFile);
-    QString line;
-    while (true)
-    {
-        line = textStream.readLine();
-        if (line.isNull()) {
-            break;
-        } else {
-            if ( ( !line.startsWith("#")) & (line.trimmed() != "") ) {
-                // if starts with # or is blank, then comment line: throw away
-                backupDirList[i] = line.split(",");
-                if ( backupDirList[i].value(1).endsWith("/") ) {
-                    // throw away trailing "/" so compares work easier later
-                    QString text = backupDirList[i].value(1);
-                    text.chop(1);
-                    backupDirList[i].replace(1, text);
-                }
-                i++;
-            }
-        }
-    }
-    textStream.flush();
-    backupDirFile.close();
-
-    // trim down vector
-    backupDirList.resize(i);
-
-    // load up useInclude file
-    useBackupIncludeFilterFile.open(QIODevice::ReadOnly);
-    QTextStream filterStream(&useBackupIncludeFilterFile);
-    line = filterStream.readLine();
-    filterStream.flush();
-    useBackupIncludeFilterFile.close();
-
-    if ( line.mid(0,2) != "NO" ) {
-        ui->actionBackupOnlyImportant->setChecked(1);
-        ui->backupIncludeLabel->setText("Picture, Music, and Video files will NOT be included in the Backup.  Those files must be backed up in a different way!");
-    } else {
-        ui->actionBackupOnlyImportant->setChecked(0);
-        ui->backupIncludeLabel->setText("ALL Files (including Pictures, Music, and Videos) will be included in the Backup.");
-    } 
 }
 
 MainWindow::~MainWindow()
@@ -712,6 +659,19 @@ void MainWindow::on_backupButton_clicked()
         dateStream.flush();
         prevBackupDateFile.close();
 
+        //update targetDevice with config files (to use for Restore ALL instead of an existing machines config files)
+        backupConfigDir = targetDir + configDir;
+
+        // Ensure backupConfigDir exists
+        QDir backupConfigPath(backupConfigDir);
+        if ( !backupConfigPath.exists() ) {
+            backupConfigPath.mkpath(backupConfigDir);
+        }
+
+        //use rsync to do configDir syncing to targetDevice
+        QString output;
+        output = shellRun("rsync -rlt --delete " + configDir + " " + backupConfigDir, false);
+
     } else {
         ui->messageOutput->append("\nBackup Canceled!");
         writeLog("Backup Canceled!");
@@ -873,10 +833,6 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     // now lets process!
 
-    //re-initialize restItemList
-    restItemList.resize(0);
-    restItemList.resize(10);
-
     // get increments
 
     rdiffCommand = "rdiff-backup -l '" + targetItem + "'";
@@ -889,6 +845,10 @@ void MainWindow::on_selectPrevItemButton_clicked()
     QStringList lineSplit = incList.value(0).split(" ");
 
     incCount = lineSplit.value(1).toInt();
+
+    //re-initialize restItemList
+    restItemList.resize(0);
+    restItemList.resize(incCount);
 
     //Now, load up increment listings
 
@@ -999,11 +959,7 @@ void MainWindow::on_selectDelFolderButton_clicked()
     restoreFolder = missingDir;
     ui->openRestoreFolderButton->setEnabled(1);
 
-    //re-initialize restItemList
-    restItemList.resize(0);
-    restItemList.resize(10);
     int restItemCount = 0;
-
 
     QString shellCommand;
     QString shellReturn;
@@ -1016,6 +972,11 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     // loop through results of compare-at-time now
     QStringList compList = shellReturn.split("\n");
+
+    //re-initialize restItemList
+    restItemList.resize(0);
+    restItemList.resize(compList.count());
+
     QString compItem;
 
     QString folderDesc;
@@ -1028,10 +989,12 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     foreach (compItem, compList) {
         // load up item, but first need to know if it is a folder or file.
+        // throw away the Thumbs.db: it will crash when attempting to get date, etc.
         if ( compItem != "" ) {
             // may be empty line return
             // first, trim off "deleted: "
             compItem.replace("deleted: ","");
+            QMessageBox::information(this, tr("Item"), "CompItem: " + compItem);
 
             //check if folder or not
             itemPath.setPath(targetDevice + "/wasta-backup/" + machine + missingDir+ "/" + compItem);
@@ -1068,6 +1031,9 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     QStringList incList = shellReturn.split("\n");
 
+    // increase size of restItemList to be safe
+    restItemList.resize(compList.count() + incList.count());
+
     QString incItem;
     QString prevFileName = "";
 
@@ -1084,21 +1050,36 @@ void MainWindow::on_selectDelFolderButton_clicked()
         restItemTime = incItem.mid(startTimeStamp,25);
 
         if ( (restItemName != prevFileName) & (restItemName != "") ) {
-            // check if doesn't exist (increment could be a change not a delete), if not, list it!
+            // check if doesn't exist (increment could be a change not a delete).  If not, add to list!
             if ( !QFile::exists(restItemName)) {
-                restItemList[restItemCount].insert(0, restItemName);
-                restItemList[restItemCount].insert(1, restItemTime);
 
-                if ( incItem.endsWith(".dir") ) {
-                    //missing item is folder
-                    folderDesc = " (folder)";
-                } else {
-                    folderDesc = "";
+                bool restItemExists = false;
+
+                // Confirm not already in restItemList first
+                int row;
+                for (row = 0; row < restItemCount; row++) {
+                    if ( restItemList[row].value(0) == restItemName ) {
+                        // flag it: shouldn't add to list because already exists
+                        restItemExists = true;
+                    }
                 }
 
-                ui->delList->insertItem(restItemCount, restItemTime.mid(0,10) + "  " + restItemTime.mid(11,5) +
-                                        "  -  " + restItemNameDisp + folderDesc);
-                restItemCount++;
+                if ( restItemExists == false ) {
+
+                    restItemList[restItemCount].insert(0, restItemName);
+                    restItemList[restItemCount].insert(1, restItemTime);
+
+                    if ( incItem.endsWith(".dir") ) {
+                        //missing item is folder
+                        folderDesc = " (folder)";
+                    } else {
+                        folderDesc = "";
+                    }
+
+                    ui->delList->insertItem(restItemCount, restItemTime.mid(0,10) + "  " + restItemTime.mid(11,5) +
+                                            "  -  " + restItemNameDisp + folderDesc);
+                    restItemCount++;
+                }
             }
             prevFileName = restItemName;
         }
@@ -1213,9 +1194,45 @@ void MainWindow::on_restoreButton_clicked()
 
         renameText = "-SAVE-" + QDate::currentDate().toString("yyyy-MM-dd") + "-" +
                 QTime::currentTime().toString("HH:mm:ss");
+
+        // Restore config files (will also need to undo this later)
+
+        // trim off trailing "/" and add renameText
+        configSave = configDir.mid(0,configDir.length()-1) + renameText;
+
+        // Backup exising config files.  Undo last restore will have to undo this also.
+        QDir path(configDir);
+        // rename it
+        bool checkRename = path.rename(configDir, configSave);
+        if ( !checkRename ) {
+            //failed to rename
+            QTest::qWait(1);
+            QMessageBox::warning(this, "Error", tr("Error in renaming item: ") + configDir +
+                                 tr(" to ") + configSave + tr(": is the item opened?"));
+            writeLog("Error in renaming item: " + configDir + " to " + configSave +
+                     ": is the item opened?");
+            return;
+        }
+        writeLog("Existing Configuration Files backed up to: " + configSave);
+
+        // copy down config files from backup
+        ui->messageOutput->append("Restoring Configuration Files from " + targetDevice + "\n");
+        writeLog("Restoring Configuration Files from Backup Directory: " + backupConfigDir);
+
+        //use rsync to copy down backupConfigDir to configDir
+        QString output;
+        // backupConfigDir may have not been set
+        backupConfigDir = targetDevice + "/wasta-backup/" + machine + configDir;
+
+        output = shellRun("rsync -rlt --delete " + backupConfigDir + " " + configDir, false);
+
+        // reload config files
+        ui->messageOutput->append("Loading Restored Configuration Files\n");
+        loadConfigFiles();
+
         // reset restItemList
         restItemList.resize(0);
-        restItemList.resize(10);
+        restItemList.resize(backupDirList.count());
 
         // load up restItemList from backupDirs folder
         for (row = 0; row < backupDirList.count(); row++) {
@@ -1248,7 +1265,6 @@ void MainWindow::on_restoreButton_clicked()
         ui->messageOutput->moveCursor(QTextCursor::End);
     }
 
-
     ui->progressBar->setValue(100);
 
     ui->cancelRestoreButton->setEnabled(0);
@@ -1266,12 +1282,12 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
     ui->messageOutput->append("Restoring " + originalItem + "....\n");
     writeLog("Restoring " + originalItem);
 
-    QString newItem;
+    QString newItem = "";
 
     if ( QFile::exists(originalItem) ) {
 
         if ( originalItem.mid(originalItem.length()-1,1) == "/" ) {
-            // rename current item (trim off trailing "/" from destDir
+            // rename current item (trim off trailing "/" from destDir)
             newItem = originalItem.mid(0,originalItem.length()-1) + renameText;
         } else {
             newItem = originalItem + renameText;
@@ -1292,7 +1308,7 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
     }
     //now, shouldn't exist before rdiff restore
 
-    // double check item DOESN't exist before restore
+    // double check item DOESN'T exist before restore
     if ( !QFile::exists(originalItem) ) {
         // confirm backup device has item;
         QString backupItem = targetDevice + "/wasta-backup/" + machine + originalItem;
@@ -1305,8 +1321,14 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime)
                 return;
             }
             // don't add to restItems if canceled, otherwise add for later undo
-            // adding new item so know what to get rid of later
-            restItems.append(newItem);
+
+            if ( !newItem.isEmpty() ) {
+                //adding newItem (has renameText appended) to restItems so know what to get rid of later
+                restItems.append(newItem);
+            } else {
+                //originalItem added to restItems w/o renameText at end will mean just delete on "undo last restore"
+                restItems.append(originalItem);
+            }
         } else {
             //backup not found on backup device: no restore done
             QTest::qWait(1);
@@ -1553,6 +1575,43 @@ void MainWindow::on_undoLastRestoreButton_clicked()
 
     } // foreach
 
+
+    //Last, check if configSave found (configDir + renameText).  If so, that is last thing to undo.
+    QDir configSaveDir(configSave);
+    if ( configSaveDir.exists() ) {
+        ui->messageOutput->append("Undoing restore of Configuration Files\n");
+        ui->messageOutput->moveCursor(QTextCursor::End);
+        writeLog("Undoing restore of Config Files.  Will replace from: " + configSave);
+
+        // delete current configDir, restore renameConfigDir to configDir and reload backupDirList
+        bool deleted = removeDir(configDir);
+        if (deleted) {
+            //rename configSave to configDir
+            bool checkRename = configSaveDir.rename(configSave, configDir);
+            if ( !checkRename ) {
+                //failed to rename
+                QTest::qWait(1);
+                QMessageBox::warning(this, "Error", tr("Error in renaming item: ") + configSave +
+                                     tr(" to ") + configDir + tr(": is the item opened?"));
+                writeLog("Error in renaming item: " + configSave + " to " + configDir +
+                         ": is the item opened?");
+                return;
+            }
+            //reload Config Files
+            ui->messageOutput->append("Loading Original Configuration Files\n");
+            loadConfigFiles();
+        } else {
+            //error: remove of configDir didn't work
+            writeLog("ERROR: Folder " + configDir + " unable to be removed!!!");
+            QTest::qWait(1);
+            QMessageBox::warning(this,"Error","ERROR: Folder " + configDir +
+                                 " unable to be removed!!!");
+            return;
+        }
+    }
+    //make sure cleared: probably better place to do this
+    configSave = "";
+
     ui->messageOutput->append("\nUndo Last Restore Complete");
     ui->messageOutput->moveCursor(QTextCursor::End);
     writeLog("Undo Last Restore Complete");
@@ -1561,13 +1620,11 @@ void MainWindow::on_undoLastRestoreButton_clicked()
     ui->changeDeviceButton->setEnabled(1);
     ui->backupTab->setEnabled(1);
     ui->restoreTab->setEnabled(1);
-
 }
 
 // ##########################################################################
 // #### MISCELLANEOUS PROCEDURES                                         ####
 // ##########################################################################
-
 
 void MainWindow::writeLog(QString data)
 {
@@ -1648,6 +1705,78 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
 
     return shellReturn;
 }
+
+void MainWindow::loadConfigFiles() {
+
+    writeLog("Loading Configuration Files from: " + configDir);
+
+    QString line;
+
+    // Load up prevBackupDev file
+    prevBackupDevFile.open(QIODevice::ReadOnly);
+    QTextStream prevBackupDevStream(&prevBackupDevFile);
+    prevBackupDevice = prevBackupDevStream.readLine();
+    prevBackupDevStream.flush();
+    prevBackupDevFile.close();
+
+    // Load up prevBackupDate file
+    prevBackupDateFile.open(QIODevice::ReadOnly);
+    QTextStream prevBackupDateStream(&prevBackupDateFile);
+    prevBackupDate = prevBackupDateStream.readLine();
+    prevBackupDateStream.flush();
+    prevBackupDateFile.close();
+
+    // load up useInclude file
+    useBackupIncludeFilterFile.open(QIODevice::ReadOnly);
+    QTextStream filterStream(&useBackupIncludeFilterFile);
+    line = filterStream.readLine();
+    filterStream.flush();
+    useBackupIncludeFilterFile.close();
+
+    if ( line.mid(0,2) != "NO" ) {
+        ui->actionBackupOnlyImportant->setChecked(1);
+        ui->backupIncludeLabel->setText("Picture, Music, and Video files will NOT be included in the Backup.  Those files must be backed up in a different way!");
+    } else {
+        ui->actionBackupOnlyImportant->setChecked(0);
+        ui->backupIncludeLabel->setText("ALL Files (including Pictures, Music, and Videos) will be included in the Backup.");
+    }
+
+    //load backupDir file
+    //resize for safety
+    backupDirList.resize(0);
+    backupDirList.resize(10);
+
+    int i = 0;
+
+    backupDirFile.open(QIODevice::ReadOnly);
+    QTextStream textStream(&backupDirFile);
+    while (true)
+    {
+        line = textStream.readLine();
+        if (line.isNull()) {
+            break;
+        } else {
+            if ( ( !line.startsWith("#")) & (line.trimmed() != "") ) {
+                // if starts with # or is blank, then comment line: throw away
+                backupDirList[i] = line.split(",");
+                if ( backupDirList[i].value(1).endsWith("/") ) {
+                    // throw away trailing "/" so compares work easier later
+                    QString text = backupDirList[i].value(1);
+                    text.chop(1);
+                    backupDirList[i].replace(1, text);
+                }
+                i++;
+            }
+        }
+    }
+    textStream.flush();
+    backupDirFile.close();
+
+    // trim down vector
+    backupDirList.resize(i);
+}
+
+
 
 bool MainWindow::removeDir(const QString & dirName)
 {

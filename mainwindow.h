@@ -24,6 +24,8 @@ private slots:
 
     void writeLog(QString data);
 
+    void loadConfigFiles();
+
     void on_restorePrevRadio_clicked();
 
     void on_restoreDelRadio_clicked();

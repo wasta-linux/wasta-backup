@@ -97,7 +97,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="documentMode">
      <bool>false</bool>
@@ -503,7 +503,7 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>571</width>
+          <width>461</width>
           <height>101</height>
          </rect>
         </property>
@@ -513,7 +513,7 @@
          </font>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;WARNING!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restore ALL Backup Data is normally done &lt;span style=&quot; font-weight:600;&quot;&gt;only when transferring Backup Data to a new computer.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Backup Data will replace data that is currently on the computer. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;WARNING!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restore ALL Backup Data is normally done &lt;span style=&quot; font-weight:600;&quot;&gt;only when transferring ALL Backup Data to a new computer.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Backup Data will replace data that is currently on the computer. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -551,8 +551,18 @@
        <widget class="QComboBox" name="machineCombo">
         <property name="geometry">
          <rect>
-          <x>230</x>
-          <y>170</y>
+          <x>270</x>
+          <y>160</y>
+          <width>151</width>
+          <height>27</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="restUserCombo">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>190</y>
           <width>151</width>
           <height>27</height>
          </rect>
@@ -561,20 +571,33 @@
        <widget class="QLabel" name="machineLabel">
         <property name="geometry">
          <rect>
-          <x>30</x>
-          <y>140</y>
-          <width>181</width>
-          <height>71</height>
+          <x>50</x>
+          <y>160</y>
+          <width>211</width>
+          <height>27</height>
          </rect>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Machine to Restore ALL Backup Data From:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Machine to Restore Data From:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+       </widget>
+       <widget class="QLabel" name="restUserLabel">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>190</y>
+          <width>181</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>User to Restore Data From:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </widget>

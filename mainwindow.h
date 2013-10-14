@@ -58,7 +58,7 @@ private slots:
 
     void on_restoreAllCheck_stateChanged(int arg1);
 
-    void renameRestoreItem(QString renameItem, QString renameTime);
+    void renameRestoreItem(QString renameItem, QString targetItem, QString restUser);
 
     void on_actionBackupOnlyImportant_changed();
 

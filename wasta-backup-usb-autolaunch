@@ -11,10 +11,11 @@
 #   2013-06-28: updated to apply gtk+ style (needed for Ubuntu, for some
 #       reason works correctly w/o that on Mint)
 #   2013-08-12: removed .sh extension to comply with debian packaging standard
+#   2013-10-14: reduced sleep delay to 5s
 #
 # ==============================================================================
 
-sleep 10s
+sleep 5s
 
 USB_DEVICE="/dev/"$1
 USB_MOUNT=$(df | grep $USB_DEVICE | awk '{print substr($0, index($0, $6))}')

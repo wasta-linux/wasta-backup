@@ -70,6 +70,7 @@ private slots:
 
     void setTargetDevice(QString inputDir);
 
+    void on_machineCombo_currentIndexChanged(const QString machineValue);
 
 private:
     Ui::MainWindow *ui;

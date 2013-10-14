@@ -753,6 +753,8 @@ void MainWindow::on_restoreAllRadio_clicked()
 
     // Setup details for Restore All
     ui->restoreAllCheck->setChecked(0);
+    ui->machineCombo->clear();
+    ui->restUserCombo->clear();
     ui->restorePageWidget->setCurrentIndex(2);
 
     ui->machineCombo->setEnabled(0);
@@ -888,6 +890,10 @@ void MainWindow::on_selectPrevItemButton_clicked()
     rdiffReturn = shellRun(rdiffCommand, false);
 
     if ( rdiffReturn.trimmed() != "" ) {
+        //increase restItemList count by 1
+        restItemList.resize(0);
+        restItemList.resize(restItemList.count() + 1);
+
         // some difference, so list current item from backup as a previous item: would be most current so list last
         restItemList[prevItemCount].insert(0, restItemName);
         restItemList[prevItemCount].insert(1, "now");
@@ -999,7 +1005,6 @@ void MainWindow::on_selectDelFolderButton_clicked()
             // may be empty line return
             // first, trim off "deleted: "
             compItem.replace("deleted: ","");
-            QMessageBox::information(this, tr("Item"), "CompItem: " + compItem);
 
             //check if folder or not
             itemPath.setPath(targetDevice + "/wasta-backup/" + machine + missingDir+ "/" + compItem);
@@ -1111,6 +1116,9 @@ void MainWindow::on_restoreButton_clicked()
 
     //clear restItem list;
     restItems.clear();
+
+    //clear configSave
+    configSave = "";
 
     ui->restoreButton->setEnabled(0);
     ui->changeDeviceButton->setEnabled(0);
@@ -1287,9 +1295,6 @@ void MainWindow::on_restoreButton_clicked()
 
 void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QString restUser)
 {
-    ui->messageOutput->append("Restoring " + originalItem + "....\n");
-    writeLog("Restoring " + originalItem);
-
     QString newItem = "";
 
     if ( QFile::exists(originalItem) ) {
@@ -1318,21 +1323,25 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
 
     // double check item DOESN'T exist before restore
     if ( !QFile::exists(originalItem) ) {
-        // confirm backup device has item;
+
         QString backupItem;
 
-        if ( restUser == "" ) {
+        if ( restUser.isEmpty() ) {
             backupItem = targetDevice + "/wasta-backup/" + machine + originalItem;
-            writeLog("NO restUser. backupItem: " + backupItem);
+            writeLog("restUser not entered. backupItem to restore: " + backupItem);
         } else {
             // need to duplicate originalItem or else originalItem modified by replace
             QString backupOriginalItem = originalItem;
             backupItem = targetDevice + "/wasta-backup/" + machine + backupOriginalItem.replace(userID,restUser);
-            writeLog("YES restUser. backupItem: " + backupItem);
+            writeLog("restUser exists. backupItem to restore: " + backupItem);
         }
 
+        // confirm backup device has item;
         if ( QFile::exists(backupItem)) {
             // do restore
+            ui->messageOutput->append("Restoring " + originalItem + "....\n");
+            writeLog("Restoring " + originalItem);
+
             QString rdiffCommand = "rdiff-backup --restore-as-of " + restoreTime + " '" +
                     backupItem + "' '" + originalItem + "'";
             QString rdiffReturn = shellRun(rdiffCommand,true);
@@ -1350,10 +1359,16 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
             }
         } else {
             //backup not found on backup device: no restore done
-            QTest::qWait(1);
-            QMessageBox::warning(this, "Warning", "Item: " + originalItem + " not found on " +
-                                 targetDevice + ".  NO RESTORE DONE!");
-            writeLog("Item: " + originalItem + " not found on " + targetDevice + ".  NO RESTORE DONE!");
+            if ( ! restUser.isEmpty() ) {
+                // For "Restore ALL", possible (likely) that item may not exist: because something like
+                //    ~/ParatextProjects may have never existed but is part of default backup list
+                // So, don't give warning message for Restore ALL.
+            } else {
+                QTest::qWait(1);
+                QMessageBox::warning(this, "Warning", "Item: " + originalItem + " not found on " +
+                                     targetDevice + ".  NO RESTORE DONE!");
+                writeLog("Item: " + originalItem + " not found on " + targetDevice + ".  NO RESTORE DONE!");
+            }
             return;
         }
     } else {
@@ -1379,13 +1394,12 @@ void MainWindow::on_restoreAllCheck_stateChanged(int arg1)
     ui->machineLabel->setEnabled(0);
     ui->restUserCombo->setEnabled(0);
     ui->restUserLabel->setEnabled(0);
+    ui->machineCombo->clear();
+    ui->restUserCombo->clear();
     ui->openRestoreFolderButton->setEnabled(0);
 
     if (arg1 == 2) {
         // restoreALLCheck is checked: allow restore ALL;
-
-        ui->machineCombo->clear();
-        ui->restUserCombo->clear();
 
         // populate machineCombo
         if ( QFile::exists(targetDevice + "/wasta-backup/") ) {
@@ -1404,36 +1418,9 @@ void MainWindow::on_restoreAllCheck_stateChanged(int arg1)
             }
 
             if ( ui->machineCombo->count() == 0) {
-                // message: no machines so don't enable.
-            } else {
-                // populate restUserCombo
-                shellCommand = "ls -1a '" + targetDevice + "/wasta-backup/" + ui->machineCombo->currentText() + "' | grep wasta-backup-config-";
-                shellReturn = shellRun(shellCommand,false);
-                QStringList userList = shellReturn.split("\n");
-                QString userItem;
-
-                foreach (userItem , userList) {
-                    if ( userItem != "") {
-                        //load it up
-                        //20 chars long ==> wasta-backup-config-, get username after it in item name
-                        ui->restUserCombo->addItem(userItem.mid(20));
-                    }
-                }
-
-                if ( ui->restUserCombo->count() == 0 ) {
-                    // message: no users so don't enable.
-                } else {
-
-                    // enable GUI elements
-                    ui->machineCombo->setEnabled(1);
-                    ui->machineLabel->setEnabled(1);
-                    ui->restUserCombo->setEnabled(1);
-                    ui->restUserLabel->setEnabled(1);
-
-                    ui->restoreButton->setEnabled(1);
-                    restoreFolder = getenv("HOME");
-                    ui->openRestoreFolderButton->setEnabled(1);
-                }
+                // no backup machines on device.
+                ui->restUserCombo->setEnabled(0);
+                ui->machineCombo->setEnabled(0);
             }
         }
     }
@@ -1441,7 +1428,6 @@ void MainWindow::on_restoreAllCheck_stateChanged(int arg1)
 
 void MainWindow::on_undoLastRestoreButton_clicked()
 {
-    ui->restoreButton->setEnabled(0);
     ui->changeDeviceButton->setEnabled(0);
     ui->backupTab->setEnabled(0);
     ui->restoreTab->setEnabled(0);
@@ -1621,40 +1607,42 @@ void MainWindow::on_undoLastRestoreButton_clicked()
 
 
     //Last, check if configSave found (configDir + renameText).  If so, that is last thing to undo.
-    QDir configSaveDir(configSave);
-    if ( configSaveDir.exists() ) {
-        ui->messageOutput->append("Undoing restore of Configuration Files\n");
-        ui->messageOutput->moveCursor(QTextCursor::End);
-        writeLog("Undoing restore of Config Files.  Will replace from: " + configSave);
+    if ( !configSave.isEmpty()) {
 
-        // delete current configDir, restore renameConfigDir to configDir and reload backupDirList
-        bool deleted = removeDir(configDir);
-        if (deleted) {
-            //rename configSave to configDir
-            bool checkRename = configSaveDir.rename(configSave, configDir);
-            if ( !checkRename ) {
-                //failed to rename
+        QDir configSaveDir(configSave);
+        if ( configSaveDir.exists() ) {
+            ui->messageOutput->append("Undoing restore of Configuration Files\n");
+            ui->messageOutput->moveCursor(QTextCursor::End);
+            writeLog("Undoing restore of Config Files.  Will replace from: " + configSave);
+
+            // delete current configDir, restore renameConfigDir to configDir and reload backupDirList
+            bool deleted = removeDir(configDir);
+            if (deleted) {
+                //rename configSave to configDir
+                bool checkRename = configSaveDir.rename(configSave, configDir);
+                if ( !checkRename ) {
+                    //failed to rename
+                    QTest::qWait(1);
+                    QMessageBox::warning(this, "Error", tr("Error in renaming item: ") + configSave +
+                                         tr(" to ") + configDir + tr(": is the item opened?"));
+                    writeLog("Error in renaming item: " + configSave + " to " + configDir +
+                             ": is the item opened?");
+                    return;
+                }
+                //reload Config Files
+                ui->messageOutput->append("Loading Original Configuration Files\n");
+                loadConfigFiles();
+            } else {
+                //error: remove of configDir didn't work
+                writeLog("ERROR: Folder " + configDir + " unable to be removed!!!");
                 QTest::qWait(1);
-                QMessageBox::warning(this, "Error", tr("Error in renaming item: ") + configSave +
-                                     tr(" to ") + configDir + tr(": is the item opened?"));
-                writeLog("Error in renaming item: " + configSave + " to " + configDir +
-                         ": is the item opened?");
+                QMessageBox::warning(this,"Error","ERROR: Folder " + configDir +
+                                     " unable to be removed!!!");
                 return;
             }
-            //reload Config Files
-            ui->messageOutput->append("Loading Original Configuration Files\n");
-            loadConfigFiles();
-        } else {
-            //error: remove of configDir didn't work
-            writeLog("ERROR: Folder " + configDir + " unable to be removed!!!");
-            QTest::qWait(1);
-            QMessageBox::warning(this,"Error","ERROR: Folder " + configDir +
-                                 " unable to be removed!!!");
-            return;
         }
+
     }
-    //make sure cleared: probably better place to do this
-    configSave = "";
 
     ui->messageOutput->append("\nUndo Last Restore Complete");
     ui->messageOutput->moveCursor(QTextCursor::End);
@@ -1738,12 +1726,13 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
                                   QString::number(shellProcess->exitCode()) +"\n\nCommand: " +
                                   command + "\n\nMessage: " + shellReturn);
             ui->messageOutput->append("\n !!!ERROR!!!\n");
-        }
-        writeLog("Error during shell process!!\n\nError: " + QString::number(shellProcess->exitCode()) +
-                 "\n\nCommand: " + command + "\n\nMessage: " + shellReturn);
 
-        // set processCanceled so any remaining processes will be canceled also.
-        cancelProcess();
+            writeLog("Error during shell process!!\n\nError: " + QString::number(shellProcess->exitCode()) +
+                     "\n\nCommand: " + command + "\n\nMessage: " + shellReturn);
+
+            // set processCanceled so any remaining processes will be canceled also.
+            cancelProcess();
+        }
     }
     ui->messageOutput->moveCursor(QTextCursor::End);
 
@@ -1845,4 +1834,41 @@ bool MainWindow::removeDir(const QString & dirName)
         result = dir.rmdir(dirName);
     }
     return result;
+}
+
+void MainWindow::on_machineCombo_currentIndexChanged(const QString machineValue)
+{
+    QString shellCommand;
+    QString shellReturn;
+
+    ui->restUserCombo->clear();
+    if ( ! machineValue.isEmpty()) {
+        // populate restUserCombo
+        shellCommand = "ls -1a '" + targetDevice + "/wasta-backup/" + machineValue + "' | grep wasta-backup-config-";
+        shellReturn = shellRun(shellCommand,false);
+        QStringList userList = shellReturn.split("\n");
+        QString userItem;
+
+        foreach (userItem , userList) {
+            if ( userItem != "") {
+                //load it up
+                //20 chars long ==> wasta-backup-config-, get username after it in item name
+                ui->restUserCombo->addItem(userItem.mid(20));
+            }
+        }
+
+        if ( ui->restUserCombo->count() == 0 ) {
+            // no backup user config found, can't restore ALL.
+        } else {
+            // enable GUI elements
+            ui->machineCombo->setEnabled(1);
+            ui->machineLabel->setEnabled(1);
+            ui->restUserCombo->setEnabled(1);
+            ui->restUserLabel->setEnabled(1);
+
+            ui->restoreButton->setEnabled(1);
+            restoreFolder = getenv("HOME");
+            ui->openRestoreFolderButton->setEnabled(1);
+        }
+    }
 }

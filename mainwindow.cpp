@@ -886,22 +886,35 @@ void MainWindow::on_selectPrevItemButton_clicked()
     // last, check CURRENT backup as compared to directory for previous version (so will be last entry if found)
 
     // traditional "diff" to compare the two.
-    rdiffCommand = "diff '" + restItemName + "' '" + targetItem + "' | { grep -v 'Common subdirectories:' || true; }";
+    //  -q will make diff only output filenames, not file content differences
+    //  -r will make recursive
+    //  || true; needed so no error returned if diff found
+
+    rdiffCommand = "diff -qr '" + restItemName + "' '" + targetItem + "' || true;";
     rdiffReturn = shellRun(rdiffCommand, false);
 
     if ( rdiffReturn.trimmed() != "" ) {
-        //increase restItemList count by 1
-        restItemList.resize(0);
-        restItemList.resize(restItemList.count() + 1);
+        //if any diff return found (list of different files), then this folder should be listed for restore
+
+        // add one more to restItemList
+        restItemList.resize(incCount + 1);
 
         // some difference, so list current item from backup as a previous item: would be most current so list last
         restItemList[prevItemCount].insert(0, restItemName);
         restItemList[prevItemCount].insert(1, "now");
-        QFileInfo currentInfo;
-        currentInfo.setFile(targetItem);
-        // get date and time for display
-        QString modifiedDate = currentInfo.lastModified().toString("yyyy-MM-dd");
-        QString modifiedTime = currentInfo.lastModified().toString("hh:mm");
+
+        // last line of incList contains list of last backup in this format:
+        //     "Current mirror: Sat Dec 14 09:07:18 2013"
+        // this would be needed to display date and time
+        QString currentMirror = incList.value(incCount + 1);
+
+        // trim off "Current mirror: " so can process date info
+        currentMirror.replace("Current mirror: ","");
+
+        QDateTime mirrorDate = QDateTime::fromString(currentMirror, "ddd MMM dd hh:mm:ss yyyy");
+
+        QString modifiedDate = mirrorDate.toString("yyyy-MM-dd");
+        QString modifiedTime = mirrorDate.toString("hh:mm");
         ui->prevListCombo->insertItem(prevItemCount, "Date: " + modifiedDate + "   Time: " + modifiedTime);
         prevItemCount++;
     }

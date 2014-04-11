@@ -1,7 +1,7 @@
-Wasta Backup is a simple backup GUI using rdiff-backup for version backups of
+wasta [Backup] is a simple backup GUI using rdiff-backup for version backups of
     data to an external USB device.
 
-Wasta Backup will auto-launch when a USB device with a previous Wasta Backup
+wasta [Backup] will auto-launch when a USB device with a previous wasta [Backup]
     on it is inserted.
 
 Restore possibilities include restoring previous versions of existing files or
@@ -12,5 +12,5 @@ Restore possibilities include restoring previous versions of existing files or
 Additionally, a 'Restore ALL' option is available that will replace all data
     on the computer from the backup device.
 
-Wasta Backup Website (bugs reports and source code):
+wasta [Backup] Website (bugs reports and source code):
     https://bitbucket.org/rikshaw76/wasta-backup

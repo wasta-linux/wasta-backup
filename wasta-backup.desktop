@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Wasta Backup
+Name=wasta [Backup]
 Comment=Simple Data Backup Tool
 Exec=wasta-backup
 Terminal=false

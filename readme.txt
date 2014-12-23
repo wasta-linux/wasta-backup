@@ -1,7 +1,7 @@
-wasta [Backup] is a simple backup GUI using rdiff-backup for version backups of
+Wasta-Backup is a simple backup GUI using rdiff-backup for version backups of
     data to an external USB device.
 
-wasta [Backup] will auto-launch when a USB device with a previous wasta [Backup]
+Wasta-Backup will auto-launch when a USB device with a previous Wasta-Backup
     on it is inserted.
 
 Restore possibilities include restoring previous versions of existing files or
@@ -12,5 +12,12 @@ Restore possibilities include restoring previous versions of existing files or
 Additionally, a 'Restore ALL' option is available that will replace all data
     on the computer from the backup device.
 
-wasta [Backup] Website (bugs reports and source code):
-    https://bitbucket.org/rikshaw76/wasta-backup
+The following configurable settings are stored in a user's
+    ~/.config/wasta-backup/ directory:
+        - backupDirs.txt: specifies directories to backup and other parameters
+          such as number of versions to keep
+        - backupInclude.txt: specifies file extensions to backup (so files
+          with media extensions, etc., will be politely ignored)
+
+Wasta-Backup Website:
+    https://sites.google.com/site/wastalinux/wasta-applications/wasta-backup

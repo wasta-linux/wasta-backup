@@ -139,6 +139,9 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "#          1Y3M to remove versions older than 1 year 3 months\n"
                 "\n"
                 "Paratext,$HOME/ParatextProjects,NO,,1Y\n"
+                "Fieldworks,$HOME/.local/share/fieldworks/Projects,NO,,1Y\n"
+                "Bloom,$HOME/Bloom,NO,,1Y\n"
+                "WeSay,$HOME/WeSay,NO,,1Y\n"
                 "Adapt It,$HOME/Adapt It Unicode Work,NO,--exclude ignorecase:**/.temp,1Y\n"
                 "Thunderbird,$HOME/.thunderbird,NO,--exclude ignorecase:**/Cache,1Y\n"
                 "Documents,$HOME/Documents,YES,,1Y\n"
@@ -203,7 +206,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     // set app icon (used in 'About')
     QIcon wastaIcon;
     wastaIcon.addFile("/usr/share/icons/hicolor/512x512/apps/wasta-backup.png");
-
     this->setWindowIcon(wastaIcon);
 
     // set location to center of primary screen
@@ -212,7 +214,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     int y = (screenGeometry.height() - this->height()) / 2;
 
     this->move(x, y);
-    this->setWindowTitle("wasta [Backup]");
+    this->setWindowTitle("Wasta [Backup]");
     this->show();
 
     // Setup GUI Defaults
@@ -283,10 +285,10 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
     if ( ui->actionBackupOnlyImportant->isChecked() ) {
         fileText = "YES";
-        ui->backupIncludeLabel->setText("Picture, Music, and Video files will NOT be included in the Backup.  Those files must be backed up in a different way!");
+        ui->backupIncludeLabel->setText("Picture, Music, and Video files will <b>NOT</b> be included in the Backup.  <b>You must backup those files yourself!</b>");
     } else {
         fileText = "NO";
-        ui->backupIncludeLabel->setText("ALL Files (including Pictures, Music, and Videos) will be included in the Backup.");
+        ui->backupIncludeLabel->setText("<b>ALL Files</b> (including Pictures, Music, and Videos) will be included in the Backup.");
     }
     // write to file for next time;
     useBackupIncludeFilterFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
@@ -300,9 +302,9 @@ void MainWindow::on_actionBackupOnlyImportant_changed()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this,"About wasta [Backup]","<h3>wasta [Backup]</h3>"
-                       "<p>wasta [Backup] is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
-                       "<p>wasta [Backup] will auto-launch when a USB device with a previous wasta [Backup] on it is inserted."
+    QMessageBox::about(this,"About Wasta-Backup","<h3>Wasta-Backup</h3>"
+                       "<p>Wasta-Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device."
+                       "<p>Wasta-Backup will auto-launch when a USB device with a previous Wasta-Backup on it is inserted."
                        "<p>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup device."
                        " In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time."
                        "<p>Additionally, a 'Restore ALL' option is available that will replace all data on the computer from the backup device."
@@ -311,8 +313,8 @@ void MainWindow::on_actionAbout_triggered()
                        "<li><p><b>backupDirs.txt:</b> specifies directories to backup and other parameters such as number of versions to keep</li>"
                        "<li><p><b>backupInclude.txt:</b> specifies file extensions to backup (so files with media extensions, etc., will be politely ignored)</li>"
                        "</ul>"
-                       "<p><b>wasta [Backup] Website (bugs reports and source code):</b> "
-                       "<a href=\"https://bitbucket.org/rikshaw76/wasta-backup\">https://bitbucket.org/rikshaw76/wasta-backup</a>"
+                       "<p><b>Wasta-Backup Website:</b> "
+                       "<a href=\"https://sites.google.com/site/wastalinux/wasta-applications/wasta-backup\">https://sites.google.com/site/wastalinux/wasta-applications/wasta-backup</a>"
                        );
 }
 
@@ -457,7 +459,7 @@ void MainWindow::setTargetDevice(QString inputDir)
                 ui->messageOutput->append("Existing backup found on device: " +
                                           ui->targetDeviceDisp->text() + "\n");
                 ui->messageOutput->append("Ready for backup");
-                ui->messageOutput->append("\n\n\n\n");
+                ui->messageOutput->append("\n\n\n");
                 ui->messageOutput->moveCursor(QTextCursor::End);
                 writeLog(targetDevice + " has existing backup and ready for backup.");
 
@@ -466,7 +468,7 @@ void MainWindow::setTargetDevice(QString inputDir)
                 ui->messageOutput->append("No existing backup found on device: " +
                                           ui->targetDeviceDisp->text() + "\n");
                 ui->messageOutput->append("Ready for first backup (may take some time to complete)");
-                ui->messageOutput->append("\n\n\n\n");
+                ui->messageOutput->append("\n\n\n");
                 ui->messageOutput->moveCursor(QTextCursor::End);
                 writeLog(targetDevice + " doesn't have existing backup but ready for first backup.");
             }
@@ -508,7 +510,7 @@ void MainWindow::on_changeDeviceButton_clicked()
                                                         startTarget,
                                                         QFileDialog::ShowDirsOnly
                                                         | QFileDialog::DontResolveSymlinks);
-    ui->messageOutput->append("\n\n\n\n\n");
+    ui->messageOutput->append("\n\n\n\n");
     setTargetDevice(dirName);
 }
 
@@ -575,7 +577,7 @@ void MainWindow::on_backupButton_clicked()
     processCanceled = false;
 
     // clear visible parts of message output window
-    ui->messageOutput->append("\n\n\n\n\n\n\n\n\n\n");
+    ui->messageOutput->append("\n\n\n\n\n\n\n\n\n");
     ui->messageOutput->append("Starting backup to " + ui->targetDeviceDisp->text() + " device...\n");
     ui->messageOutput->moveCursor(QTextCursor::End);
     writeLog("Starting backup to " + ui->targetDeviceDisp->text());
@@ -628,6 +630,12 @@ void MainWindow::on_backupButton_clicked()
             if ( !path.exists(dest) ) {
                 path.mkpath(dest);
             }
+
+            // Adding extra check to ensure user didn't cancel BEFORE rdiff called
+            if (processCanceled) {
+                break; // break out of backup loop
+            }
+
             // Backup
             rdiffReturn = shellRun("rdiff-backup " + parms + " '" + source +
                                    "' '" + dest + "'",true);
@@ -1145,7 +1153,7 @@ void MainWindow::on_restoreButton_clicked()
     ui->progressBar->setVisible(1);
 
     // clear visibal parts of message output window
-    ui->messageOutput->append("\n\n\n\n\n\n\n\n\n\n");
+    ui->messageOutput->append("\n\n\n\n\n\n\n\n\n");
     ui->messageOutput->moveCursor(QTextCursor::End);
     ui->messageOutput->append("Starting restore from " + ui->targetDeviceDisp->text() + " device...\n");
     writeLog("Starting restore from " + ui->targetDeviceDisp->text());
@@ -1184,6 +1192,12 @@ void MainWindow::on_restoreButton_clicked()
 
                 // double check item DOESN't exist before restore
                 if ( !QFile::exists(restItemList[row].value(0)) ) {
+
+                    // Adding extra check to ensure user didn't cancel BEFORE rdiff called
+                    if (processCanceled) {
+                        break; // break out of backup loop
+                    }
+
                     rdiffCommand = "rdiff-backup --restore-as-of " + restItemList[row].value(1) +
                             " '" + targetDevice + "/wasta-backup/" + machine + restItemList[row].value(0) +
                             "' '" + restItemList[row].value(0) + "'";
@@ -1355,9 +1369,15 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
             ui->messageOutput->append("Restoring " + originalItem + "....\n");
             writeLog("Restoring " + originalItem);
 
+            // Adding extra check to ensure user didn't cancel BEFORE rdiff called
+            if (processCanceled) {
+                return;
+            }
+
             QString rdiffCommand = "rdiff-backup --restore-as-of " + restoreTime + " '" +
                     backupItem + "' '" + originalItem + "'";
             QString rdiffReturn = shellRun(rdiffCommand,true);
+
             if (processCanceled) {
                 return;
             }
@@ -1447,7 +1467,7 @@ void MainWindow::on_undoLastRestoreButton_clicked()
     ui->undoLastRestoreButton->setEnabled(0);
 
     // clear visibal parts of message output window
-    ui->messageOutput->append("\n\n\n\n\n\n\n\n\n\n");
+    ui->messageOutput->append("\n\n\n\n\n\n\n\n\n");
     ui->messageOutput->append("Starting undo last restore from " +
                               ui->targetDeviceDisp->text() + " device...\n");
     ui->messageOutput->moveCursor(QTextCursor::End);
@@ -1781,10 +1801,10 @@ void MainWindow::loadConfigFiles() {
 
     if ( line.mid(0,2) != "NO" ) {
         ui->actionBackupOnlyImportant->setChecked(1);
-        ui->backupIncludeLabel->setText("Picture, Music, and Video files will NOT be included in the Backup.  Those files must be backed up in a different way!");
+        ui->backupIncludeLabel->setText("Picture, Music, and Video files will <b>NOT</b> be included in the Backup.  <b>You must backup those files yourself!</b>");
     } else {
         ui->actionBackupOnlyImportant->setChecked(0);
-        ui->backupIncludeLabel->setText("ALL Files (including Pictures, Music, and Videos) will be included in the Backup.");
+        ui->backupIncludeLabel->setText("<b>ALL Files</b> (including Pictures, Music, and Videos) will be included in the Backup.");
     }
 
     //load backupDir file

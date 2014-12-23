@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>900</width>
-    <height>565</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -135,7 +135,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>wasta [Backup] makes version backups of data to an external USB device.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wasta-Backup&lt;/span&gt; makes version backups of data to an external USB device.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="backupIncludeLabel">
@@ -148,7 +148,10 @@
        </rect>
       </property>
       <property name="text">
-       <string>Picture, Music, and Video files will NOT be backed up!  Those files must be backed up in a different way!</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Picture, Music, and Video files will NOT be backed up! Those files must be backed up in a different way!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -676,9 +679,9 @@
     <property name="geometry">
      <rect>
       <x>270</x>
-      <y>349</y>
+      <y>350</y>
       <width>621</width>
-      <height>181</height>
+      <height>131</height>
      </rect>
     </property>
    </widget>
@@ -702,7 +705,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>500</y>
+      <y>450</y>
       <width>99</width>
       <height>27</height>
      </rect>
@@ -718,7 +721,7 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

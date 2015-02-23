@@ -1,3 +1,14 @@
+// =============================================================================
+//
+// wasta-backup: mainwindow.cpp
+//
+// 2015-02-23 rik: increase backupDirs array from 10 to 20.  I thought it would
+//      auto-expand, but it doesn't seem to.
+//
+// =============================================================================
+
+
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
@@ -19,8 +30,8 @@ bool processCanceled;
 QString configDir;
 QString configSave;
 QString logDir;
-QVector<QStringList> backupDirList(10); //initialize with 10 entries: a "few" extra can be added, later trimmed down to correct size
-QVector<QStringList> restItemList(10);
+QVector<QStringList> backupDirList(20); //initialize with 20 entries: a "few" extra can be added, later trimmed down to correct size
+QVector<QStringList> restItemList(20);
 QStringList restItems;
 
 QString targetDevice = "";
@@ -1810,7 +1821,7 @@ void MainWindow::loadConfigFiles() {
     //load backupDir file
     //resize for safety
     backupDirList.resize(0);
-    backupDirList.resize(10);
+    backupDirList.resize(20);
 
     int i = 0;
 

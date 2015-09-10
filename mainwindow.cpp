@@ -4,6 +4,13 @@
 //
 // 2015-02-23 rik: increase backupDirs array from 10 to 20.  I thought it would
 //      auto-expand, but it doesn't seem to.
+// 2015-09-19 rik: Restore ALL needs to "mkdir -p" on the restore folder, as
+//      it may several layers (of non-existing subfolders) deep.  Normal restore
+//      won't need this because am starting from the immediate parent folder.
+//    - Added '2>&1' to shellRun commands so that warnings and errors both
+//      returned and sent to logfile.
+//    - Added quotes to restore all rsync command to restore .config/wasta-backup
+//    - Added 'sync' commands to restore processes
 //
 // =============================================================================
 
@@ -606,7 +613,7 @@ void MainWindow::on_backupButton_clicked()
         //   since before 2013-10-13 backupConfigDir was targetDir + userHome + /.config/wasta-backup
         //   Since this was NOT a "rdiff-backup folder" then rdiff-backup will warn folder exists and will not process
         //   So, need to manually remove .config folder so will not conflict with anyone attempting to backup home
-        output = shellRun("rm -rf " + targetDir + userHome + "/.config", false);
+        output = shellRun("rm -rf '" + targetDir + userHome + "/.config'", false);
 
         backupConfigPath.mkpath(backupConfigDir);
     }
@@ -1277,7 +1284,7 @@ void MainWindow::on_restoreButton_clicked()
         //use rsync to copy down backupConfigDir to configDir
         QString output;
 
-        output = shellRun("rsync -rlt --delete " + userBackupConfigDir + " " + configDir, false);
+        output = shellRun("rsync -rlt --delete '" + userBackupConfigDir + "' '" + configDir + "'", false);
 
         // reload config files
         ui->messageOutput->append("Loading Restored Configuration Files\n");
@@ -1318,6 +1325,15 @@ void MainWindow::on_restoreButton_clicked()
         writeLog("Restore Canceled!");
         ui->messageOutput->moveCursor(QTextCursor::End);
     }
+
+    // reset processCanceled so won't report as canceled for sync commands
+    processCanceled = false;
+
+    // regardless of canceled or not, need to sync hdd (this ensures all written to disk: thanks to jl)
+    rdiffReturn = shellRun("sync",false);
+
+    // recommended to do it twice (also thanks to jl :)
+    rdiffReturn = shellRun("sync",false);
 
     ui->progressBar->setValue(100);
 
@@ -1385,6 +1401,10 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
                 return;
             }
 
+            // Ensure path exists: ridff-backup will fail if path not existing already
+            shellRun("mkdir -p '" + originalItem + "'",false);
+
+            // Do Restore
             QString rdiffCommand = "rdiff-backup --restore-as-of " + restoreTime + " '" +
                     backupItem + "' '" + originalItem + "'";
             QString rdiffReturn = shellRun(rdiffCommand,true);
@@ -1721,7 +1741,7 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
     writeLog("shellCommand:\n" + command);
 
     QProcess *shellProcess = new QProcess();
-    shellProcess->start("sh", QStringList() << "-c" << command);
+    shellProcess->start("sh", QStringList() << "-c" << command + " 2>&1");
 
     if (giveFeedback) {
         while (shellProcess->pid() > 0 ) {

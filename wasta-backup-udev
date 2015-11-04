@@ -11,9 +11,12 @@
 #
 #   2013-06-24: Initial script
 #   2013-08-12: removed .sh extension to comply with debian packaging standard
+#   2015-11-04 rik: using "at" run dependent script, otherwise using 15.10
+#       even though this script finishes, the automount of the usb is held
+#       until the dependent script finishes as well.
 #
 # ==============================================================================
 
-/bin/bash -c "/usr/bin/wasta-backup-usb-autolaunch $*" &
+echo "/usr/bin/wasta-backup-usb-autolaunch $*" | at now
 
 exit 0

@@ -1,0 +1,112 @@
+wasta-backup (1.0.8) trusty; urgency=medium
+
+  * debian/control: adding 'at' dependency
+  * wasta-backup-udev: calling dependent script with 'at now' so usb mount
+    can complete instead of waiting for dependent script to finish
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Wed, 04 Nov 2015 11:31:23 +0300
+
+wasta-backup (1.0.7) trusty; urgency=medium
+
+  * Restore ALL needs to "mkdir -p" on the restore folder, as
+    it may several layers (of non-existing subfolders) deep.  Normal restore
+    won't need this because am starting from the immediate parent folder.
+  * Added '2>&1' to shellRun commands so that warnings and errors both
+    returned and sent to logfile.
+  * Added quotes to 'Restore All' rsync command to restore .config/wasta-backup
+  * Added 'sync' commands to restore processes
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Thu, 10 Sep 2015 18:03:10 +0300
+
+wasta-backup (1.0.6) trusty; urgency=medium
+
+  * Increased backupDirList to 20 elements (from 10).
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Mon, 23 Feb 2015 12:55:02 +0300
+
+wasta-backup (1.0.5) trusty; urgency=medium
+
+  * Updated backupDirs.txt to include Fieldworks, Bloom, and WeSay data
+    locations.
+  * Added checks for user canceling before rdiff-backup call
+  * Minor GUI adjustments (adding bold to description)
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Tue, 23 Dec 2014 20:08:19 +0300
+
+wasta-backup (1.0.4) precise; urgency=low
+
+  * Resized GUI to accommodate 600 vertical px screens
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Tue, 15 Jul 2014 16:59:19 -0500
+
+wasta-backup (1.0.3) precise; urgency=low
+
+  * Handle "space" in backup of config directory
+  * Modified icon, display name to "wasta [Backup]"
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Fri, 11 Apr 2014 14:34:12 -0500
+
+wasta-backup (1.0.2wasta1) precise; urgency=low
+
+  * Removing postinst (used to add wasta-apps PPA, but won't anymore, as
+    this is the the only place to get wasta-backup)
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Mon, 24 Mar 2014 20:49:14 -0500
+
+wasta-backup (1.0.2) precise; urgency=low
+
+  * diff command change on check of current mirror to determine
+    if should be added to restore list
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Fri, 20 Dec 2013 11:14:45 -0600
+
+wasta-backup (1.0.1wasta2) precise; urgency=low
+
+  * Updated preinst PPA addition to wasta-apps PPA
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Fri, 18 Oct 2013 09:52:04 -0500
+
+wasta-backup (1.0.1wasta1) precise; urgency=low
+
+  * Adding wasta-Linux team PPA via preinst
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Wed, 16 Oct 2013 02:49:03 -0500
+
+wasta-backup (1.0.1) precise; urgency=low
+
+  * Bugfix on Restore ALL and Restore Deleted Item Patches
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Mon, 14 Oct 2013 15:19:50 -0500
+
+wasta-backup (1.0.0) precise; urgency=low
+
+  * Implemented multi-user for "Restore ALL", so now can restore from
+    different machine and different user to current machine and user.
+  * reduced USB auto-launch delay to 5s (from 10s)
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Mon, 14 Oct 2013 11:49:22 -0500
+
+wasta-backup (0.9.5) precise; urgency=low
+
+  * Fixed Restore Item Array Size crashes.
+  * Config files backed up and restored on "Restore All".  * 
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Sat, 28 Sep 2013 09:24:37 -0500
+
+wasta-backup (0.9.4) precise; urgency=low
+
+  * Ignore "hard linking not supported" warnings from rdiff-backup 
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Wed, 25 Sep 2013 10:08:36 -0500
+
+wasta-backup (0.9.3ubuntu1) precise; urgency=low
+
+  * Corrected distroseries in changelog
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Tue, 27 Aug 2013 12:14:44 -0500
+
+wasta-backup (0.9.3) precise; urgency=low
+
+  * Initial Release.
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Mon, 12 Aug 2013 14:41:14 -0500

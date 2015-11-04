@@ -1,0 +1,13 @@
+Source: wasta-backup
+Section: utils
+Priority: extra
+Maintainer: Rik Shaw <rikshaw76@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), libqt4-dev (>= 4.8.1)
+Standards-Version: 3.9.5
+Homepage: https://sites.google.com/site/wastalinux/wasta-applications/wasta-backup
+
+Package: wasta-backup
+Architecture: any
+Depends: at, rdiff-backup (>= 1.2.8), ${shlibs:Depends}, ${misc:Depends}
+Description: Simple version backups
+ Simple backup tool using the power of rdiff-backup for version backups.

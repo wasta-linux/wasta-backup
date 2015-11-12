@@ -1,3 +1,16 @@
+wasta-backup (1.0.9) wily; urgency=medium
+
+  * wasta-backup-udev: account for machines that have "broken at" due to
+    remastersys throwing away the config file /var/spool/cron/atjobs/.SEQ
+    Without that file, at doesn't work and autolaunch is broken. Fixed
+    by running "sudo dpkg-reconfigure at", but patching here so if that
+    file isn't found, we revert to the old method of launching wasta-backup.
+    WARNING: if using 15.10+ and that file doesn't exist, the old method
+    is used, then automount of ALL USBs is broken.  So we need to ensure
+    that wasta-remastersys properly configs "at" in the firstboot script.
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Thu, 12 Nov 2015 16:39:16 +0300
+
 wasta-backup (1.0.8) trusty; urgency=medium
 
   * debian/control: adding 'at' dependency

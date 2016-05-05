@@ -1,3 +1,17 @@
+wasta-backup (1.0.10) xenial; urgency=medium
+
+  * jcl: only autolaunch on USB drive insertion, not all block devices
+
+    Previously the udev rule launched on any SUBSYSTEM that was       
+    considered a block device, including normal drive partitions.
+    This could be triggered by creating a /media/wasta-offline folder
+    for example.
+
+    USB seems like the only kind of device insertion that we are      
+    interested in auto-launching wasta-offline.
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Thu, 05 May 2016 17:39:09 +0300
+
 wasta-backup (1.0.9) wily; urgency=medium
 
   * wasta-backup-udev: account for machines that have "broken at" due to

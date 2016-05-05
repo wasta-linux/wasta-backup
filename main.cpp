@@ -1,11 +1,23 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QLibraryInfo>
+#include <QTranslator>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w(a.arguments());
-    w.show();
+    QApplication app(argc, argv);
+
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(),
+            QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&qtTranslator);
+
+    QTranslator myappTranslator;
+    myappTranslator.load("myapp_" + QLocale::system().name());
+    app.installTranslator(&myappTranslator);
+
+    MainWindow window(app.arguments());
+    window.show();
     
-    return a.exec();
+    return app.exec();
 }

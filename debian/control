@@ -9,5 +9,5 @@ Homepage: https://sites.google.com/site/wastalinux/wasta-applications/wasta-back
 Package: wasta-backup
 Architecture: any
 Depends: at, rdiff-backup (>= 1.2.8), ${shlibs:Depends}, ${misc:Depends}
-Description: Simple version backups
- Simple backup tool using the power of rdiff-backup for version backups.
+Description: Simple versioned backups
+ Simple backup tool using the power of rdiff-backup for versioned backups.

@@ -1,3 +1,10 @@
+wasta-backup (1.0.11) xenial; urgency=medium
+
+  * reverting accidental commit of main.cpp that was made
+    attempting to provide localization for wasta-backup.
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Thu, 05 May 2016 18:19:09 +0300
+
 wasta-backup (1.0.10) xenial; urgency=medium
 
   * jcl: only autolaunch on USB drive insertion, not all block devices

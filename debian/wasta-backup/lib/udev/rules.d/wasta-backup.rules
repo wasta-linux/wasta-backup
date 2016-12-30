@@ -1,2 +1,0 @@
-# call wasta-backup-udev for any added device.  Kernel (device id) is passed
-SUBSYSTEM=="block", KERNEL=="sd??*", ACTION=="add", SUBSYSTEMS=="usb", RUN+="/bin/sh -c '/usr/bin/wasta-backup-udev $kernel'"

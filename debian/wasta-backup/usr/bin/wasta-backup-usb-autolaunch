@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# ==============================================================================
+# wasta-backup-usb-autolaunch
+#
+#   This script takes a device id as input, finds the mount point of the device
+#       from df, determines the owner of the device, and finally launches
+#       wasta-backup on the device owner's x display server.
+#
+#   2013-06-24: Initial script
+#   2013-06-28: updated to apply gtk+ style (needed for Ubuntu, for some
+#       reason works correctly w/o that on Mint)
+#   2013-08-12: removed .sh extension to comply with debian packaging standard
+#   2013-10-14: reduced sleep delay to 5s
+#
+# ==============================================================================
+
+sleep 5s
+
+USB_DEVICE="/dev/"$1
+USB_MOUNT=$(df | grep $USB_DEVICE | awk '{print substr($0, index($0, $6))}')
+USB_OWNER=$(stat -c "%U" "$USB_MOUNT")
+PID_WASTA=$(pidof wasta-backup)
+
+# only launch wasta-backup if device has a 'wasta-backup' folder and
+# no other wasta-backup process running
+if [ -e "$USB_MOUNT/wasta-backup" ] && [ ! $PID_WASTA ];
+then
+    xhost local:$USB_OWNER
+    export DISPLAY=:0
+
+    su $USB_OWNER -c "wasta-backup \"$USB_MOUNT\" -style gtk+" &
+fi
+
+exit 0

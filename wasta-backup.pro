@@ -8,17 +8,23 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = wasta-backup
-TEMPLATE = app
+TARGET       = wasta-backup
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+TEMPLATE     = app
 
-HEADERS  += mainwindow.h
+SOURCES     += main.cpp \
+    mainwindow.cpp
 
-FORMS    += mainwindow.ui
+TRANSLATIONS = l10n/wasta-backup_es.ts \
+    l10n/wasta-backup_fr.ts \
+    l10n/wasta-backup_ru.ts
 
-CONFIG += qtestlib
+HEADERS     += mainwindow.h \
+    ui_mainwindow.h
+
+FORMS       += mainwindow.ui
+
+CONFIG      += qtestlib
 
 OTHER_FILES += \
     wasta-base.png \
@@ -30,3 +36,8 @@ OTHER_FILES += \
     wasta-backup-usb-autolaunch \
     README \
     readme.txt
+
+DISTFILES += \
+    l10n/wasta-backup_es.ts \
+    l10n/wasta-backup_fr.ts \
+    l10n/wasta-backup_ru.ts

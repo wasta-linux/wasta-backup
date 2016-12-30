@@ -1,11 +1,20 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QTranslator>
+#include <QLocale>
+#include <QLibraryInfo>
+#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w(a.arguments());
-    w.show();
+    QApplication app(argc, argv);
+
+    QTranslator myappTranslator;
+    myappTranslator.load("l10n/wasta-backup_" + QLocale::system().name());
+    app.installTranslator(&myappTranslator);
+
+    MainWindow win(app.arguments());
+    win.show();
     
-    return a.exec();
+    return app.exec();
 }

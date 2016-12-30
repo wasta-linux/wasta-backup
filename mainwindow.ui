@@ -11,15 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Wasta [Backup]</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="changeDeviceButton">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>400</x>
       <y>10</y>
-      <width>91</width>
+      <width>121</width>
       <height>27</height>
      </rect>
     </property>
@@ -30,9 +30,9 @@
    <widget class="QLineEdit" name="targetDeviceDisp">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>180</x>
       <y>10</y>
-      <width>161</width>
+      <width>211</width>
       <height>27</height>
      </rect>
     </property>
@@ -44,9 +44,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>15</y>
-      <width>111</width>
-      <height>21</height>
+      <y>5</y>
+      <width>161</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -55,14 +55,17 @@
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>530</x>
       <y>10</y>
-      <width>271</width>
-      <height>51</height>
+      <width>291</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -97,7 +100,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="documentMode">
      <bool>false</bool>
@@ -112,9 +115,9 @@
      <widget class="QPushButton" name="backupButton">
       <property name="geometry">
        <rect>
-        <x>350</x>
+        <x>310</x>
         <y>110</y>
-        <width>111</width>
+        <width>191</width>
         <height>41</height>
        </rect>
       </property>
@@ -130,7 +133,7 @@
        <rect>
         <x>120</x>
         <y>10</y>
-        <width>561</width>
+        <width>721</width>
         <height>21</height>
        </rect>
       </property>
@@ -143,7 +146,7 @@
        <rect>
         <x>120</x>
         <y>50</y>
-        <width>531</width>
+        <width>611</width>
         <height>51</height>
        </rect>
       </property>
@@ -163,9 +166,9 @@
      <widget class="QPushButton" name="cancelBackupButton">
       <property name="geometry">
        <rect>
-        <x>350</x>
+        <x>310</x>
         <y>160</y>
-        <width>111</width>
+        <width>191</width>
         <height>27</height>
        </rect>
       </property>
@@ -197,52 +200,58 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>140</y>
-         <width>211</width>
-         <height>22</height>
+         <y>170</y>
+         <width>21</width>
+         <height>21</height>
         </rect>
        </property>
        <property name="text">
-        <string>Restore ALL Backup Data</string>
+        <string/>
        </property>
       </widget>
       <widget class="QRadioButton" name="restoreDelRadio">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>90</y>
-         <width>211</width>
+         <y>110</y>
+         <width>21</width>
          <height>22</height>
         </rect>
        </property>
        <property name="text">
-        <string>Restore Deleted File</string>
+        <string/>
        </property>
       </widget>
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="restoreDelRadioLabel">
        <property name="geometry">
         <rect>
-         <x>50</x>
+         <x>30</x>
          <y>110</y>
-         <width>141</width>
-         <height>16</height>
+         <width>171</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="text">
-        <string>or Folder</string>
+        <string>Restore Deleted File or Folder</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QRadioButton" name="restorePrevRadio">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>40</y>
-         <width>211</width>
+         <y>50</y>
+         <width>21</width>
          <height>22</height>
         </rect>
        </property>
        <property name="text">
-        <string>Restore Previous Version</string>
+        <string/>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -251,17 +260,23 @@
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="restorePrevRadioLabel">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>60</y>
-         <width>141</width>
-         <height>16</height>
+         <x>30</x>
+         <y>50</y>
+         <width>171</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="text">
-        <string>of File or Folder</string>
+        <string>Restore Previous Version of File or Folder</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_7">
@@ -269,8 +284,8 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>131</width>
-         <height>17</height>
+         <width>201</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -281,6 +296,28 @@
        </property>
        <property name="text">
         <string>Restore what?</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="restoreAllRadioLabel">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>170</y>
+         <width>171</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Restore ALL Backup Data</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
@@ -294,16 +331,16 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="restorePrevPage">
        <widget class="QLabel" name="prevDateTimeLabel">
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>80</y>
+          <y>70</y>
           <width>131</width>
-          <height>41</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="text">
@@ -319,17 +356,20 @@
        <widget class="QLabel" name="prevItemLabel">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>-10</x>
           <y>15</y>
-          <width>121</width>
-          <height>21</height>
+          <width>131</width>
+          <height>51</height>
          </rect>
         </property>
         <property name="text">
          <string>File to Restore:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLineEdit" name="prevItem">
@@ -337,7 +377,7 @@
          <rect>
           <x>130</x>
           <y>10</y>
-          <width>411</width>
+          <width>391</width>
           <height>27</height>
          </rect>
         </property>
@@ -348,9 +388,9 @@
        <widget class="QPushButton" name="selectPrevItemButton">
         <property name="geometry">
          <rect>
-          <x>550</x>
+          <x>530</x>
           <y>10</y>
-          <width>81</width>
+          <width>101</width>
           <height>27</height>
          </rect>
         </property>
@@ -362,8 +402,8 @@
         <property name="geometry">
          <rect>
           <x>130</x>
-          <y>90</y>
-          <width>251</width>
+          <y>80</y>
+          <width>501</width>
           <height>27</height>
          </rect>
         </property>
@@ -373,7 +413,7 @@
          <rect>
           <x>10</x>
           <y>60</y>
-          <width>601</width>
+          <width>611</width>
           <height>16</height>
          </rect>
         </property>
@@ -386,7 +426,7 @@
          <rect>
           <x>130</x>
           <y>40</y>
-          <width>61</width>
+          <width>101</width>
           <height>22</height>
          </rect>
         </property>
@@ -400,9 +440,9 @@
        <widget class="QRadioButton" name="prevFolderRadio">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>240</x>
           <y>40</y>
-          <width>81</width>
+          <width>111</width>
           <height>22</height>
          </rect>
         </property>
@@ -415,10 +455,10 @@
        <widget class="QListWidget" name="delList">
         <property name="geometry">
          <rect>
-          <x>130</x>
-          <y>60</y>
+          <x>0</x>
+          <y>120</y>
           <width>341</width>
-          <height>191</height>
+          <height>131</height>
          </rect>
         </property>
        </widget>
@@ -426,16 +466,16 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>70</y>
-          <width>121</width>
-          <height>171</height>
+          <y>50</y>
+          <width>631</width>
+          <height>68</height>
          </rect>
         </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Deleted Files or Folders to Restore:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(use ctrl + click to select more than 1 item to restore)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -446,7 +486,7 @@
          <rect>
           <x>170</x>
           <y>10</y>
-          <width>371</width>
+          <width>351</width>
           <height>27</height>
          </rect>
         </property>
@@ -457,9 +497,9 @@
        <widget class="QPushButton" name="selectDelFolderButton">
         <property name="geometry">
          <rect>
-          <x>550</x>
+          <x>530</x>
           <y>10</y>
-          <width>81</width>
+          <width>101</width>
           <height>27</height>
          </rect>
         </property>
@@ -470,10 +510,10 @@
        <widget class="QLabel" name="delFolderLabel">
         <property name="geometry">
          <rect>
-          <x>-20</x>
-          <y>15</y>
-          <width>181</width>
-          <height>21</height>
+          <x>0</x>
+          <y>-5</y>
+          <width>161</width>
+          <height>51</height>
          </rect>
         </property>
         <property name="text">
@@ -482,13 +522,16 @@
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
-       <widget class="Line" name="line_3">
+       <widget class="Line" name="line_5">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>10</x>
           <y>40</y>
-          <width>601</width>
+          <width>611</width>
           <height>16</height>
          </rect>
         </property>
@@ -506,7 +549,7 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>461</width>
+          <width>611</width>
           <height>101</height>
          </rect>
         </property>
@@ -529,8 +572,8 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>120</y>
-          <width>161</width>
+          <y>110</y>
+          <width>331</width>
           <height>27</height>
          </rect>
         </property>
@@ -543,7 +586,7 @@
          <rect>
           <x>10</x>
           <y>100</y>
-          <width>461</width>
+          <width>611</width>
           <height>16</height>
          </rect>
         </property>
@@ -554,8 +597,8 @@
        <widget class="QComboBox" name="machineCombo">
         <property name="geometry">
          <rect>
-          <x>270</x>
-          <y>160</y>
+          <x>190</x>
+          <y>140</y>
           <width>151</width>
           <height>27</height>
          </rect>
@@ -564,8 +607,8 @@
        <widget class="QComboBox" name="restUserCombo">
         <property name="geometry">
          <rect>
-          <x>270</x>
-          <y>190</y>
+          <x>190</x>
+          <y>200</y>
           <width>151</width>
           <height>27</height>
          </rect>
@@ -574,60 +617,56 @@
        <widget class="QLabel" name="machineLabel">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>160</y>
-          <width>211</width>
-          <height>27</height>
+          <x>10</x>
+          <y>140</y>
+          <width>181</width>
+          <height>51</height>
          </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="text">
          <string>Machine to Restore Data From:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="restUserLabel">
         <property name="geometry">
          <rect>
-          <x>80</x>
-          <y>190</y>
+          <x>10</x>
+          <y>200</y>
           <width>181</width>
-          <height>27</height>
+          <height>51</height>
          </rect>
         </property>
         <property name="text">
          <string>User to Restore Data From:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
      </widget>
-     <widget class="QPushButton" name="restoreButton">
-      <property name="geometry">
-       <rect>
-        <x>720</x>
-        <y>80</y>
-        <width>151</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Restore</string>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QPushButton" name="cancelRestoreButton">
       <property name="geometry">
        <rect>
-        <x>720</x>
-        <y>125</y>
-        <width>151</width>
-        <height>27</height>
+        <x>590</x>
+        <y>170</y>
+        <width>281</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
@@ -637,10 +676,10 @@
      <widget class="QPushButton" name="openRestoreFolderButton">
       <property name="geometry">
        <rect>
-        <x>720</x>
-        <y>190</y>
-        <width>151</width>
-        <height>27</height>
+        <x>590</x>
+        <y>200</y>
+        <width>281</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
@@ -650,14 +689,30 @@
      <widget class="QPushButton" name="undoLastRestoreButton">
       <property name="geometry">
        <rect>
-        <x>720</x>
-        <y>220</y>
-        <width>151</width>
-        <height>27</height>
+        <x>590</x>
+        <y>230</y>
+        <width>281</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
        <string>Undo Last Restore</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="restoreButton">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>120</y>
+        <width>281</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Restore</string>
+      </property>
+      <property name="default">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -688,9 +743,9 @@
    <widget class="QLabel" name="label_10">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>70</x>
       <y>405</y>
-      <width>101</width>
+      <width>191</width>
       <height>21</height>
      </rect>
     </property>
@@ -705,9 +760,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>450</y>
-      <width>99</width>
-      <height>27</height>
+      <y>446</y>
+      <width>251</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -721,20 +776,20 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Fi&amp;le</string>
     </property>
     <widget class="QMenu" name="menuAdvanced">
      <property name="title">
-      <string>Advanced...</string>
+      <string>A&amp;dvanced...</string>
      </property>
      <widget class="QMenu" name="menuFile_Selection">
       <property name="title">
-       <string>Backup File Selection</string>
+       <string>&amp;Backup File Selection</string>
       </property>
       <addaction name="actionBackupOnlyImportant"/>
      </widget>
@@ -747,7 +802,7 @@
   </widget>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
    </property>
   </action>
   <action name="actionBackupOnlyImportant">
@@ -755,7 +810,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Only Backup Important Files (Default)</string>
+    <string>&amp;Only Backup Important Files (Default)</string>
    </property>
    <property name="iconText">
     <string>Only Backup Important Files (Default)</string>

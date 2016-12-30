@@ -1,3 +1,9 @@
+wasta-backup (1.1.2) xenial; urgency=medium
+
+  * correcting l10n location
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Fri, 30 Dec 2016 15:43:59 +0300
+
 wasta-backup (1.1.1) xenial; urgency=medium
 
   * placing l10n files in /usr/share/wasta-backup

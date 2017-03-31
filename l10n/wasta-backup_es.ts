@@ -6,64 +6,78 @@
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="239"/>
+        <location filename="../ui_mainwindow.h" line="363"/>
         <source>Wasta [Backup]</source>
         <translation>Wasta [Backup]</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="27"/>
+        <location filename="../ui_mainwindow.h" line="376"/>
         <source>Change</source>
         <translation>Cambiar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="53"/>
+        <location filename="../ui_mainwindow.h" line="377"/>
         <source>Backup Device:</source>
         <translatorcomment>&quot;Backup Drive&quot;</translatorcomment>
         <translation>Unidad de respaldo:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="78"/>
+        <location filename="../ui_mainwindow.h" line="378"/>
         <source>To choose a different device, make sure it is connected and click &quot;Change&quot;.</source>
-        <translation>Para elegir una unidad diferente, asurgarse que lo esta conectado y haga clik a &quot;Cambiar&quot;.</translation>
+        <translation>Para elegir una unidad diferente, asurguese que lo esta conectado y haga clik a &quot;Cambiar&quot;.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="113"/>
         <location filename="../mainwindow.ui" line="125"/>
+        <location filename="../ui_mainwindow.h" line="379"/>
+        <location filename="../ui_mainwindow.h" line="383"/>
         <source>Backup</source>
         <translation>Respaldar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="141"/>
+        <location filename="../ui_mainwindow.h" line="380"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wasta-Backup&lt;/span&gt; makes version backups of data to an external USB device.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wasta-Backup&lt;/span&gt; hace respaladas de various versiones antiguos a un dispositivo USB.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wasta-Backup&lt;/span&gt; hace respalados de various versiones antiguos a un dispositivo USB.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="154"/>
+        <location filename="../ui_mainwindow.h" line="381"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Picture, Music, and Video files will NOT be backed up! Those files must be backed up in a different way!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Archivos de imagines, musica y video no seran respaldados. Archivos asi tienen que protegidos por otro medio.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="176"/>
+        <location filename="../ui_mainwindow.h" line="382"/>
         <source>Cancel Backup</source>
         <translation>Cancelar respaldo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="182"/>
-        <location filename="../mainwindow.ui" line="706"/>
+        <location filename="../mainwindow.ui" line="712"/>
+        <location filename="../ui_mainwindow.h" line="406"/>
+        <location filename="../ui_mainwindow.h" line="407"/>
         <source>Restore</source>
         <translation>Restaurar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="235"/>
+        <location filename="../ui_mainwindow.h" line="386"/>
         <source>Restore Deleted File or Folder</source>
-        <translation>Restaurar Archivo borrado o Carpeta</translation>
+        <translation>Restaurar archivo borrado o carpeta</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="273"/>
+        <location filename="../ui_mainwindow.h" line="388"/>
         <source>Restore Previous Version of File or Folder</source>
-        <translation>Restaurar versión anterior Archivo o Carpeta</translation>
+        <translation>Restaurar versión anterior de archivo o carpeta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="311"/>
+        <location filename="../mainwindow.ui" line="314"/>
+        <location filename="../ui_mainwindow.h" line="390"/>
         <source>Restore ALL Backup Data</source>
         <translatorcomment>I&apos;m not sure about &quot;respaldados&quot; as a word. </translatorcomment>
         <translation>Restaurar TODOS los datos respaldados</translation>
@@ -74,7 +88,7 @@
     </message>
     <message>
         <source>or Folder</source>
-        <translation type="obsolete">o Carpeta</translation>
+        <translation type="obsolete">o carpeta</translation>
     </message>
     <message>
         <source>Restore Previous &amp;Version</source>
@@ -82,132 +96,159 @@
     </message>
     <message>
         <source>of File or Folder</source>
-        <translation type="obsolete">Archivo o Carpeta</translation>
+        <translation type="obsolete">de archivo o carpeta</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="298"/>
+        <location filename="../ui_mainwindow.h" line="389"/>
         <source>Restore what?</source>
         <translation>¿Cuales datos quiere restaurar?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="344"/>
+        <location filename="../mainwindow.ui" line="347"/>
+        <location filename="../ui_mainwindow.h" line="391"/>
         <source>Restore previous version from:</source>
         <translation>Restaurar archivo de versión anterior:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="363"/>
+        <location filename="../mainwindow.ui" line="366"/>
         <location filename="../mainwindow.cpp" line="795"/>
+        <location filename="../ui_mainwindow.h" line="392"/>
         <source>File to Restore:</source>
         <translation>Archivo para restaurar:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="395"/>
-        <location filename="../mainwindow.ui" line="504"/>
+        <location filename="../mainwindow.ui" line="398"/>
+        <location filename="../mainwindow.ui" line="507"/>
+        <location filename="../ui_mainwindow.h" line="393"/>
+        <location filename="../ui_mainwindow.h" line="397"/>
         <source>Select</source>
         <translation>Seleccionar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="431"/>
+        <location filename="../mainwindow.ui" line="434"/>
+        <location filename="../ui_mainwindow.h" line="394"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="447"/>
+        <location filename="../mainwindow.ui" line="450"/>
+        <location filename="../ui_mainwindow.h" line="395"/>
         <source>Folder</source>
         <translation>Carpeta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="472"/>
+        <location filename="../mainwindow.ui" line="475"/>
+        <location filename="../ui_mainwindow.h" line="396"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Deleted Files or Folders to Restore:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(use ctrl + click to select more than 1 item to restore)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleccionar Archivos o Carpetas borrados para restaurar:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(use ctrl + click to select more than 1 item to restore)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleccionar archivos o carpetas borrados para restaurar:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(utilice las teclas Ctrl + clic para seleccionar más de un elemento para restorar)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="517"/>
+        <location filename="../mainwindow.ui" line="520"/>
+        <location filename="../ui_mainwindow.h" line="398"/>
         <source>Folder of Deleted Item:</source>
         <translation>Carpeta de Item borrado: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="559"/>
+        <location filename="../mainwindow.ui" line="562"/>
+        <location filename="../ui_mainwindow.h" line="399"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;WARNING!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restore ALL Backup Data is normally done &lt;span style=&quot; font-weight:600;&quot;&gt;only when transferring ALL Backup Data to a new computer.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Backup Data will replace data that is currently on the computer. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translatorcomment>Computadora is a latinamerican Spanish term. European Spanish woud use &quot;ordenador&quot;. This is perhaps true of some South American Spansih variants</translatorcomment>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;¡Cuidado!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Normalmente restoraci&amp;oacute;n de todos datos se hace unicmente  &lt;span style=&quot; font-weight:600;&quot;&gt;cuando traslandando Todo Datos Respaldados a una nueva computadora.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Los datos restaurados reemplazeran todos los datos actualmente en la m&amp;aacute;quina . &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="578"/>
+        <location filename="../mainwindow.ui" line="581"/>
+        <location filename="../ui_mainwindow.h" line="400"/>
         <source>enable Restore ALL</source>
         <translation>Habilitar Restaurar TODOS </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="630"/>
+        <location filename="../mainwindow.ui" line="633"/>
+        <location filename="../ui_mainwindow.h" line="401"/>
         <source>Machine to Restore Data From:</source>
         <translatorcomment>This is literally &quot;Source data machine&quot; - I would liek to see this phrase in context</translatorcomment>
         <translation>Máquina fuente de datos: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="646"/>
+        <location filename="../mainwindow.ui" line="652"/>
+        <location filename="../ui_mainwindow.h" line="402"/>
         <source>User to Restore Data From:</source>
         <translatorcomment>Literally &quot;Source User data&quot;</translatorcomment>
-        <translation>Usuario de origen de dato: </translation>
+        <translation>Usuario de origen de datos: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="667"/>
+        <location filename="../mainwindow.ui" line="673"/>
+        <location filename="../ui_mainwindow.h" line="403"/>
         <source>Cancel Restore</source>
-        <translation>Cancelar restauración  </translation>
+        <translation>Cancelar la restauración  </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="680"/>
+        <location filename="../mainwindow.ui" line="686"/>
+        <location filename="../ui_mainwindow.h" line="404"/>
         <source>Open Restore Folder</source>
-        <translation>Abrir Carpeta de Restauración</translation>
+        <translation>Abrir carpeta de restauración</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="693"/>
+        <location filename="../mainwindow.ui" line="699"/>
+        <location filename="../ui_mainwindow.h" line="405"/>
         <source>Undo Last Restore</source>
-        <translation>Deshacer la Última Restauración</translation>
+        <translation>Deshacer la última restauración</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="747"/>
+        <location filename="../mainwindow.ui" line="753"/>
+        <location filename="../ui_mainwindow.h" line="408"/>
         <source>Messages:</source>
         <translation>Mensajes:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="763"/>
+        <location filename="../mainwindow.ui" line="769"/>
+        <location filename="../ui_mainwindow.h" line="409"/>
         <source>View Log File</source>
-        <translation>Mirar Archivos de Registro</translation>
+        <translation>Mirar archivos de registro</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="778"/>
+        <location filename="../mainwindow.ui" line="784"/>
+        <location filename="../ui_mainwindow.h" line="410"/>
         <source>Fi&amp;le</source>
         <translation>&amp;Archivo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="782"/>
+        <location filename="../mainwindow.ui" line="788"/>
+        <location filename="../ui_mainwindow.h" line="411"/>
         <source>A&amp;dvanced...</source>
         <translation>Avan&amp;zado...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="786"/>
+        <location filename="../mainwindow.ui" line="792"/>
+        <location filename="../ui_mainwindow.h" line="412"/>
         <source>&amp;Backup File Selection</source>
-        <translation>&amp;Selección de Archivos de Respaldar</translation>
+        <translation>&amp;Selección de archivos de respaldar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="799"/>
+        <location filename="../mainwindow.ui" line="805"/>
+        <location filename="../ui_mainwindow.h" line="364"/>
         <source>&amp;About</source>
         <translation>&amp;Acerca de</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="807"/>
-        <source>&amp;Only Backup Important Files (Default)</source>
-        <translation>Respalda &amp;Uniquamente Archivos Importantes (por Defecto)</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="810"/>
-        <source>Only Backup Important Files (Default)</source>
-        <translation>Respalda Uniquamente Archivos Importantes (por Defecto)</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="813"/>
+        <location filename="../ui_mainwindow.h" line="365"/>
+        <source>&amp;Only Backup Important Files (Default)</source>
+        <translation>Respalda &amp;uniquamente archivos importantes (por Defecto)</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.ui" line="816"/>
+        <location filename="../ui_mainwindow.h" line="366"/>
+        <source>Only Backup Important Files (Default)</source>
+        <translation>Respalda uniquamente archivos importantes (por Defecto)</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.ui" line="819"/>
+        <location filename="../mainwindow.ui" line="822"/>
+        <location filename="../mainwindow.ui" line="825"/>
+        <location filename="../ui_mainwindow.h" line="368"/>
+        <location filename="../ui_mainwindow.h" line="371"/>
+        <location filename="../ui_mainwindow.h" line="374"/>
         <source>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</source>
         <translation>Si no seleccionado TODOS los datos sera incluidos en la respalda (cuidados con espacio sufficiente en la unidad de copia) </translation>
     </message>
@@ -224,12 +265,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="310"/>
         <source>Picture, Music, and Video files will &lt;b&gt;NOT&lt;/b&gt; be included in the Backup.  &lt;b&gt;You must backup those files yourself!&lt;/b&gt;</source>
-        <translation>Archivos de im&amp;aacute;genes, musica y vidoes &lt;b&gt;no sera incluidos&lt;/b&gt; en la respalda. &lt;b&gt;Tiene que respaldar estos typos de archivos por otro modo.&lt;/b&gt; </translation>
+        <translation>Archivos de im&amp;aacute;genes, musica y video &lt;b&gt;no serán incluidos&lt;/b&gt; en la respalda. &lt;b&gt;Tiene que respaldar estos typos de archivos por otro modo.&lt;/b&gt; </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="313"/>
         <source>&lt;b&gt;ALL Files&lt;/b&gt; (including Pictures, Music, and Videos) will be included in the Backup.</source>
-        <translation>&lt;b&gt;TODOS Archivos&lt;/b&gt; (incluido de los de Im&amp;aacute;genes Musica y Video) sera incluidos en la respalda.</translation>
+        <translation>&lt;b&gt;TODOS Archivos&lt;/b&gt; (incluido de los de im&amp;aacute;genes musica y video) serán incluidos en el respaldo.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="327"/>
@@ -249,7 +290,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="329"/>
         <source>Wasta-Backup will auto-launch when a USB device with a previous Wasta-Backup on it is inserted.</source>
-        <translation>Wasta Backup se arancará cuando un dipositivo con una respalda anterior de Wasta Backup es conectado.   </translation>
+        <translation>Wasta Backup se arancará automaticamente cuando un dipositivo con una respalda anterior de Wasta Backup es conectado.   </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="330"/>
@@ -382,7 +423,7 @@
         <location filename="../mainwindow.cpp" line="825"/>
         <location filename="../mainwindow.cpp" line="976"/>
         <source>Select File or Folder</source>
-        <translation>Elegir Archivo o Carpeta</translation>
+        <translation>Elegir archivo o carpeta</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="957"/>
@@ -720,7 +761,7 @@
         <location filename="../mainwindow.cpp" line="1836"/>
         <source>Picture, Music, and Video files will</source>
         <translatorcomment>It is not possible to build up this phrase out of the surrounding pieces. We need to see how to parse this for Spanish</translatorcomment>
-        <translation>Archivos de imagen, musica, y vdeo seran </translation>
+        <translation>Archivos de imagen, musica, y vdeo serán </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1836"/>
@@ -736,17 +777,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="1836"/>
         <source>You must backup those files yourself</source>
-        <translation>estos archivos tienen que respaldar estos archivos por otro modo</translation>
+        <translation>Tiene que respaldar estos archivos por otro modo</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1839"/>
         <source>ALL Files</source>
-        <translation>todos archivos</translation>
+        <translation>todos los archivos</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1839"/>
         <source>including Pictures, Music, and Videos) will be included in the Backup.</source>
-        <translation>imagenes, audio y video sera incluido en el respaldo. </translation>
+        <translation>imagenes, audio y video serán incluidos en el respaldo. </translation>
     </message>
 </context>
 </TS>

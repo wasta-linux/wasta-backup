@@ -6,63 +6,77 @@
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="239"/>
+        <location filename="../ui_mainwindow.h" line="363"/>
         <source>Wasta [Backup]</source>
         <translation>Wasta [Архивация]</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="27"/>
+        <location filename="../ui_mainwindow.h" line="376"/>
         <source>Change</source>
         <translation>Изменить</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="53"/>
+        <location filename="../ui_mainwindow.h" line="377"/>
         <source>Backup Device:</source>
         <translation>Устройство для архивации:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="78"/>
+        <location filename="../ui_mainwindow.h" line="378"/>
         <source>To choose a different device, make sure it is connected and click &quot;Change&quot;.</source>
         <translation>Чтобы выбрать другое устройство, удостоверьтесь, что оно подключено и нажмите &quot;Изменить&quot;.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="113"/>
         <location filename="../mainwindow.ui" line="125"/>
+        <location filename="../ui_mainwindow.h" line="379"/>
+        <location filename="../ui_mainwindow.h" line="383"/>
         <source>Backup</source>
         <translation>Архивировать</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="141"/>
+        <location filename="../ui_mainwindow.h" line="380"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wasta-Backup&lt;/span&gt; makes version backups of data to an external USB device.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wasta-Backup&lt;/span&gt; создает архивы версий данных на внешнем USB-совместимом устройстве.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="154"/>
+        <location filename="../ui_mainwindow.h" line="381"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Picture, Music, and Video files will NOT be backed up! Those files must be backed up in a different way!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Файлы изображений, музыки и видео НЕ будут архивированы! Эти файлы должны быть архивированы другим способом!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="176"/>
+        <location filename="../ui_mainwindow.h" line="382"/>
         <source>Cancel Backup</source>
         <translation>Отменить архивацию</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="182"/>
-        <location filename="../mainwindow.ui" line="706"/>
+        <location filename="../mainwindow.ui" line="712"/>
+        <location filename="../ui_mainwindow.h" line="406"/>
+        <location filename="../ui_mainwindow.h" line="407"/>
         <source>Restore</source>
         <translation>Восстановить</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="235"/>
+        <location filename="../ui_mainwindow.h" line="386"/>
         <source>Restore Deleted File or Folder</source>
         <translation>Восстановить удаленный файл или папку</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="273"/>
+        <location filename="../ui_mainwindow.h" line="388"/>
         <source>Restore Previous Version of File or Folder</source>
         <translation>Восстановить предыдущую версию или файл или папку</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="311"/>
+        <location filename="../mainwindow.ui" line="314"/>
+        <location filename="../ui_mainwindow.h" line="390"/>
         <source>Restore ALL Backup Data</source>
         <translation>Восстановить ВСЕ архивированные данные</translation>
     </message>
@@ -84,125 +98,152 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="298"/>
+        <location filename="../ui_mainwindow.h" line="389"/>
         <source>Restore what?</source>
         <translation>Восстановить что?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="344"/>
+        <location filename="../mainwindow.ui" line="347"/>
+        <location filename="../ui_mainwindow.h" line="391"/>
         <source>Restore previous version from:</source>
         <translation>Восстановить предыдущую версию из:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="363"/>
+        <location filename="../mainwindow.ui" line="366"/>
         <location filename="../mainwindow.cpp" line="795"/>
+        <location filename="../ui_mainwindow.h" line="392"/>
         <source>File to Restore:</source>
         <translation>Файл для восстановления:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="395"/>
-        <location filename="../mainwindow.ui" line="504"/>
+        <location filename="../mainwindow.ui" line="398"/>
+        <location filename="../mainwindow.ui" line="507"/>
+        <location filename="../ui_mainwindow.h" line="393"/>
+        <location filename="../ui_mainwindow.h" line="397"/>
         <source>Select</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="431"/>
+        <location filename="../mainwindow.ui" line="434"/>
+        <location filename="../ui_mainwindow.h" line="394"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="447"/>
+        <location filename="../mainwindow.ui" line="450"/>
+        <location filename="../ui_mainwindow.h" line="395"/>
         <source>Folder</source>
         <translation>Папка</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="472"/>
+        <location filename="../mainwindow.ui" line="475"/>
+        <location filename="../ui_mainwindow.h" line="396"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Deleted Files or Folders to Restore:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(use ctrl + click to select more than 1 item to restore)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбрать удаленные файлы или папки для восстановления:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(нажмите и удерживайте клавишу ctrl, чтобы выбрать более одного элемента для восстановления)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="517"/>
+        <location filename="../mainwindow.ui" line="520"/>
+        <location filename="../ui_mainwindow.h" line="398"/>
         <source>Folder of Deleted Item:</source>
         <translation>Папка удаленного элемента:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="559"/>
+        <location filename="../mainwindow.ui" line="562"/>
+        <location filename="../ui_mainwindow.h" line="399"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;WARNING!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restore ALL Backup Data is normally done &lt;span style=&quot; font-weight:600;&quot;&gt;only when transferring ALL Backup Data to a new computer.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Backup Data will replace data that is currently on the computer. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;ПРЕДУПРЕЖДЕНИЕ!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Восстановление ВСЕХ архивированных данных обычно производится&lt;span style=&quot; font-weight:600;&quot;&gt;только при перенесении ВСЕХ архивированных данных на новый компьютер.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Архивированные данные заменят данные, которые сейчас в компьютере.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="578"/>
+        <location filename="../mainwindow.ui" line="581"/>
+        <location filename="../ui_mainwindow.h" line="400"/>
         <source>enable Restore ALL</source>
         <translation>включить восстановление ВСЕГО</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="630"/>
+        <location filename="../mainwindow.ui" line="633"/>
+        <location filename="../ui_mainwindow.h" line="401"/>
         <source>Machine to Restore Data From:</source>
         <translation>Компьютер, с которого будут восстановлены данные:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="646"/>
+        <location filename="../mainwindow.ui" line="652"/>
+        <location filename="../ui_mainwindow.h" line="402"/>
         <source>User to Restore Data From:</source>
         <translation>Пользователь, с которого будут восстановлены данные:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="667"/>
+        <location filename="../mainwindow.ui" line="673"/>
+        <location filename="../ui_mainwindow.h" line="403"/>
         <source>Cancel Restore</source>
         <translation>Отменить восстановление</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="680"/>
+        <location filename="../mainwindow.ui" line="686"/>
+        <location filename="../ui_mainwindow.h" line="404"/>
         <source>Open Restore Folder</source>
         <translation>Открыть папку для восстановления</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="693"/>
+        <location filename="../mainwindow.ui" line="699"/>
+        <location filename="../ui_mainwindow.h" line="405"/>
         <source>Undo Last Restore</source>
         <translation>Отменить последнее восстановление</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="747"/>
+        <location filename="../mainwindow.ui" line="753"/>
+        <location filename="../ui_mainwindow.h" line="408"/>
         <source>Messages:</source>
         <translation>Сообщения:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="763"/>
+        <location filename="../mainwindow.ui" line="769"/>
+        <location filename="../ui_mainwindow.h" line="409"/>
         <source>View Log File</source>
         <translation>Посмотреть файл журнала</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="778"/>
+        <location filename="../mainwindow.ui" line="784"/>
+        <location filename="../ui_mainwindow.h" line="410"/>
         <source>Fi&amp;le</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="782"/>
+        <location filename="../mainwindow.ui" line="788"/>
+        <location filename="../ui_mainwindow.h" line="411"/>
         <source>A&amp;dvanced...</source>
         <translation>&amp;Расширенный...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="786"/>
+        <location filename="../mainwindow.ui" line="792"/>
+        <location filename="../ui_mainwindow.h" line="412"/>
         <source>&amp;Backup File Selection</source>
         <translation>Выбор файла &amp;архива</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="799"/>
+        <location filename="../mainwindow.ui" line="805"/>
+        <location filename="../ui_mainwindow.h" line="364"/>
         <source>&amp;About</source>
         <translation>&amp;О</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="807"/>
+        <location filename="../mainwindow.ui" line="813"/>
+        <location filename="../ui_mainwindow.h" line="365"/>
         <source>&amp;Only Backup Important Files (Default)</source>
         <translation>Архивировать только &amp;важные файлы (по умолчанию)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="810"/>
+        <location filename="../mainwindow.ui" line="816"/>
+        <location filename="../ui_mainwindow.h" line="366"/>
         <source>Only Backup Important Files (Default)</source>
         <translation>Архивировать только важные файлы (по умолчанию)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="813"/>
-        <location filename="../mainwindow.ui" line="816"/>
         <location filename="../mainwindow.ui" line="819"/>
+        <location filename="../mainwindow.ui" line="822"/>
+        <location filename="../mainwindow.ui" line="825"/>
+        <location filename="../ui_mainwindow.h" line="368"/>
+        <location filename="../ui_mainwindow.h" line="371"/>
+        <location filename="../ui_mainwindow.h" line="374"/>
         <source>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</source>
         <translation>если не отмечено, ВСЕ файлы будут включены в архив (проверьте доступное место на устройстве для архивации!)</translation>
     </message>

@@ -14,6 +14,8 @@
 // 2016-12-20 rik: Adding in tr() to display strings
 //    - Adding .ramp and .bloompack to default extensions
 //    - Adding $HOME/Publications to default folders (Pathway exports)
+// 2017-03-31 rik: replacing ' with \" for shell commands to account for single
+//      quote in directory or file names (such as "Rik's Files" for example.
 //
 // =============================================================================
 
@@ -375,7 +377,7 @@ void MainWindow::setPreferredDestination()
                 //if no wasta-backup folders found, pick largest device
 
                 //get free space
-                shellCommand = "df -P '" + deviceList.value(i) + "/' | tail -1 | awk '{print $4}'";
+                shellCommand = "df -P \"" + deviceList.value(i) + "/\" | tail -1 | awk '{print $4}'";
                 QString temp2 = shellRun(shellCommand, false);
                 currentSize = temp2.toInt();
 
@@ -614,13 +616,13 @@ void MainWindow::on_backupButton_clicked()
         //   since before 2013-10-13 backupConfigDir was targetDir + userHome + /.config/wasta-backup
         //   Since this was NOT a "rdiff-backup folder" then rdiff-backup will warn folder exists and will not process
         //   So, need to manually remove .config folder so will not conflict with anyone attempting to backup home
-        output = shellRun("rm -rf '" + targetDir + userHome + "/.config'", false);
+        output = shellRun("rm -rf \"" + targetDir + userHome + "/.config\"", false);
 
         backupConfigPath.mkpath(backupConfigDir);
     }
 
     //use rsync to do configDir syncing to targetDevice
-    output = shellRun("rsync -rlt --delete '" + configDir + "' '" + backupConfigDir + "'", false);
+    output = shellRun("rsync -rlt --delete \"" + configDir + "\" \"" + backupConfigDir + "\"", false);
 
     //now proceed with backups
     int progress = 10;
@@ -656,8 +658,8 @@ void MainWindow::on_backupButton_clicked()
             }
 
             // Backup
-            rdiffReturn = shellRun("rdiff-backup " + parms + " '" + source +
-                                   "' '" + dest + "' 2>&1",true);
+            rdiffReturn = shellRun("rdiff-backup " + parms + " \"" + source +
+                                   "\" \"" + dest + "\" 2>&1",true);
 
             if (processCanceled) {
                 break; // break out of backup loop
@@ -666,7 +668,7 @@ void MainWindow::on_backupButton_clicked()
             QString olderThan = backupDirList[i].value(4);
             if (olderThan.trimmed() != "") {
                 QString rdiffCommand = "rdiff-backup " + stdParms + " --remove-older-than " +
-                        olderThan + " --force '" + dest + "' 2>&1";
+                        olderThan + " --force \"" + dest + "\" 2>&1";
                 rdiffReturn = shellRun(rdiffCommand,false);
             }
             if (processCanceled) {
@@ -869,7 +871,7 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     // get increments
 
-    rdiffCommand = "rdiff-backup -l '" + targetItem + "' 2>&1";
+    rdiffCommand = "rdiff-backup -l \"" + targetItem + "\" 2>&1";
     rdiffReturn = shellRun(rdiffCommand,false);
 
     QStringList incList = rdiffReturn.split("\n");
@@ -917,7 +919,7 @@ void MainWindow::on_selectPrevItemButton_clicked()
     //  -r will make recursive
     //  || true; needed so no error returned if diff found
 
-    rdiffCommand = "diff -qr '" + restItemName + "' '" + targetItem + "' || true;";
+    rdiffCommand = "diff -qr \"" + restItemName + "\" \"" + targetItem + "\" || true;";
     rdiffReturn = shellRun(rdiffCommand, false);
 
     if ( rdiffReturn.trimmed() != "" ) {
@@ -1017,8 +1019,8 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     // first, check CURRENT backup as compared to directory for missing items.
 
-    shellCommand = "rdiff-backup --compare-at-time now '" + missingDir + "' '" + targetDevice +
-            "/wasta-backup/" + machine + missingDir + "' 2>&1 | grep 'deleted: ' | { grep -v '/' || true; }";
+    shellCommand = "rdiff-backup --compare-at-time now \"" + missingDir + "\" \"" + targetDevice +
+            "/wasta-backup/" + machine + missingDir + "\" 2>&1 | grep 'deleted: ' | { grep -v '/' || true; }";
     shellReturn = shellRun(shellCommand,false);
 
     // loop through results of compare-at-time now
@@ -1070,7 +1072,7 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     // get listing of files that don't contain ".missing": this will be all available increments (but many will be existing)
     // sh needs the {} escaped with a \.  Qt needs \ escaped with \\.
-    shellCommand = "ls -r '" + incDir + "' | grep '[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}T[0-9]\\{2\\}.*\\(snapshot\\|dir\\)' | { grep -v 'missing' || true; }";
+    shellCommand = "ls -r \"" + incDir + "\" | grep '[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}T[0-9]\\{2\\}.*\\(snapshot\\|dir\\)' | { grep -v 'missing' || true; }";
     shellReturn = shellRun(shellCommand,false);
 
     shellReturn.replace(incDir + "/","");
@@ -1218,8 +1220,8 @@ void MainWindow::on_restoreButton_clicked()
                     }
 
                     rdiffCommand = "rdiff-backup --restore-as-of " + restItemList[row].value(1) +
-                            " '" + targetDevice + "/wasta-backup/" + machine + restItemList[row].value(0) +
-                            "' '" + restItemList[row].value(0) + "' 2>&1";
+                            " \"" + targetDevice + "/wasta-backup/" + machine + restItemList[row].value(0) +
+                            "\" \"" + restItemList[row].value(0) + "\" 2>&1";
                     rdiffReturn = shellRun(rdiffCommand,true);
                     if (processCanceled) {
                         break; // break out of for loop;
@@ -1285,7 +1287,7 @@ void MainWindow::on_restoreButton_clicked()
         //use rsync to copy down backupConfigDir to configDir
         QString output;
 
-        output = shellRun("rsync -rlt --delete '" + userBackupConfigDir + "' '" + configDir + "'", false);
+        output = shellRun("rsync -rlt --delete \"" + userBackupConfigDir + "\" \"" + configDir + "\"", false);
 
         // reload config files
         ui->messageOutput->append(tr("Loading Restored Configuration Files") + "\n");
@@ -1403,11 +1405,11 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
             }
 
             // Ensure path exists: ridff-backup will fail if path not existing already
-            shellRun("mkdir -p '" + originalItem + "'",false);
+            shellRun("mkdir -p \"" + originalItem + "\"",false);
 
             // Do Restore
-            QString rdiffCommand = "rdiff-backup --restore-as-of " + restoreTime + " '" +
-                    backupItem + "' '" + originalItem + "' 2>&1";
+            QString rdiffCommand = "rdiff-backup --restore-as-of " + restoreTime + " \"" +
+                    backupItem + "\" \"" + originalItem + "\" 2>&1";
             QString rdiffReturn = shellRun(rdiffCommand,true);
 
             if (processCanceled) {
@@ -1469,7 +1471,7 @@ void MainWindow::on_restoreAllCheck_stateChanged(int arg1)
         // populate machineCombo
         if ( QFile::exists(targetDevice + "/wasta-backup/") ) {
 
-            QString shellCommand = "ls -1 '" + targetDevice + "/wasta-backup/'";
+            QString shellCommand = "ls -1 \"" + targetDevice + "/wasta-backup/\"";
             QString shellReturn = shellRun(shellCommand,false);
 
             QStringList machList = shellReturn.split("\n");
@@ -1907,7 +1909,7 @@ void MainWindow::on_machineCombo_currentIndexChanged(const QString machineValue)
     ui->restUserCombo->clear();
     if ( ! machineValue.isEmpty()) {
         // populate restUserCombo
-        shellCommand = "ls -1a '" + targetDevice + "/wasta-backup/" + machineValue + "' | grep wasta-backup-config-";
+        shellCommand = "ls -1a \"" + targetDevice + "/wasta-backup/" + machineValue + "\" | grep wasta-backup-config-";
         shellReturn = shellRun(shellCommand,false);
         QStringList userList = shellReturn.split("\n");
         QString userItem;

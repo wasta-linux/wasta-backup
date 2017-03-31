@@ -115,9 +115,9 @@
      <widget class="QPushButton" name="backupButton">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>280</x>
         <y>110</y>
-        <width>191</width>
+        <width>251</width>
         <height>41</height>
        </rect>
       </property>
@@ -166,9 +166,9 @@
      <widget class="QPushButton" name="cancelBackupButton">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>280</x>
         <y>160</y>
-        <width>191</width>
+        <width>251</width>
         <height>27</height>
        </rect>
       </property>
@@ -331,7 +331,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="restorePrevPage">
        <widget class="QLabel" name="prevDateTimeLabel">
@@ -356,9 +356,9 @@
        <widget class="QLabel" name="prevItemLabel">
         <property name="geometry">
          <rect>
-          <x>-10</x>
+          <x>0</x>
           <y>15</y>
-          <width>131</width>
+          <width>141</width>
           <height>51</height>
          </rect>
         </property>
@@ -375,9 +375,9 @@
        <widget class="QLineEdit" name="prevItem">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>150</x>
           <y>10</y>
-          <width>391</width>
+          <width>371</width>
           <height>27</height>
          </rect>
         </property>
@@ -424,7 +424,7 @@
        <widget class="QRadioButton" name="prevFileRadio">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>150</x>
           <y>40</y>
           <width>101</width>
           <height>22</height>
@@ -440,7 +440,7 @@
        <widget class="QRadioButton" name="prevFolderRadio">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>260</x>
           <y>40</y>
           <width>111</width>
           <height>22</height>

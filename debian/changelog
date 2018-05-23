@@ -1,3 +1,9 @@
+wasta-backup (1.1.4) xenial; urgency=medium
+
+  * mainwindow.cpp: adding Paratext8Projects to default folders
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Wed, 23 May 2018 08:53:19 +0300
+
 wasta-backup (1.1.3) xenial; urgency=medium
 
   * mainwindow.cpp: replacing ' with \" for shell commands to accomodate

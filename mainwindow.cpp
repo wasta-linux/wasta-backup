@@ -16,6 +16,7 @@
 //    - Adding $HOME/Publications to default folders (Pathway exports)
 // 2017-03-31 rik: replacing ' with \" for shell commands to account for single
 //      quote in directory or file names (such as "Rik's Files" for example.
+// 2018-05-22 rik: adding Paratext8Projects to default folders
 //
 // =============================================================================
 
@@ -161,9 +162,10 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "#          1Y to remove versions older than 1 year\n"
                 "#          1Y3M to remove versions older than 1 year 3 months\n"
                 "\n"
-                "Paratext,$HOME/ParatextProjects,NO,,1Y\n"
-                "Fieldworks,$HOME/.local/share/fieldworks/Projects,NO,,1Y\n"
                 "Bloom,$HOME/Bloom,NO,,1Y\n"
+                "Paratext,$HOME/ParatextProjects,NO,,1Y\n"
+                "Paratext8,$HOME/Paratext8Projects,NO,,1Y\n"
+                "Fieldworks,$HOME/.local/share/fieldworks/Projects,NO,,1Y\n"
                 "WeSay,$HOME/WeSay,NO,,1Y\n"
                 "Adapt It,$HOME/Adapt It Unicode Work,NO,--exclude ignorecase:**/.temp,1Y\n"
                 "Publications,$HOME/Publications,NO,,1Y\n"

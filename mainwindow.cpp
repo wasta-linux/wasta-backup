@@ -17,6 +17,13 @@
 // 2017-03-31 rik: replacing ' with \" for shell commands to account for single
 //      quote in directory or file names (such as "Rik's Files" for example.
 // 2018-05-22 rik: adding Paratext8Projects to default folders
+// 2018-11-16 rik: when backing up, if source is symlink then set it to the
+//      REAL path
+//    - Attempt restore if EITHER of the following:
+//      1. if restoreTime == now: if it is in the current backup (don't try
+//         rdiff-backup --list-at-time now since if not found it will error)
+//      2. if restoreTime <> now: if rdiff-backup --list-at-time restoreTime
+//         exists since may not be in current backup but only in previous backups
 //
 // =============================================================================
 
@@ -219,7 +226,11 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         // create it ... but leave empty
         prevBackupDateFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
         writeLog("No " + prevBackupDateFile.fileName() + ": creating it (empty).");
-
+        //  Attempt restore if EITHER of the following:
+        //      1. if restoreTime == now: if it is in the current backup (don't try
+        //         rdiff-backup --list-at-time now since if not found it will error)
+        //      2. if restoreTime <> now: if rdiff-backup --list-at-time restoreTime
+        //         exists since may not be in current backup but only in previous backups
         QTextStream stream(&prevBackupDateFile);
         stream << "";
         stream.flush();
@@ -647,6 +658,16 @@ void MainWindow::on_backupButton_clicked()
         dest = targetDir + backupDirList[i].value(1).replace("$HOME",getenv("HOME"));
 
         if ( path.exists(source) ) {
+
+            //Need to check if source is a symlink or else backup will fail
+            QFileInfo sourceinfo(source);
+
+            if (sourceinfo.isSymLink()) {
+              //Set source to REAL Path (but do NOT change dest, so backup will be the correct
+              //  location not the symlink location)
+              source = sourceinfo.symLinkTarget();
+            }
+
             ui->messageOutput->append(tr("Backing up") + " " + backupDirList[i].value(0) + "....\n");
 
             //ensure dest path exists
@@ -1123,7 +1144,7 @@ void MainWindow::on_selectDelFolderButton_clicked()
                     restItemList[restItemCount].insert(0, restItemName);
                     restItemList[restItemCount].insert(1, restItemTime);
 
-                    if ( incItem.endsWith(".dir") ) {
+                    if ( incItem.endsWith(".dir")) {
                         //missing item is folder
                         folderDesc = " (" + tr("folder") + ")";
                     } else {
@@ -1395,8 +1416,48 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
             writeLog("restUser exists. backupItem to restore: " + backupItem);
         }
 
-        // confirm backup device has item;
-        if ( QFile::exists(backupItem)) {
+        // CONFIRM item to restore on backup: COULD exist only in "previous time" in the case
+        // that the item was first restored from deletion THEN before a new backup was made
+        // user requested to restore a previous version.
+        //
+        //  Attempt restore if EITHER of the following:
+        //      1. if restoreTime == now: if it is in the current backup (don't try
+        //         rdiff-backup --list-at-time now since if not found it will error)
+        //      2. if restoreTime <> now: if rdiff-backup --list-at-time restoreTime
+        //         exists since may not be in current backup but only in previous backups
+
+        QString willRestore;
+
+        if (restoreTime == "now") {
+          // check if backup item exists
+            if (QFileInfo::exists(backupItem)) {
+                willRestore = "true";
+            } else {
+                willRestore = "false";
+            }
+        } else {
+            QString rdiffCommand = "rdiff-backup --list-at-time " + restoreTime + " \"" +
+                    backupItem + "\" 2>&1";
+            QString shellReturn = shellRun(rdiffCommand,true);
+
+            if (processCanceled) {
+              return;
+            }
+
+            if (shellReturn.isEmpty()) {
+                willRestore = "false";
+            } else {
+                willRestore = "true";
+            }
+        }
+
+        if ( willRestore == "true") {
+            // TODO: item may not exist in root of backup but COULD exist in rdiff-backup-data
+            // EXAMPLE: person restored a DELETED file, then wants to restore a PREVIOUS
+            //          VERSION of the file, BEFORE a new backup is done of the file (so
+            //          the "current root of the backup" still would NOT have the file.
+            // 2018-11-16 TESTING if don't check for item existing is OK
+
             // do restore
             ui->messageOutput->append(tr("Restoring") + " " + originalItem + "....\n");
             writeLog("Restoring " + originalItem);
@@ -1758,7 +1819,7 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
     }
 
     shellProcess->waitForFinished(-1);
-
+       QFileInfo item;
     shellReturn = shellProcess->readAll();
 
     writeLog("shellReturn:\n" + shellReturn);

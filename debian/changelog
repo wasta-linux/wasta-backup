@@ -1,3 +1,15 @@
+wasta-backup (1.2.0) bionic; urgency=medium
+
+  * mainwindow.cpp: when backing up, if source is symlink will follow
+      to REAL path
+    - Attempt restore if either of the following true:
+      1. restoreTime == now AND is in the current backup
+      2. restoreTime <> now and found with rdiff-backup --list-at-time 
+  * wasta-backup-postinst.sh: added to tweak rdiff-backup for
+      exFAT filesystem compatibility
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Fri, 16 Nov 2018 14:51:32 +0300
+
 wasta-backup (1.1.4) xenial; urgency=medium
 
   * mainwindow.cpp: adding Paratext8Projects to default folders

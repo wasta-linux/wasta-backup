@@ -11,5 +11,6 @@ wasta-backup.appdata.xml      usr/share/appdata
 wasta-backup.desktop          usr/share/applications
 wasta-backup.pro              usr/share/wasta-backup
 wasta-backup.rules            lib/udev/rules.d
+wasta-backup-postinst.sh      usr/share/wasta-backup
 wasta-backup-udev             usr/bin
 wasta-backup-usb-autolaunch   usr/bin

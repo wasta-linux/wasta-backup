@@ -343,7 +343,7 @@ void MainWindow::on_actionAbout_triggered()
                        "<p>" + tr("Wasta-Backup is a simple backup GUI using rdiff-backup for version backups of data to an external USB device.") +
                        "<p>" + tr("Wasta-Backup will auto-launch when a USB device with a previous Wasta-Backup on it is inserted.") +
                        "<p>" + tr("Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup device") + ". " +
-                                  tr("In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time.") +
+                       tr("In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time.") +
                        "<p>" + tr("Additionally, a 'Restore ALL' option is available that will replace all data on the computer from the backup device.") +
                        "<p>" + tr("The following configurable settings are stored in a user's ~/.config/wasta-backup/ directory:") +
                        "<ul>" +
@@ -663,9 +663,9 @@ void MainWindow::on_backupButton_clicked()
             QFileInfo sourceinfo(source);
 
             if (sourceinfo.isSymLink()) {
-              //Set source to REAL Path (but do NOT change dest, so backup will be the correct
-              //  location not the symlink location)
-              source = sourceinfo.symLinkTarget();
+                //Set source to REAL Path (but do NOT change dest, so backup will be the correct
+                //  location not the symlink location)
+                source = sourceinfo.symLinkTarget();
             }
 
             ui->messageOutput->append(tr("Backing up") + " " + backupDirList[i].value(0) + "....\n");
@@ -1429,7 +1429,7 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
         QString willRestore;
 
         if (restoreTime == "now") {
-          // check if backup item exists
+            // check if backup item exists
             if (QFileInfo::exists(backupItem)) {
                 willRestore = "true";
             } else {
@@ -1441,7 +1441,7 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
             QString shellReturn = shellRun(rdiffCommand,true);
 
             if (processCanceled) {
-              return;
+                return;
             }
 
             if (shellReturn.isEmpty()) {
@@ -1819,7 +1819,7 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
     }
 
     shellProcess->waitForFinished(-1);
-       QFileInfo item;
+    QFileInfo item;
     shellReturn = shellProcess->readAll();
 
     writeLog("shellReturn:\n" + shellReturn);

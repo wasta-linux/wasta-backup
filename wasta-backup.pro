@@ -4,9 +4,11 @@
 #
 #-------------------------------------------------
 
-QT           += core gui network
+QT           += core gui network testlib widgets
+#QT           += testlib
+#QT           += widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5)
 
 TARGET        = wasta-backup
 
@@ -24,8 +26,6 @@ HEADERS      += mainwindow.h \
     ui_mainwindow.h
 
 FORMS        += mainwindow.ui
-
-CONFIG       += qtestlib
 
 OTHER_FILES  += \
     readme.txt \

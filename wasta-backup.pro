@@ -4,9 +4,11 @@
 #
 #-------------------------------------------------
 
-QT           += core gui network testlib widgets
-#QT           += testlib
-#QT           += widgets
+QT           += core \
+    gui \
+    network \
+    testlib \
+    widgets
 
 greaterThan(QT_MAJOR_VERSION, 5)
 

@@ -1430,7 +1430,7 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
 
         if (restoreTime == "now") {
             // check if backup item exists
-            if (QFileInfo::exists(backupItem)) {
+            if (QFile::exists(backupItem)) {
                 willRestore = "true";
             } else {
                 willRestore = "false";

@@ -36,7 +36,7 @@ fi
 # Can comment out the assert function and then it doesn't crash??? Not sure
 # why but going ahead for now
 
-sed -i -e 's@\(assert not upper_a.lstat()\)$@\"\"\"\1 wasta: commenting out for exFAT compatibility\"\"\"@' \
+sed -i -e 's@\(assert not upper_a.lstat()\)$@# \1 wasta: commenting out for exFAT compatibility@' \
     /usr/lib/python2.7/dist-packages/rdiff_backup/fs_abilities.py
 
 # ------------------------------------------------------------------------------

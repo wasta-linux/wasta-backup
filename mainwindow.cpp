@@ -24,6 +24,8 @@
 //         rdiff-backup --list-at-time now since if not found it will error)
 //      2. if restoreTime <> now: if rdiff-backup --list-at-time restoreTime
 //         exists since may not be in current backup but only in previous backups
+// 2018-11-21 rik: restore deleted item: if parent folder is a symlink then
+//      follow to the REAL path
 //
 // =============================================================================
 
@@ -69,16 +71,12 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
 {
     userID = getenv("USER");
     userHome = getenv("HOME");
-
     // Ensure configDir exists
     configDir = userHome + "/.config/wasta-backup/";
-
     QDir configPath(configDir);
-
     if ( !configPath.exists() ) {
         configPath.mkpath(configDir);
     }
-
     //Ensure logDir exists
     logDir = userHome + "/.cache/wasta-backup/logs/";
 
@@ -87,18 +85,14 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     if ( !logPath.exists() ) {
         logPath.mkpath(logDir);
     }
-
     // set current log
     logFile.setFileName(logPath.absolutePath() + "/" + QDateTime::currentDateTime().date().toString("yyyy-MM-dd") +
                         "-wasta-backup.log");
-
     // legacy: remove .config/wasta-backup/logs/ directory (until version 0.9.2, but don't want going forward)
     removeDir(configDir + "logs/");
-
     writeLog("===========================================\n"
              "== wasta-backup started                  ==\n"
              "===========================================");
-
     // clean out old logs (greater than 1 year old)
     QStringList logList = logPath.entryList(QDir::Files);
     QString fileName;
@@ -112,7 +106,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
             QFile::remove(logDir + fileName);
         }
     }
-
     // Check for backupInclude file
     if ( !QFile::exists(configDir + "backupInclude.txt") ) {
         // create it
@@ -179,9 +172,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "Thunderbird,$HOME/.thunderbird,NO,--exclude ignorecase:**/Cache,1Y\n"
                 "Documents,$HOME/Documents,YES,,1Y\n"
                 "Desktop,$HOME/Desktop,YES,,1Y";
-
         // open it
-
         backupDirFile.open(QIODevice::ReadWrite);
         writeLog("No " + configDir + "backupDirs.txt: creating it.");
 
@@ -190,7 +181,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         stream.flush();
         backupDirFile.close();
     }
-
     // Check for useFilter file
     useBackupIncludeFilterFile.setFileName(configDir + "useBackupIncludeFilter.txt");
 
@@ -204,7 +194,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         stream.flush();
         useBackupIncludeFilterFile.close();
     }
-
     // Check for prevBackupDev file
     prevBackupDevFile.setFileName(configDir + "prevBackupDevice.txt");
 
@@ -218,7 +207,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         stream.flush();
         prevBackupDevFile.close();
     }
-
     // Check for prevBackupDate file
     prevBackupDateFile.setFileName(configDir + "prevBackupDate.txt");
 
@@ -236,7 +224,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         stream.flush();
         prevBackupDateFile.close();
     }
-
     // Launch Main Window
     ui->setupUi(this);
 
@@ -369,7 +356,6 @@ void MainWindow::setPreferredDestination()
     QStringList deviceList = shellReturn.split("\n");
 
     if ( deviceList.count() > 1 ) {
-
         int biggestSize = 0;
         int wastaBiggestSize = 0;
         int currentSize = 0;
@@ -413,7 +399,6 @@ void MainWindow::setPreferredDestination()
                 writeLog(deviceList.value(i) + " is NOT writable.");
             }
         }
-
         if ( bestDevice >= 0 ) {
             // valid device found, set it
             setTargetDevice(deviceList.value(bestDevice));
@@ -423,7 +408,6 @@ void MainWindow::setPreferredDestination()
             QMessageBox::information(this, tr("No Device Found"), tr("No Writable USB device found to backup to!  Please insert USB device and click 'Change'!"));
             writeLog("A target device found, but not writeable.");
         }
-
     } else {
         // no devices found
         QTest::qWait(1);
@@ -496,7 +480,6 @@ void MainWindow::setTargetDevice(QString inputDir)
                 ui->messageOutput->append("\n\n\n");
                 ui->messageOutput->moveCursor(QTextCursor::End);
                 writeLog(targetDevice + " has existing backup and ready for backup.");
-
             } else {
                 //new backup: display message
                 ui->messageOutput->append(tr("No existing backup found on device") + ": " +
@@ -506,7 +489,6 @@ void MainWindow::setTargetDevice(QString inputDir)
                 ui->messageOutput->moveCursor(QTextCursor::End);
                 writeLog(targetDevice + " doesn't have existing backup but ready for first backup.");
             }
-
         } else {
             // newTarget not writable, give error
             QTest::qWait(1);
@@ -515,7 +497,6 @@ void MainWindow::setTargetDevice(QString inputDir)
             writeLog("User can't write to newTarget: " + newTarget);
             // targetDevice and ui.targetDevice.Disp remain unchanged
         }
-
     } else {
         // no newTarget found to be used.
         QTest::qWait(1);
@@ -660,30 +641,28 @@ void MainWindow::on_backupButton_clicked()
         if ( path.exists(source) ) {
 
             //Need to check if source is a symlink or else backup will fail
-            QFileInfo sourceinfo(source);
+            QFileInfo sourceInfo(source);
 
-            if (sourceinfo.isSymLink()) {
-                //Set source to REAL Path (but do NOT change dest, so backup will be the correct
-                //  location not the symlink location)
-                source = sourceinfo.symLinkTarget();
+            if (sourceInfo.isSymLink()) {
+                //Set source to REAL Path (but do NOT change dest: no symlinks in backups but want to
+                //  match folder names from backupDirs.txt)
+                writeLog(source + " contains a symlink so re-directing to REAL path");
+                source = sourceInfo.symLinkTarget();
+                writeLog(source + " NOW set as source");
             }
-
             ui->messageOutput->append(tr("Backing up") + " " + backupDirList[i].value(0) + "....\n");
 
             //ensure dest path exists
             if ( !path.exists(dest) ) {
                 path.mkpath(dest);
             }
-
             // Adding extra check to ensure user didn't cancel BEFORE rdiff called
             if (processCanceled) {
                 break; // break out of backup loop
             }
-
             // Backup
             rdiffReturn = shellRun("rdiff-backup " + parms + " \"" + source +
                                    "\" \"" + dest + "\" 2>&1",true);
-
             if (processCanceled) {
                 break; // break out of backup loop
             }
@@ -1033,6 +1012,18 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     ui->delFolder->setText(missingDir);
     restoreFolder = missingDir;
+
+    //Need to check if folder is a symlink or else all items will show as deleted
+    QFileInfo restoreFolderInfo(restoreFolder);
+
+    if (restoreFolderInfo.isSymLink()) {
+        //Set to REAL Path so restore will be the correct
+        //  location not the symlink location
+        writeLog(restoreFolder + " contains a symlink so re-directing to REAL path");
+        restoreFolder = restoreFolderInfo.symLinkTarget();
+        writeLog(restoreFolder + " NOW set as restoreFolder");
+    }
+
     ui->openRestoreFolderButton->setEnabled(1);
 
     int restItemCount = 0;
@@ -1042,7 +1033,7 @@ void MainWindow::on_selectDelFolderButton_clicked()
 
     // first, check CURRENT backup as compared to directory for missing items.
 
-    shellCommand = "rdiff-backup --compare-at-time now \"" + missingDir + "\" \"" + targetDevice +
+    shellCommand = "rdiff-backup --compare-at-time now \"" + restoreFolder + "\" \"" + targetDevice +
             "/wasta-backup/" + machine + missingDir + "\" 2>&1 | grep 'deleted: ' | { grep -v '/' || true; }";
     shellReturn = shellRun(shellCommand,false);
 
@@ -1370,7 +1361,6 @@ void MainWindow::on_restoreButton_clicked()
     ui->undoLastRestoreButton->setEnabled(1);
     ui->restTypeFrame->setEnabled(1);
     ui->restorePageWidget->setEnabled(1);
-
 }
 
 void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QString restUser)
@@ -1732,7 +1722,6 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                 break; // foreach
             }
         } // end else (no renameText at end of item)
-
     } // foreach
 
 
@@ -1771,7 +1760,6 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                 return;
             }
         }
-
     }
 
     ui->messageOutput->append("\n" + tr("Undo Last Restore Complete"));

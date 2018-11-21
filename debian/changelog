@@ -1,3 +1,11 @@
+wasta-backup (1.2.5) bionic; urgency=medium
+
+  * mainwindow.cpp: restoreDeleted: if folder of deleted item to
+    restore is a symlink, follow to REAL path
+    (restorePrevious did not have this issue)
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Wed, 21 Nov 2018 12:58:21 +0300
+
 wasta-backup (1.2.4) bionic; urgency=medium
 
   * disabling postinst pending feedback from rdiff-backup developers

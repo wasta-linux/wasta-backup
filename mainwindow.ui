@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Wasta [Backup]</string>
+   <string>Wasta-Backup</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="changeDeviceButton">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>480</x>
       <y>10</y>
       <width>121</width>
       <height>27</height>
@@ -30,9 +30,9 @@
    <widget class="QLineEdit" name="targetDeviceDisp">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>230</x>
       <y>10</y>
-      <width>211</width>
+      <width>241</width>
       <height>27</height>
      </rect>
     </property>
@@ -45,40 +45,21 @@
      <rect>
       <x>10</x>
       <y>5</y>
-      <width>161</width>
+      <width>211</width>
       <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Backup Device:</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>10</y>
-      <width>291</width>
-      <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
-      <italic>true</italic>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
-     <string>To choose a different device, make sure it is connected and click &quot;Change&quot;.</string>
+     <string>Backup Location:</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
@@ -100,7 +81,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="documentMode">
      <bool>false</bool>
@@ -115,8 +96,8 @@
      <widget class="QPushButton" name="backupButton">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>110</y>
+        <x>310</x>
+        <y>130</y>
         <width>251</width>
         <height>41</height>
        </rect>
@@ -128,36 +109,23 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_11">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>10</y>
-        <width>721</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Wasta-Backup&lt;/span&gt; makes version backups of data to an external USB device.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="backupIncludeLabel">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>50</y>
+        <x>130</x>
+        <y>40</y>
         <width>611</width>
-        <height>51</height>
+        <height>81</height>
        </rect>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Picture, Music, and Video files will NOT be backed up! Those files must be backed up in a different way!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Picture, Music, and Video files will &lt;b&gt;NOT&lt;/b&gt; be backed up.</string>
       </property>
       <property name="textFormat">
-       <enum>Qt::RichText</enum>
+       <enum>Qt::AutoText</enum>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -166,14 +134,42 @@
      <widget class="QPushButton" name="cancelBackupButton">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>160</y>
+        <x>310</x>
+        <y>180</y>
         <width>251</width>
         <height>27</height>
        </rect>
       </property>
       <property name="text">
        <string>Cancel Backup</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="welcomeLabel">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>10</y>
+        <width>611</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Welcome to Wasta-Backup</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -232,7 +228,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Restore Deleted File or Folder</string>
+        <string>Restore &lt;b&gt;Deleted&lt;/b&gt; File or Folder</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -270,7 +266,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Restore Previous Version of File or Folder</string>
+        <string>Restore &lt;b&gt;Previous Version&lt;/b&gt; of File or Folder</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -311,7 +307,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Restore ALL Backup Data</string>
+        <string>Restore &lt;b&gt;ALL&lt;/b&gt; Backup Data</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -331,7 +327,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="restorePrevPage">
        <widget class="QLabel" name="prevDateTimeLabel">
@@ -339,15 +335,21 @@
          <rect>
           <x>0</x>
           <y>70</y>
-          <width>131</width>
+          <width>121</width>
           <height>81</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>Restore previous version from:</string>
+         <string>Select Version to Restore:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -472,7 +474,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select Deleted Files or Folders to Restore:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(use ctrl + click to select more than 1 item to restore)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;b&gt;Select Deleted Files or Folders to Restore:&lt;/b&gt;&lt;p&gt;&lt;i&gt;(use ctrl + click to select more than 1 item to restore)&lt;/i&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -559,7 +561,7 @@
          </font>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;WARNING!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restore ALL Backup Data is normally done &lt;span style=&quot; font-weight:600;&quot;&gt;only when transferring ALL Backup Data to a new computer.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Backup Data will replace data that is currently on the computer. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;b&gt;Warning!&lt;/b&gt; Restore ALL Backup Data is normally done &lt;b&gt;only when transferring ALL Backup Data to a new computer.&lt;/b&gt;&lt;p&gt;Backup Data will &lt;b&gt;replace&lt;/b&gt; data that is currently on the computer.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -577,8 +579,14 @@
           <height>27</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>enable Restore ALL</string>
+         <string>Enable Restore ALL</string>
         </property>
        </widget>
        <widget class="Line" name="line_4">
@@ -816,13 +824,13 @@
     <string>Only Backup Important Files (Default)</string>
    </property>
    <property name="toolTip">
-    <string>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</string>
+    <string>If unchecked, ALL files will be included in backup (be careful of available space in backup location!)</string>
    </property>
    <property name="statusTip">
-    <string>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</string>
+    <string>If unchecked, ALL files will be included in backup (be careful of available space in backup location!)</string>
    </property>
    <property name="whatsThis">
-    <string>if unchecked, ALL files will be included in backup (be careful of available space on backup device!)</string>
+    <string>If unchecked, ALL files will be included in backup (be careful of available space in backup location!)</string>
    </property>
   </action>
  </widget>

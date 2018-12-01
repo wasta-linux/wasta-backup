@@ -20,6 +20,8 @@ SOURCES      += main.cpp \
     mainwindow.cpp
 
 TRANSLATIONS += \
+    l10n/wasta-backup_am.ts \
+    l10n/wasta-backup_ar.ts \
     l10n/wasta-backup_es.ts \
     l10n/wasta-backup_fr.ts \
     l10n/wasta-backup_ru.ts

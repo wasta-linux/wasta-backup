@@ -1,66 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.1" language="ar_EG">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="27"/>
         <source>Change</source>
-        <translation>Изменить</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="94"/>
         <location filename="../mainwindow.ui" line="106"/>
         <location filename="../mainwindow.cpp" line="289"/>
         <source>Backup</source>
-        <translation>Архивировать</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="144"/>
-        <source>Cancel Backup</source>
-        <translation>Отменить архивацию</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="178"/>
-        <location filename="../mainwindow.ui" line="720"/>
-        <source>Restore</source>
-        <translation>Восстановить</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="294"/>
-        <source>Restore what?</source>
-        <translation>Восстановить что?</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="368"/>
-        <source>File to Restore:</source>
-        <translation>Файл для восстановления:</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="400"/>
-        <location filename="../mainwindow.ui" line="509"/>
-        <source>Select</source>
-        <translation>Выбрать</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="436"/>
-        <source>File</source>
-        <translation>Файл</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="452"/>
-        <location filename="../mainwindow.cpp" line="1157"/>
-        <source>Folder</source>
-        <translation>Папка</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="522"/>
-        <source>Folder of Deleted Item:</source>
-        <translation>Папка удаленного элемента:</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="59"/>
-        <source>Backup Location:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -71,8 +23,61 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainwindow.ui" line="144"/>
+        <source>Cancel Backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.ui" line="163"/>
         <source>Welcome to Wasta-Backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="178"/>
+        <location filename="../mainwindow.ui" line="720"/>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="294"/>
+        <source>Restore what?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="349"/>
+        <source>Select Version to Restore:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="368"/>
+        <source>File to Restore:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="400"/>
+        <location filename="../mainwindow.ui" line="509"/>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="436"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="452"/>
+        <location filename="../mainwindow.cpp" line="1157"/>
+        <source>Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="522"/>
+        <source>Folder of Deleted Item:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="59"/>
+        <source>Backup Location:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -88,11 +93,6 @@
     <message>
         <location filename="../mainwindow.ui" line="310"/>
         <source>Restore &lt;b&gt;ALL&lt;/b&gt; Backup Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="349"/>
-        <source>Select Version to Restore:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -113,67 +113,67 @@
     <message>
         <location filename="../mainwindow.ui" line="641"/>
         <source>Machine to Restore Data From:</source>
-        <translation>Компьютер, с которого будут восстановлены данные:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="660"/>
         <source>User to Restore Data From:</source>
-        <translation>Пользователь, с которого будут восстановлены данные:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="681"/>
         <source>Cancel Restore</source>
-        <translation>Отменить восстановление</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="694"/>
         <source>Open Restore Folder</source>
-        <translation>Открыть папку для восстановления</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="707"/>
         <source>Undo Last Restore</source>
-        <translation>Отменить последнее восстановление</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="761"/>
         <source>Messages:</source>
-        <translation>Сообщения:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="777"/>
         <source>View Log File</source>
-        <translation>Посмотреть файл журнала</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="792"/>
         <source>Fi&amp;le</source>
-        <translation>&amp;Файл</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="796"/>
         <source>A&amp;dvanced...</source>
-        <translation>&amp;Расширенный...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="800"/>
         <source>&amp;Backup File Selection</source>
-        <translation>Выбор файла &amp;архива</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="813"/>
         <source>&amp;About</source>
-        <translation>&amp;О</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="821"/>
         <source>&amp;Only Backup Important Files (Default)</source>
-        <translation>Архивировать только &amp;важные файлы (по умолчанию)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="824"/>
         <source>Only Backup Important Files (Default)</source>
-        <translation>Архивировать только важные файлы (по умолчанию)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="827"/>
@@ -185,76 +185,190 @@
     <message>
         <location filename="../mainwindow.cpp" line="346"/>
         <source>About Wasta-Backup</source>
-        <translation>О Wasta-Backup</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="257"/>
         <location filename="../mainwindow.cpp" line="346"/>
         <source>Wasta-Backup</source>
-        <translation>Wasta-Backup</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="348"/>
         <source>Wasta-Backup will auto-launch when a USB device with a previous Wasta-Backup on it is inserted.</source>
-        <translation>Wasta-Backup автоматически загрузится, когда USB-совместимое устройство с установленным предыдущим Wasta Backup будет вставлено.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="350"/>
         <source>In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time.</source>
-        <translation>В случае восстановления предыдущих версий существующих элементов, нынешний элемент будет сначала переименован с использованием текущей даты и времени.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="352"/>
         <source>The following configurable settings are stored in a user&apos;s ~/.config/wasta-backup/ directory:</source>
-        <translation>Следующие настраиваемые параметры записаны в пользовательском директории~/.config/wasta-backup/:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="354"/>
+        <source>This file specifies directories to backup and other parameters such as number of versions to keep</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="425"/>
         <location filename="../mainwindow.cpp" line="431"/>
         <source>No Device Found</source>
-        <translation>Устройство не найдено</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="494"/>
+        <source>Existing backup found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="497"/>
         <source>Ready for backup</source>
-        <translation>Готово для архивации</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="502"/>
+        <source>No existing backup found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="505"/>
         <source>Ready for first backup (may take some time to complete)</source>
-        <translation>Готово для первой архивации (может потребоваться время для завершения)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="512"/>
         <location filename="../mainwindow.cpp" line="519"/>
         <source>Choose Again</source>
-        <translation>Выберите снова</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="512"/>
+        <location filename="../mainwindow.cpp" line="519"/>
+        <source>Chosen directory is not a valid backup location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="349"/>
+        <source>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="351"/>
+        <source>Additionally, a &apos;Restore ALL&apos; option is available that will replace all data on the computer from the backup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="355"/>
+        <source>This file specifies file extensions to backup (so files with media extensions, etc., will be ignored)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="425"/>
+        <location filename="../mainwindow.cpp" line="431"/>
+        <source>No backup location found. Please insert a USB device and click &apos;Change&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="540"/>
+        <source>Choose Backup Location</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="672"/>
         <source>Backing up</source>
-        <translation>Выполняется архивация</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="820"/>
+        <source>File to Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="825"/>
+        <source>Folder to Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="844"/>
+        <source>Select File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="850"/>
+        <source>Select Folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="981"/>
         <source>No Items Found</source>
-        <translation>Элементы не найдены</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="998"/>
+        <source>Select Parent Folder of Deleted Item</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1025"/>
         <source>Not Found</source>
-        <translation>Не найдено</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="885"/>
+        <location filename="../mainwindow.cpp" line="1025"/>
+        <source>Backup not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="332"/>
+        <location filename="../mainwindow.cpp" line="1914"/>
+        <source>&lt;b&gt;ALL&lt;/b&gt; files (including Pictures, Music, and Videos) will be backed up.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="577"/>
+        <source>Canceling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="613"/>
+        <source>Starting backup to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="705"/>
+        <source>Backup complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="731"/>
+        <source>Backup canceled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="981"/>
+        <source>No previous versions found in backup</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1178"/>
         <source>None Found</source>
-        <translation>Ничего не найдено</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1238"/>
         <source>No Items Selected</source>
-        <translation>Не выбраны элементы</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1238"/>
+        <source>No deleted items selected for restore</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1272"/>
@@ -284,157 +398,6 @@
         <location filename="../mainwindow.cpp" line="1865"/>
         <location filename="../mainwindow.cpp" line="1868"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1511"/>
-        <location filename="../mainwindow.cpp" line="1953"/>
-        <source>Warning</source>
-        <translation>Предупреждение</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1617"/>
-        <location filename="../mainwindow.cpp" line="1651"/>
-        <location filename="../mainwindow.cpp" line="1703"/>
-        <location filename="../mainwindow.cpp" line="1721"/>
-        <location filename="../mainwindow.cpp" line="1843"/>
-        <location filename="../mainwindow.cpp" line="1861"/>
-        <source>Done</source>
-        <translation>Выполнено</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="332"/>
-        <location filename="../mainwindow.cpp" line="1914"/>
-        <source>&lt;b&gt;ALL&lt;/b&gt; files (including Pictures, Music, and Videos) will be backed up.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="347"/>
-        <source>Wasta-Backup is a simple backup GUI using rdiff-backup for version backups of data.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="349"/>
-        <source>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="351"/>
-        <source>Additionally, a &apos;Restore ALL&apos; option is available that will replace all data on the computer from the backup.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="354"/>
-        <source>This file specifies directories to backup and other parameters such as number of versions to keep</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="355"/>
-        <source>This file specifies file extensions to backup (so files with media extensions, etc., will be ignored)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="425"/>
-        <location filename="../mainwindow.cpp" line="431"/>
-        <source>No backup location found. Please insert a USB device and click &apos;Change&apos;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="494"/>
-        <source>Existing backup found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="502"/>
-        <source>No existing backup found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="512"/>
-        <location filename="../mainwindow.cpp" line="519"/>
-        <source>Chosen directory is not a valid backup location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="540"/>
-        <source>Choose Backup Location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="577"/>
-        <source>Canceling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="613"/>
-        <source>Starting backup to:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="705"/>
-        <source>Backup complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="731"/>
-        <source>Backup canceled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="820"/>
-        <source>File to Restore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="825"/>
-        <source>Folder to Restore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="844"/>
-        <source>Select File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="850"/>
-        <source>Select Folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="885"/>
-        <location filename="../mainwindow.cpp" line="1025"/>
-        <source>Backup not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="981"/>
-        <source>No previous versions found in backup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="998"/>
-        <source>Select Parent Folder of Deleted Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1178"/>
-        <source>No deleted items found in backup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1210"/>
-        <source>Starting restore from:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1238"/>
-        <source>No deleted items selected for restore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1254"/>
-        <location filename="../mainwindow.cpp" line="1475"/>
-        <source>Restoring item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -449,10 +412,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="1600"/>
+        <location filename="../mainwindow.cpp" line="1691"/>
+        <source>Undoing restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1775"/>
+        <source>Loading original configuration files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1851"/>
+        <location filename="../mainwindow.cpp" line="1853"/>
+        <source>Backup Location Full</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1852"/>
+        <source>Backup not complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="1308"/>
         <location filename="../mainwindow.cpp" line="1406"/>
         <location filename="../mainwindow.cpp" line="1767"/>
         <source>Error Renaming Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="347"/>
+        <source>Wasta-Backup is a simple backup GUI using rdiff-backup for version backups of data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -487,6 +477,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="1511"/>
+        <location filename="../mainwindow.cpp" line="1953"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1511"/>
+        <source>Item not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1178"/>
+        <source>No deleted items found in backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1210"/>
+        <source>Starting restore from:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1254"/>
+        <location filename="../mainwindow.cpp" line="1475"/>
+        <source>Restoring item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="1357"/>
         <source>Restore complete</source>
         <translation type="unfinished"></translation>
@@ -494,11 +511,6 @@
     <message>
         <location filename="../mainwindow.cpp" line="1362"/>
         <source>Restore canceled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1511"/>
-        <source>Item not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -513,9 +525,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1600"/>
-        <location filename="../mainwindow.cpp" line="1691"/>
-        <source>Undoing restore</source>
+        <location filename="../mainwindow.cpp" line="1617"/>
+        <location filename="../mainwindow.cpp" line="1651"/>
+        <location filename="../mainwindow.cpp" line="1703"/>
+        <location filename="../mainwindow.cpp" line="1721"/>
+        <location filename="../mainwindow.cpp" line="1843"/>
+        <location filename="../mainwindow.cpp" line="1861"/>
+        <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -555,40 +571,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1775"/>
-        <source>Loading original configuration files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1787"/>
         <source>Undo Complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1851"/>
-        <location filename="../mainwindow.cpp" line="1853"/>
-        <source>Backup Location Full</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1852"/>
-        <source>Backup not complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1865"/>
         <source>Error during shell process</source>
-        <translation>Ошибка во время выполнения процесса программной оболочки</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1866"/>
         <source>Command</source>
-        <translation>Команда</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1867"/>
         <source>Message</source>
-        <translation>Сообщение</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1953"/>

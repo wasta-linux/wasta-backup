@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="changeDeviceButton">
     <property name="geometry">
      <rect>
-      <x>480</x>
+      <x>520</x>
       <y>10</y>
       <width>121</width>
       <height>27</height>
@@ -30,7 +30,7 @@
    <widget class="QLineEdit" name="targetDeviceDisp">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>270</x>
       <y>10</y>
       <width>241</width>
       <height>27</height>
@@ -45,7 +45,7 @@
      <rect>
       <x>10</x>
       <y>5</y>
-      <width>211</width>
+      <width>251</width>
       <height>41</height>
      </rect>
     </property>
@@ -81,7 +81,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="documentMode">
      <bool>false</bool>

@@ -1,3 +1,10 @@
+wasta-backup (1.2.7) bionic; urgency=medium
+
+  * French l10n updated
+  * mainwindow.cpp: adding ":" to translation string
+
+ -- Rik Shaw <rikshaw76@gmail.com>  Wed, 16 Jan 2019 16:06:23 +0300
+
 wasta-backup (1.2.6) bionic; urgency=medium
 
   * mainwindow.cpp: cleaning up tr() strings to make more simple

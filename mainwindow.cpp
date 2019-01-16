@@ -1627,8 +1627,8 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                                      " unable to be renamed to " + origItemName + "!");
                             QTest::qWait(1);
                             QMessageBox::warning(this,tr("Error"),"<b>" + tr("Error") + " - " +tr("Original item removed:") + "</b><p>" +
-                                                 origItemName + "<p><b>" + tr("New item unable to be renamed")
-                                                 + ":</b><p>" + itemName);
+                                                 origItemName + "<p><b>" + tr("New item unable to be renamed:")
+                                                 + "</b><p>" + itemName);
                             break; // foreach
                         }
                     } else {
@@ -1662,8 +1662,8 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                             writeLog("Error: Folder " + origItemName + " removed but " + itemName +
                                      " unable to be renamed to " + origItemName + "!");
                             QTest::qWait(1);
-                            QMessageBox::warning(this,tr("Error"),"<b>" + tr("Original item removed:") + "</b><p>" + origItemName + "<p><b>" + tr("New item unable to be renamed")
-                                                 + ":</b><p>" + itemName);
+                            QMessageBox::warning(this,tr("Error"),"<b>" + tr("Original item removed:") + "</b><p>" + origItemName + "<p><b>" + tr("New item unable to be renamed:")
+                                                 + "</b><p>" + itemName);
                             break; // foreach
                         }
                     } else {

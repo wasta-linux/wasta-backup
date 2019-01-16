@@ -565,8 +565,8 @@
     <message>
         <location filename="../mainwindow.cpp" line="1630"/>
         <location filename="../mainwindow.cpp" line="1665"/>
-        <source>New item unable to be renamed</source>
-        <translation>Новый элемент не может быть переименован</translation>
+        <source>New item unable to be renamed:</source>
+        <translation>Новый элемент не может быть переименован:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1757"/>

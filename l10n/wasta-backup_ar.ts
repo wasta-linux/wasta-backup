@@ -486,6 +486,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="1630"/>
+        <location filename="../mainwindow.cpp" line="1665"/>
+        <source>New item unable to be renamed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="1777"/>
         <source>Loading original configuration files</source>
         <translation type="unfinished"></translation>
@@ -581,12 +587,6 @@
         <location filename="../mainwindow.cpp" line="1845"/>
         <location filename="../mainwindow.cpp" line="1863"/>
         <source>Done</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1630"/>
-        <location filename="../mainwindow.cpp" line="1665"/>
-        <source>New item unable to be renamed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

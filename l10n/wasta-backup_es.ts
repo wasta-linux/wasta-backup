@@ -569,8 +569,8 @@
     <message>
         <location filename="../mainwindow.cpp" line="1630"/>
         <location filename="../mainwindow.cpp" line="1665"/>
-        <source>New item unable to be renamed</source>
-        <translation>No se pudo renombrar el Item nuevo</translation>
+        <source>New item unable to be renamed:</source>
+        <translation>No se pudo renombrar el Item nuevo:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1757"/>

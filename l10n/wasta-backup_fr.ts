@@ -12,13 +12,12 @@
         <location filename="../mainwindow.ui" line="94"/>
         <location filename="../mainwindow.ui" line="106"/>
         <source>Backup</source>
-        <translatorcomment>Is this a noun or a verb?</translatorcomment>
         <translation>Sauvegarder</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="144"/>
         <source>Cancel Backup</source>
-        <translation>Annuler le processus de sauvegarde</translation>
+        <translation>Annuler la sauvegarde</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="178"/>
@@ -57,64 +56,65 @@
     <message>
         <location filename="../mainwindow.ui" line="522"/>
         <source>Folder of Deleted Item:</source>
-        <translation>Dossier du fichier supprimé:</translation>
+        <translation>Dossier du fichier supprimé :</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="59"/>
         <source>Backup Location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Périphérique de sauvegarde :</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="122"/>
         <location filename="../mainwindow.cpp" line="329"/>
         <location filename="../mainwindow.cpp" line="1913"/>
         <source>Picture, Music, and Video files will &lt;b&gt;NOT&lt;/b&gt; be backed up.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les fichiers d&apos;image, de la musique, et de vidéo &lt;b&gt;NE SERONT PAS&lt;/b&gt; inclus dans la sauvegarde.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="163"/>
         <source>Welcome to Wasta-Backup</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I typically refer to wasta apps as &quot;wasta-backup&quot; when discussing them at a technical level, but I&apos;ve always assumed the form &quot;Wasta [Backup]&quot; is the layman&apos;s form. Have I been mistaken? It looks like you prefer &quot;Wasta-Backup&quot; here.</translatorcomment>
+        <translation>Bienvenue à Wasta [Sauvegarder]</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="231"/>
         <source>Restore &lt;b&gt;Deleted&lt;/b&gt; File or Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer fichier ou dossier &lt;b&gt;supprimé&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="269"/>
         <source>Restore &lt;b&gt;Previous Version&lt;/b&gt; of File or Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer &lt;b&gt;version précédente&lt;/b&gt; du fichier ou du dossier</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="310"/>
         <source>Restore &lt;b&gt;ALL&lt;/b&gt; Backup Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer TOUTES les données de sauvegarde</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="349"/>
         <source>Select Version to Restore:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner version à restaurer :</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="477"/>
         <source>&lt;b&gt;Select Deleted Files or Folders to Restore:&lt;/b&gt;&lt;p&gt;&lt;i&gt;(use ctrl + click to select more than 1 item to restore)&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Sélectionner les fichiers ou les dossiers à restaurer :&lt;/b&gt;&lt;p&gt;&lt;i&gt;(Ctrl+cliquer pour sélectionner plus qu&apos;un élément)&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="564"/>
         <source>&lt;b&gt;Warning!&lt;/b&gt; Restore ALL Backup Data is normally done &lt;b&gt;only when transferring ALL Backup Data to a new computer.&lt;/b&gt;&lt;p&gt;Backup Data will &lt;b&gt;replace&lt;/b&gt; data that is currently on the computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Attention !&lt;/b&gt; Normalement, « TOUT Restaurer » se fait &lt;b&gt;seulement pour le transfert de toutes les données dans un nouvel ordinateur.&lt;/b&gt;&lt;p&gt;Les données de sauvegarde &lt;b&gt;remplaceront&lt;/b&gt; des données actuellement dans l&apos;ordinateur.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="589"/>
         <source>Enable Restore ALL</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer TOUT Restaurer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="641"/>
         <source>Machine to Restore Data From:</source>
-        <translation>Ordinateur depuis lequel restaurer des données :</translation>
+        <translation>Ordinateur depuis lequel restaurer les données :</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="660"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../mainwindow.ui" line="707"/>
         <source>Undo Last Restore</source>
-        <translation>Annuler la dernière restauration</translation>
+        <translation>Annuler la restauration précédente</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="761"/>
@@ -182,7 +182,7 @@
         <location filename="../mainwindow.ui" line="830"/>
         <location filename="../mainwindow.ui" line="833"/>
         <source>If unchecked, ALL files will be included in backup (be careful of available space in backup location!)</source>
-        <translation type="unfinished"></translation>
+        <translation>Si décoché, TOUS les fichiers seront inclus dans la sauvegarde (attention de l&apos;espace libre à la destination !)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="346"/>
@@ -194,12 +194,14 @@
         <location filename="../mainwindow.cpp" line="257"/>
         <location filename="../mainwindow.cpp" line="346"/>
         <source>Wasta-Backup</source>
-        <translation>Wasta-Sauvegarder</translation>
+        <translatorcomment>same as other comment: I would expect to use &quot;Wasta [Backup]&quot; form here and &quot;wasta-backup&quot; form in technical discussion and on the command line. Would you prefer &quot;Wasta-Backup&quot; here anyway?</translatorcomment>
+        <translation>Wasta [Sauvegarder]</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="348"/>
         <source>Wasta-Backup will auto-launch when a USB device with a previous Wasta-Backup on it is inserted.</source>
-        <translation>Wasta-Sauvegarder se démarrera lors qu&apos;un périphérique USB avec un Wasta-Sauvegarder précédent soit inséré.</translation>
+        <translatorcomment>same question about the naming convention: Wasta-Backup or Wasta [Backup]?</translatorcomment>
+        <translation>Wasta [Sauvegarder] se démarrera lors qu&apos;un périphérique USB avec un dossier de Wasta [Sauvegarder] soit inséré.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="350"/>
@@ -209,19 +211,18 @@
     <message>
         <location filename="../mainwindow.cpp" line="352"/>
         <source>The following configurable settings are stored in a user&apos;s ~/.config/wasta-backup/ directory:</source>
-        <translatorcomment>Will the installed files change names at all? E.g. will &quot;wasta-backup&quot; become &quot;wasta-sauvegarder&quot;?</translatorcomment>
-        <translation>Les paramètres configurables suivants sont stockés dans le dossier de l&apos;utilisateur à ~/.config/wasta-backup/ :</translation>
+        <translation>Les paramètres configurables suivants se trouvent dans le dossier de l&apos;utilisateur à ~/.config/wasta-backup/ :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="425"/>
         <location filename="../mainwindow.cpp" line="431"/>
         <source>No Device Found</source>
-        <translation>Pas de périphérique trouvé</translation>
+        <translation>Aucun périphérique trouvé</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="494"/>
         <source>Existing backup found:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde existante trouvée :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="497"/>
@@ -231,45 +232,45 @@
     <message>
         <location filename="../mainwindow.cpp" line="502"/>
         <source>No existing backup found:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune sauvegarde précédente trouvée :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="505"/>
         <source>Ready for first backup (may take some time to complete)</source>
-        <translation>Prêt pour premier processus de savegarde (qui peut durer longtemps)</translation>
+        <translation>Prêt pour la première savegarde (qui peut durer longtemps)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="512"/>
         <location filename="../mainwindow.cpp" line="519"/>
         <source>Choose Again</source>
-        <translation>Sélectionner encore</translation>
+        <translation>Sélectionner de nouveau</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="512"/>
         <location filename="../mainwindow.cpp" line="519"/>
         <source>Chosen directory is not a valid backup location:</source>
-        <translation type="unfinished"></translation>
+        <translation>Le dossier choisi n&apos;est pas valide comme destination de sauvegarde :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <source>Folder to Restore:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dossier à restaurer :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="885"/>
         <location filename="../mainwindow.cpp" line="1025"/>
         <source>Backup not found:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune sauvegarde trouvée :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="981"/>
         <source>No Items Found</source>
-        <translation>Aucun élément n&apos;est trouvé</translation>
+        <translation>Aucun élément trouvé</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="981"/>
         <source>No previous versions found in backup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune version précédente trouvée dans la sauvegarde :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1025"/>
@@ -279,23 +280,23 @@
     <message>
         <location filename="../mainwindow.cpp" line="1178"/>
         <source>None Found</source>
-        <translation>aucun n&apos;est trouvé</translation>
+        <translation>Aucun trouvé</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1178"/>
         <source>No deleted items found in backup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun élément supprimé trouvé dans la sauvegarde :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1238"/>
         <source>No Items Selected</source>
-        <translation>Aucun élément n&apos;est sélectionné</translation>
+        <translation>Aucun élément sélectionné</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1254"/>
         <location filename="../mainwindow.cpp" line="1476"/>
         <source>Restoring item:</source>
-        <translation type="unfinished"></translation>
+        <translation>Restauration de l&apos;élément :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1272"/>
@@ -329,19 +330,19 @@
         <location filename="../mainwindow.cpp" line="1407"/>
         <location filename="../mainwindow.cpp" line="1769"/>
         <source>Original Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom originel :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1310"/>
         <location filename="../mainwindow.cpp" line="1408"/>
         <location filename="../mainwindow.cpp" line="1770"/>
         <source>New Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau nom :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1318"/>
         <source>Restoring configuration files from backup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Restauration des fichiers de configuration depuis la sauvegarde :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1512"/>
@@ -352,26 +353,26 @@
     <message>
         <location filename="../mainwindow.cpp" line="1512"/>
         <source>Item not found:</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;élément n&apos;est pas trouvé :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1273"/>
         <location filename="../mainwindow.cpp" line="1512"/>
         <location filename="../mainwindow.cpp" line="1520"/>
         <source>No restore done</source>
-        <translation type="unfinished"></translation>
+        <translation>Restauration échouée</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1272"/>
         <location filename="../mainwindow.cpp" line="1520"/>
         <source>Item already exists:</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;élément existe déjà :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1601"/>
         <location filename="../mainwindow.cpp" line="1693"/>
         <source>Undoing restore:</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulation de la restauration :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1618"/>
@@ -387,220 +388,220 @@
         <location filename="../mainwindow.cpp" line="1625"/>
         <location filename="../mainwindow.cpp" line="1867"/>
         <source>Error:</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1629"/>
         <location filename="../mainwindow.cpp" line="1665"/>
         <source>Original item removed:</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;élément originel déplacé :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1641"/>
         <location filename="../mainwindow.cpp" line="1676"/>
         <source>Original item unable to be removed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Echéc de supprimation de l&apos;élément originel :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1686"/>
         <location filename="../mainwindow.cpp" line="1744"/>
         <source>Item doesn&apos;t exist so undo is not possible:</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;élément n&apos;existe pas, donc annulation impossible :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1716"/>
         <location filename="../mainwindow.cpp" line="1734"/>
         <location filename="../mainwindow.cpp" line="1783"/>
         <source>Item unable to be removed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de supprimer l&apos;élément :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1868"/>
         <source>Command:</source>
-        <translation type="unfinished"></translation>
+        <translation>Commande :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1869"/>
         <source>Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Message :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1956"/>
         <source>Backup item:</source>
-        <translation type="unfinished"></translation>
+        <translation>Elément de sauvegarde :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1957"/>
         <source>Check configuration file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vérifiez le fichier de configuration :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="332"/>
         <location filename="../mainwindow.cpp" line="1916"/>
         <source>&lt;b&gt;ALL&lt;/b&gt; files (including Pictures, Music, and Videos) will be backed up.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;TOUT&lt;/b&gt; les fichiers (y compris les images, la musique, et les vidéos) seront sauvegardés.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="289"/>
         <source>Backup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="347"/>
         <source>Wasta-Backup is a simple backup GUI using rdiff-backup for version backups of data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wasta [Sauvegarder] est un logiciel simple qui utilise rdiff-backup pour sauvegarder des données.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="349"/>
         <source>Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Les options de restauration incluent la restauration des versions précédentes des fichiers ou des dossiers existants, ainsi que la restauration des fichiers ou des dossiers supprimés</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="351"/>
         <source>Additionally, a &apos;Restore ALL&apos; option is available that will replace all data on the computer from the backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>De plus, l&apos;option « TOUT Restaurer » est disponible pour remplacer toutes les données dans l&apos;ordinateur depuis la sauvegarde.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="354"/>
         <source>This file specifies directories to backup and other parameters such as number of versions to keep</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce fichier précise les dossiers inclus dans la sauvegarde et d&apos;autres paramètres, comme la quantité de versions à garder</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="355"/>
         <source>This file specifies file extensions to backup (so files with media extensions, etc., will be ignored)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce fichier précise les extension de fichier à sauvegarder (afin d&apos;ignorer des fichiers avec extensions de média)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="425"/>
         <location filename="../mainwindow.cpp" line="431"/>
         <source>No backup location found. Please insert a USB device and click &apos;Change&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun périphérique de sauvegarde trouvé. Veuillez insérer un périphérique USB et cliquer sur « Changer ».</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="540"/>
         <source>Choose Backup Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner le périphérique de sauvegarde</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="577"/>
         <source>Canceling</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulation</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="613"/>
         <source>Starting backup to:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lancement de la sauvegarde à :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="672"/>
         <source>Backing up:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde en cours :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="705"/>
         <source>Backup complete</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde terminée</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="731"/>
         <source>Backup canceled</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde annulée</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="844"/>
         <source>Select File</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner un fichier</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="850"/>
         <source>Select Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner un dossier</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="998"/>
         <source>Select Parent Folder of Deleted Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner le dossier parent de l&apos;élément supprimé</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1210"/>
         <source>Starting restore from:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lancement de la restauration depuis :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1238"/>
         <source>No deleted items selected for restore</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun élément supprimé séléctionné pour la restauration</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1309"/>
         <location filename="../mainwindow.cpp" line="1407"/>
         <location filename="../mainwindow.cpp" line="1769"/>
         <source>Error Renaming Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de changement de nom de l&apos;élément</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1310"/>
         <location filename="../mainwindow.cpp" line="1408"/>
         <location filename="../mainwindow.cpp" line="1770"/>
         <source>Is the item opened?</source>
-        <translation type="unfinished"></translation>
+        <translation>Est-ce que l&apos;élément est ouvert ?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1327"/>
         <source>Loading restored configuration files</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement des fichiers de configuration restaurés</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1358"/>
         <source>Restore complete</source>
-        <translation type="unfinished"></translation>
+        <translation>Restauration termiée</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1363"/>
         <source>Restore canceled</source>
-        <translation type="unfinished"></translation>
+        <translation>Restauration annulée</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1581"/>
         <source>Starting undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Lancement de l&apos;annulation</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1630"/>
         <location filename="../mainwindow.cpp" line="1665"/>
-        <source>New item unable to be renamed</source>
-        <translation type="unfinished"></translation>
+        <source>New item unable to be renamed:</source>
+        <translation>Impossible de renommer le nouvel élément :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1757"/>
         <source>Undoing restore of configuration files</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulation de la restauration des fichiers de configuration</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1777"/>
         <source>Loading original configuration files</source>
-        <translation type="unfinished"></translation>
+        <translation>Chargement des fichiers de configuration par défaut</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1789"/>
         <source>Undo Complete</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulation terminée</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1853"/>
         <source>Backup Location Full</source>
-        <translation type="unfinished"></translation>
+        <translation>Disque de sauvegarde plein</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1853"/>
         <location filename="../mainwindow.cpp" line="1855"/>
         <source>Backup location full:</source>
-        <translation type="unfinished"></translation>
+        <translation>Disque de sauvegarde plein :</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1854"/>
         <source>Backup not complete</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde non terminée</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1867"/>
@@ -610,12 +611,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="1955"/>
         <source>Backup configuration file error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de fichier de configuration de sauvegarde</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1958"/>
         <source>This location will NOT be backed up!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce dossier NE SERA PAS sauvegardée !</translation>
     </message>
 </context>
 </TS>

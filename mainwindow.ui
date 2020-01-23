@@ -81,7 +81,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="documentMode">
      <bool>false</bool>
@@ -106,28 +106,6 @@
        <string>Backup</string>
       </property>
       <property name="default">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="backupIncludeLabel">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>40</y>
-        <width>611</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Picture, Music, and Video files will &lt;b&gt;NOT&lt;/b&gt; be backed up.</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::AutoText</enum>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
        <bool>true</bool>
       </property>
      </widget>
@@ -791,46 +769,13 @@
     <property name="title">
      <string>Fi&amp;le</string>
     </property>
-    <widget class="QMenu" name="menuAdvanced">
-     <property name="title">
-      <string>A&amp;dvanced...</string>
-     </property>
-     <widget class="QMenu" name="menuFile_Selection">
-      <property name="title">
-       <string>&amp;Backup File Selection</string>
-      </property>
-      <addaction name="actionBackupOnlyImportant"/>
-     </widget>
-     <addaction name="menuFile_Selection"/>
-    </widget>
     <addaction name="actionAbout"/>
-    <addaction name="menuAdvanced"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
   <action name="actionAbout">
    <property name="text">
     <string>&amp;About</string>
-   </property>
-  </action>
-  <action name="actionBackupOnlyImportant">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Only Backup Important Files (Default)</string>
-   </property>
-   <property name="iconText">
-    <string>Only Backup Important Files (Default)</string>
-   </property>
-   <property name="toolTip">
-    <string>If unchecked, ALL files will be included in backup (be careful of available space in backup location!)</string>
-   </property>
-   <property name="statusTip">
-    <string>If unchecked, ALL files will be included in backup (be careful of available space in backup location!)</string>
-   </property>
-   <property name="whatsThis">
-    <string>If unchecked, ALL files will be included in backup (be careful of available space in backup location!)</string>
    </property>
   </action>
  </widget>

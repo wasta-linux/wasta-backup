@@ -60,7 +60,6 @@ QStringList restItems;
 QString targetDevice = "";
 QString machine = QHostInfo::localHostName();
 QFile logFile;
-QFile useBackupIncludeFilterFile;
 QString prevBackupDevice;
 QString prevBackupDate;
 QFile prevBackupDevFile;
@@ -108,6 +107,11 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
             QFile::remove(logDir + fileName);
         }
     }
+
+    //Legacy file cleanup
+    if ( QFile::exists(configDir + "useBackupIncludeFilter.txt") )
+        QFile::remove(configDir + "useBackupIncludeFilter.txt");
+
     // Check for backupInclude file
     backupIncludeFile.setFileName(configDir + "backupInclude.txt");
     if ( !backupIncludeFile.exists() ) {
@@ -167,7 +171,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "#     If NAME is not a valid xdg-user-dir folder, this backup folder will be IGNORED.\n"
                 "#     Use the command 'man xdg-user-dir' to see a list of available folders.\n"
                 "#\n"
-                "#   Note: useInclude is ignored unless useBackupIncludeFilter.txt == YES\n"
                 "#   useInclude = YES ==> only include specified filetypes in backupInclude.txt\n"
                 "#   useInclude = NO  ==> don't limit backup to specified filetypes in backupInclude.txt\n"
                 "#\n"
@@ -196,19 +199,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         stream.flush();
         backupDirFile.close();
     }
-    // Check for useFilter file
-    useBackupIncludeFilterFile.setFileName(configDir + "useBackupIncludeFilter.txt");
 
-    if ( !useBackupIncludeFilterFile.exists() ) {
-        // create it
-        useBackupIncludeFilterFile.open(QIODevice::ReadWrite);
-        writeLog("No " + useBackupIncludeFilterFile.fileName() + ": creating it.");
-
-        QTextStream stream(&useBackupIncludeFilterFile);
-        stream << "YES";
-        stream.flush();
-        useBackupIncludeFilterFile.close();
-    }
     // Check for prevBackupDev file
     prevBackupDevFile.setFileName(configDir + "prevBackupDevice.txt");
 
@@ -318,27 +309,6 @@ MainWindow::~MainWindow()
 // ##########################################################################
 // #### MAIN INTERFACE PROCEDURES                                        ####
 // ##########################################################################
-
-void MainWindow::on_actionBackupOnlyImportant_changed()
-{
-    QString fileText;
-
-    if ( ui->actionBackupOnlyImportant->isChecked() ) {
-        fileText = "YES";
-        ui->backupIncludeLabel->setText(tr("Picture, Music, and Video files will <b>NOT</b> be backed up."));
-    } else {
-        fileText = "NO";
-        ui->backupIncludeLabel->setText(tr("<b>ALL</b> files (including Pictures, Music, and Videos) will be backed up."));
-    }
-    // write to file for next time;
-    useBackupIncludeFilterFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
-    writeLog("Updating " + useBackupIncludeFilterFile.fileName() + ": value: " + fileText);
-
-    QTextStream stream(&useBackupIncludeFilterFile);
-    stream << fileText;
-    stream.flush();
-    useBackupIncludeFilterFile.close();
-}
 
 void MainWindow::on_actionAbout_triggered()
 {
@@ -501,13 +471,16 @@ void MainWindow::setTargetDevice(QString inputDir)
                 QString backupConfigDir = newTarget + "/wasta-backup/" + machine + "/wasta-backup-config-" + userID + "/";
 
                 if ( QDir().exists(backupConfigDir) ) {
-                    if ( QFile::exists( backupConfigDir + "useBackupIncludeFilter.txt" ) )
-                        useBackupIncludeFilterFile.setFileName(backupConfigDir + "useBackupIncludeFilter.txt");
                     if ( QFile::exists( backupConfigDir + "backupDirs.txt" ) )
                         backupDirFile.setFileName(backupConfigDir + "backupDirs.txt");
                     if ( QFile::exists( backupConfigDir + "backupInclude.txt" ) )
                         backupIncludeFile.setFileName(backupConfigDir + "backupInclude.txt");
-                    writeLog("Switching to config on backup device: "+useBackupIncludeFilterFile.fileName()+ " " +backupDirFile.fileName()+ " " +backupIncludeFile.fileName());
+                    writeLog("Switching to config on backup device: " +backupDirFile.fileName()+ " " +backupIncludeFile.fileName());
+
+                    //Legacy file cleanup
+                    if ( QFile::exists(backupConfigDir + "useBackupIncludeFilter.txt") )
+                        QFile::remove(backupConfigDir + "useBackupIncludeFilter.txt");
+
                     loadConfigFiles();
                 }
 
@@ -660,10 +633,12 @@ void MainWindow::on_backupButton_clicked()
         // value 3: additional parameters
         parms = stdParms + " " + backupDirList[i].value(3);
 
-        // to use Filter, need backup directory to specify using it PLUS program set to use it.
-        if ( (QString::compare(backupDirList[i].value(2), "YES", Qt::CaseInsensitive) == 0) & (ui->actionBackupOnlyImportant->isChecked()) ) {
+        // to use Filter, need backup directory to specify using it.
+        QString notifyLimitedBackup="";
+        if ( QString::compare(backupDirList[i].value(2), "YES", Qt::CaseInsensitive) == 0 ) {
             // value 2=YES: include filetype filter
             parms = parms + " --include-globbing-filelist " +backupIncludeFile.fileName();
+            notifyLimitedBackup = tr(" [config limits backup to specified file-types]");
         }
 
         source = backupDirList[i].value(1).replace("$HOME",getenv("HOME"));
@@ -682,7 +657,7 @@ void MainWindow::on_backupButton_clicked()
                 writeLog(source + " NOW set as source");
             }
             ui->messageOutput->append("");
-            ui->messageOutput->append("<b>" + tr("Backing up:") + "</b> " + backupDirList[i].value(0));
+            ui->messageOutput->append("<b>" + tr("Backing up:") + "</b> " + backupDirList[i].value(0) +notifyLimitedBackup);
 
             //ensure dest path exists
             QDir().mkpath(dest);
@@ -1912,21 +1887,6 @@ void MainWindow::loadConfigFiles() {
     prevBackupDate = prevBackupDateStream.readLine();
     prevBackupDateStream.flush();
     prevBackupDateFile.close();
-
-    // load up useInclude file
-    useBackupIncludeFilterFile.open(QIODevice::ReadOnly);
-    QTextStream filterStream(&useBackupIncludeFilterFile);
-    line = filterStream.readLine();
-    filterStream.flush();
-    useBackupIncludeFilterFile.close();
-
-    if ( line.mid(0,2) != "NO" ) {
-        ui->actionBackupOnlyImportant->setChecked(1);
-        ui->backupIncludeLabel->setText(tr("Picture, Music, and Video files will <b>NOT</b> be backed up."));
-    } else {
-        ui->actionBackupOnlyImportant->setChecked(0);
-        ui->backupIncludeLabel->setText(tr("<b>ALL</b> files (including Pictures, Music, and Videos) will be backed up."));
-    }
 
     //load backupDir file
     //resize for safety

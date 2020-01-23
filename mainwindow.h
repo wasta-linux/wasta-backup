@@ -60,8 +60,6 @@ private slots:
 
     void renameRestoreItem(QString renameItem, QString targetItem, QString restUser);
 
-    void on_actionBackupOnlyImportant_changed();
-
     void on_actionAbout_triggered();
 
     void on_undoLastRestoreButton_clicked();

@@ -496,6 +496,21 @@ void MainWindow::setTargetDevice(QString inputDir)
                 ui->messageOutput->append("<b>" + tr("Ready for backup") + "</b>");
                 //ui->messageOutput->moveCursor(QTextCursor::End);
                 writeLog(targetDevice + " has existing backup and ready for backup.");
+
+                // load per-backup config from target instead of defaults from the user home-directory
+                QString backupConfigDir = newTarget + "/wasta-backup/" + machine + "/wasta-backup-config-" + userID + "/";
+
+                if ( QDir().exists(backupConfigDir) ) {
+                    if ( QFile::exists( backupConfigDir + "useBackupIncludeFilter.txt" ) )
+                        useBackupIncludeFilterFile.setFileName(backupConfigDir + "useBackupIncludeFilter.txt");
+                    if ( QFile::exists( backupConfigDir + "backupDirs.txt" ) )
+                        backupDirFile.setFileName(backupConfigDir + "backupDirs.txt");
+                    if ( QFile::exists( backupConfigDir + "backupInclude.txt" ) )
+                        backupIncludeFile.setFileName(backupConfigDir + "backupInclude.txt");
+                    writeLog("Switching to config on backup device: "+useBackupIncludeFilterFile.fileName()+ " " +backupDirFile.fileName()+ " " +backupIncludeFile.fileName());
+                    loadConfigFiles();
+                }
+
             } else {
                 //new backup: display message
                 ui->messageOutput->append("<b>" + tr("No existing backup found:") + "</b> " +
@@ -630,8 +645,9 @@ void MainWindow::on_backupButton_clicked()
         QDir().mkpath(backupConfigDir);
     }
 
-    //use rsync to do configDir syncing to targetDevice
-    output = shellRun("rsync -rlt --delete \"" + configDir + "\" \"" + backupConfigDir + "\"", false);
+    //use rsync to fill in missing config files on backup drive from the user's $HOME/.config/
+    QString rSyncCmd = "rsync -rlt --ignore-existing --exclude prevBackupDate.txt --exclude prevBackupDevice.txt ";
+    output = shellRun(rSyncCmd + " \"" + configDir + "\" \"" + backupConfigDir + "\"", false);
 
     //now proceed with backups
     int progress = 10;

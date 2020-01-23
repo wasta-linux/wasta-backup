@@ -65,6 +65,7 @@ QString prevBackupDevice;
 QString prevBackupDate;
 QFile prevBackupDevFile;
 QFile prevBackupDateFile;
+QFile backupIncludeFile;
 QFile backupDirFile;
 QString renameText = "-SAVE-YYY-MM-DD";
 
@@ -108,7 +109,8 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         }
     }
     // Check for backupInclude file
-    if ( !QFile::exists(configDir + "backupInclude.txt") ) {
+    backupIncludeFile.setFileName(configDir + "backupInclude.txt");
+    if ( !backupIncludeFile.exists() ) {
         // create it
         QString include =
                 "+ ignorecase:**.od*\n"
@@ -138,16 +140,14 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "- **\n";
 
         // open it
-        QFile file(configDir + "backupInclude.txt");
-
-        file.open(QIODevice::ReadWrite);
+        backupIncludeFile.open(QIODevice::ReadWrite);
 
         writeLog("No " + configDir + "backupInclude.txt: creating it.");
 
-        QTextStream stream(&file);
+        QTextStream stream(&backupIncludeFile);
         stream << include;
         stream.flush();
-        file.close();
+        backupIncludeFile.close();
     }
 
     // Check for backupDirs file
@@ -647,7 +647,7 @@ void MainWindow::on_backupButton_clicked()
         // to use Filter, need backup directory to specify using it PLUS program set to use it.
         if ( (QString::compare(backupDirList[i].value(2), "YES", Qt::CaseInsensitive) == 0) & (ui->actionBackupOnlyImportant->isChecked()) ) {
             // value 2=YES: include filetype filter
-            parms = parms + " --include-globbing-filelist " + configDir + "backupInclude.txt";
+            parms = parms + " --include-globbing-filelist " +backupIncludeFile.fileName();
         }
 
         source = backupDirList[i].value(1).replace("$HOME",getenv("HOME"));

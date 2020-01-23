@@ -61,9 +61,7 @@ QString targetDevice = "";
 QString machine = QHostInfo::localHostName();
 QFile logFile;
 QString prevBackupDevice;
-QString prevBackupDate;
 QFile prevBackupDevFile;
-QFile prevBackupDateFile;
 QFile backupIncludeFile;
 QFile backupDirFile;
 QString renameText = "-SAVE-YYY-MM-DD";
@@ -111,6 +109,8 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     //Legacy file cleanup
     if ( QFile::exists(configDir + "useBackupIncludeFilter.txt") )
         QFile::remove(configDir + "useBackupIncludeFilter.txt");
+    if ( QFile::exists(configDir + "prevBackupDate.txt") )
+        QFile::remove(configDir + "prevBackupDate.txt");
 
     // Check for backupInclude file
     backupIncludeFile.setFileName(configDir + "backupInclude.txt");
@@ -212,23 +212,6 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
         stream << "";
         stream.flush();
         prevBackupDevFile.close();
-    }
-    // Check for prevBackupDate file
-    prevBackupDateFile.setFileName(configDir + "prevBackupDate.txt");
-
-    if ( !prevBackupDateFile.exists() ) {
-        // create it: but leave empty
-        prevBackupDateFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
-        writeLog("No " + prevBackupDateFile.fileName() + ": creating it (empty).");
-        //  Attempt restore if EITHER of the following:
-        //      1. if restoreTime == now: if it is in the current backup (don't try
-        //         rdiff-backup --list-at-time now since if not found it will error)
-        //      2. if restoreTime <> now: if rdiff-backup --list-at-time restoreTime
-        //         exists since may not be in current backup but only in previous backups
-        QTextStream stream(&prevBackupDateFile);
-        stream << "";
-        stream.flush();
-        prevBackupDateFile.close();
     }
     // Launch Main Window
     ui->setupUi(this);
@@ -480,6 +463,8 @@ void MainWindow::setTargetDevice(QString inputDir)
                     //Legacy file cleanup
                     if ( QFile::exists(backupConfigDir + "useBackupIncludeFilter.txt") )
                         QFile::remove(backupConfigDir + "useBackupIncludeFilter.txt");
+                    if ( QFile::exists(backupConfigDir + "prevBackupDate.txt") )
+                        QFile::remove(backupConfigDir + "prevBackupDate.txt");
 
                     loadConfigFiles();
                 }
@@ -619,8 +604,17 @@ void MainWindow::on_backupButton_clicked()
     }
 
     //use rsync to fill in missing config files on backup drive from the user's $HOME/.config/
-    QString rSyncCmd = "rsync -rlt --ignore-existing --exclude prevBackupDate.txt --exclude prevBackupDevice.txt ";
+    QString rSyncCmd = "rsync -rlt --ignore-existing --exclude prevBackupDevice.txt ";
     output = shellRun(rSyncCmd + " \"" + configDir + "\" \"" + backupConfigDir + "\"", false);
+
+    // sync back the config used. The timestamp will show the last time the backup was done to that device
+    // as well as easily allowing a comparision of the various backup configuration files used by the different devices.
+    // It is also an easy way to re-create a backup config in case the backup device is lost.
+    QString lastConfigsDir=configDir + "lastUsedConfigs/";
+    if ( QDir().mkpath(lastConfigsDir) ) {
+        output = shellRun("rsync " +backupIncludeFile.fileName()+ "  " +lastConfigsDir+ "backupInclude.txt_" +ui->targetDeviceDisp->text(), false);
+        output = shellRun("rsync " +backupDirFile.fileName()+     "  " +lastConfigsDir+ "backupDirs.txt_" +ui->targetDeviceDisp->text(), false);
+    }
 
     //now proceed with backups
     int progress = 10;
@@ -702,17 +696,6 @@ void MainWindow::on_backupButton_clicked()
         devStream << fileText;
         devStream.flush();
         prevBackupDevFile.close();
-
-        //update prevBackupDateFile info
-        fileText = QDate::currentDate().toString("yyyy-MM-dd");
-        prevBackupDateFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
-        writeLog("Updating " + prevBackupDateFile.fileName() + ": value: " + fileText);
-
-        QTextStream dateStream(&prevBackupDateFile);
-        dateStream << fileText;
-        dateStream.flush();
-        prevBackupDateFile.close();
-
     } else {
         ui->messageOutput->append("");
         ui->messageOutput->append("<b>" + tr("Backup canceled") + "</b>");
@@ -1880,13 +1863,6 @@ void MainWindow::loadConfigFiles() {
     prevBackupDevice = prevBackupDevStream.readLine();
     prevBackupDevStream.flush();
     prevBackupDevFile.close();
-
-    // Load up prevBackupDate file
-    prevBackupDateFile.open(QIODevice::ReadOnly);
-    QTextStream prevBackupDateStream(&prevBackupDateFile);
-    prevBackupDate = prevBackupDateStream.readLine();
-    prevBackupDateStream.flush();
-    prevBackupDateFile.close();
 
     //load backupDir file
     //resize for safety

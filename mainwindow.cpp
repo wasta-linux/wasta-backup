@@ -179,7 +179,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "#     1Y3M - remove versions older than 1 year 3 months\n"
                 "\n"
                 "Bloom,$HOME/Bloom,NO,,1Y\n"
-                "Paratext 7,$HOME/ParatextProjects,NO,,1Y\n"
+                "Paratext 9,$HOME/Paratext9Projects,NO,,1Y\n"
                 "Paratext 8,$HOME/Paratext8Projects,NO,,1Y\n"
                 "Fieldworks Projects,$HOME/.local/share/fieldworks/Projects,NO,,1Y\n"
                 "WeSay,$HOME/WeSay,NO,,1Y\n"
@@ -1505,7 +1505,7 @@ void MainWindow::renameRestoreItem(QString originalItem, QString restoreTime, QS
             //backup not found on backup device: no restore done
             if ( ! restUser.isEmpty() ) {
                 // For "Restore ALL", possible (likely) that item may not exist: because something like
-                //    ~/ParatextProjects may have never existed but is part of default backup list
+                //    ~/Paratext9Projects may have never existed but is part of default backup list
                 // So, don't give warning message for Restore ALL.
             } else {
                 QTest::qWait(1);

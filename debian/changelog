@@ -1,3 +1,10 @@
+wasta-backup (1.2.8) focal; urgency=medium
+
+  * Add Paratext9Projects to suggested/default backup list
+  * Allow more than 20 backup items in backupDirs.txt
+
+ -- Justin Luth <jluth@mail.com>  Fri, 24 Jan 2020 13:43:12 +0300
+
 wasta-backup (1.2.7) bionic; urgency=medium
 
   * French l10n updated

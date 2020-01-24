@@ -1965,6 +1965,8 @@ void MainWindow::loadConfigFiles() {
                     }
                 }
                 i++;
+                if ( i == backupDirList.count() )
+                    backupDirList.resize(i+20);
             }
         }
     }

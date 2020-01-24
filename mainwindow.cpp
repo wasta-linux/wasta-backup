@@ -886,7 +886,7 @@ void MainWindow::on_selectPrevItemButton_clicked()
 
     for ( int i = 1; i <= incCount; i++) {
         // throw away items indicating missing
-        startIncDate = incList.value(i).lastIndexOf(QRegExp("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"));
+        startIncDate = incList.value(i).lastIndexOf(QRegExp("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}[:-][0-9]{2}"));
         restItemTime = incList.value(i).mid(startIncDate,25);
 
         if ( incList.value(i).mid(startIncDate + 25,8) != ".missing" ) {
@@ -1097,7 +1097,7 @@ void MainWindow::on_selectDelFolderButton_clicked()
         // parse up this long string to fill missing item, date info so can retrieve later.
         // just take first entry for each file/folder (likely multiple, but sorted so "newest first" due to -r on the ls listing)
 
-        int startTimeStamp = incItem.lastIndexOf(QRegExp("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"));
+        int startTimeStamp = incItem.lastIndexOf(QRegExp("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}[:-][0-9]{2}"));
         restItemNameDisp = incItem.mid(0,startTimeStamp - 1);
         restItemName = ui->delFolder->text() + "/" + restItemNameDisp;
         restItemTime = incItem.mid(startTimeStamp,25);

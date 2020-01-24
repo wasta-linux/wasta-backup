@@ -20,4 +20,4 @@ The following configurable settings are stored in a user's
           with media extensions, etc., will be politely ignored)
 
 Wasta-Backup Website:
-    https://sites.google.com/site/wastalinux/wasta-applications/wasta-backup
+    https://www.wastalinux.org/wasta-apps/wasta-backup/

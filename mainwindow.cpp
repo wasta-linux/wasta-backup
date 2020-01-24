@@ -29,6 +29,10 @@
 // 2018-11-30 rik: cleaning up tr() strings to make more simple to translate
 //    - Using xdg-user-dir to retrieve user's DESKTOP and DOCUMENTS locations
 //      to account for locale differences in folder names.
+// 2020-01-24 jcl: remove useBackupFilter.txt, relying on backup target
+//      to define if filename extension filter should be used (default)
+//      or not. This allows the same source to have full backups for a large
+//      disk and also have filtered backups for a different smaller disk.
 //
 // =============================================================================
 
@@ -217,8 +221,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     ui->setupUi(this);
 
     // set app icon (used in 'About')
-    QIcon wastaIcon;
-    wastaIcon.addFile("/usr/share/icons/hicolor/512x512/apps/wasta-backup.png");
+    QIcon wastaIcon = QIcon::fromTheme("wasta-backup");
     this->setWindowIcon(wastaIcon);
 
     // set location to center of primary screen
@@ -304,8 +307,10 @@ void MainWindow::on_actionAbout_triggered()
                        "<p>" + tr("The following configurable settings are stored in a user's ~/.config/wasta-backup/ directory:") +
                        "<ul>" +
                        "<li><p><b>backupDirs.txt:</b> " + tr("This file specifies directories to backup and other parameters such as number of versions to keep") + "</li>" +
-                       "<li><p><b>backupInclude.txt:</b> " +tr("This file specifies file extensions to backup (so files with media extensions, etc., will be ignored)") + "</li>" +
-                       "<a href=\"https://sites.google.com/site/wastalinux/wasta-applications/wasta-backup\">https://sites.google.com/site/wastalinux/wasta-applications/wasta-backup</a>");
+                       "<li><p><b>backupInclude.txt:</b> " + tr("This file specifies file extensions to backup (so files with media extensions, etc., will be ignored)") +
+                       "</li></ul>" +
+                       "<p><b>" + tr("Wasta-Backup website:") + "</b>"
+                       "<p><a href=\"https://www.wastalinux.org/wasta-apps/wasta-backup\">https://www.wastalinux.org/wasta-apps/wasta-backup</a>");
 }
 
 void MainWindow::setPreferredDestination()
@@ -340,9 +345,9 @@ void MainWindow::setPreferredDestination()
                 writeLog(deviceList.value(i) + " is writable.");
 
                 // check for wasta-backup folder.  if found, keep track (and count of found wasta-backup folders).
-                // If only 1 wasta-backup folder found, choose it (regardless of space).
-                //If more than 1 wasta-backup folder, pick one with most remaining space.
-                //if no wasta-backup folders found, pick largest device
+                // if only 1 wasta-backup folder found, choose it (regardless of space).
+                // if more than 1 wasta-backup folder, pick one with most remaining space.
+                // if no wasta-backup folders found, pick largest device
 
                 //get free space
                 shellCommand = "df -P \"" + deviceList.value(i) + "/\" | tail -1 | awk '{print $4}'";
@@ -470,7 +475,7 @@ void MainWindow::setTargetDevice(QString inputDir)
                 }
 
             } else {
-                //new backup: display message
+                // new backup: display message
                 ui->messageOutput->append("<b>" + tr("No existing backup found:") + "</b> " +
                                           ui->targetDeviceDisp->text());
                 ui->messageOutput->append("");

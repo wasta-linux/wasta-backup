@@ -76,10 +76,8 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     userHome = getenv("HOME");
     // Ensure configDir exists
     configDir = userHome + "/.config/wasta-backup/";
-    QDir configPath(configDir);
-    if ( !configPath.exists() ) {
-        configPath.mkpath(configDir);
-    }
+    QDir().mkpath(configDir);
+
     //Ensure logDir exists
     logDir = userHome + "/.cache/wasta-backup/logs/";
 
@@ -169,6 +167,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "#     If NAME is not a valid xdg-user-dir folder, this backup folder will be IGNORED.\n"
                 "#     Use the command 'man xdg-user-dir' to see a list of available folders.\n"
                 "#\n"
+                "#   Note: useInclude is ignored unless useBackupIncludeFilter.txt == YES\n"
                 "#   useInclude = YES ==> only include specified filetypes in backupInclude.txt\n"
                 "#   useInclude = NO  ==> don't limit backup to specified filetypes in backupInclude.txt\n"
                 "#\n"
@@ -594,7 +593,6 @@ void MainWindow::on_backupButton_clicked()
     QString dest;
     QString parms;
     QString stdParms = "--exclude-symbolic-links --override-chars-to-quote '\"*/:<>?\\\\|'";
-    QDir path;
     QString output;
 
     ui->progressBar->setValue(0);
@@ -622,15 +620,14 @@ void MainWindow::on_backupButton_clicked()
     QString backupConfigDir = targetDir + "/wasta-backup-config-" + userID + "/";
 
     // Ensure backupConfigDir exists
-    QDir backupConfigPath(backupConfigDir);
-    if ( !backupConfigPath.exists() ) {
+    if ( !QDir().exists(backupConfigDir) ) {
         //Legacy: clean out old backupConfigDir location that will cause any rdiff-backup of ~/.config to fail
         //   since before 2013-10-13 backupConfigDir was targetDir + userHome + /.config/wasta-backup
         //   Since this was NOT a "rdiff-backup folder" then rdiff-backup will warn folder exists and will not process
         //   So, need to manually remove .config folder so will not conflict with anyone attempting to backup home
         output = shellRun("rm -rf \"" + targetDir + userHome + "/.config\"", false);
 
-        backupConfigPath.mkpath(backupConfigDir);
+        QDir().mkpath(backupConfigDir);
     }
 
     //use rsync to do configDir syncing to targetDevice
@@ -648,7 +645,7 @@ void MainWindow::on_backupButton_clicked()
         parms = stdParms + " " + backupDirList[i].value(3);
 
         // to use Filter, need backup directory to specify using it PLUS program set to use it.
-        if ( (backupDirList[i].value(2) == "YES") & (ui->actionBackupOnlyImportant->isChecked()) ) {
+        if ( (QString::compare(backupDirList[i].value(2), "YES", Qt::CaseInsensitive) == 0) & (ui->actionBackupOnlyImportant->isChecked()) ) {
             // value 2=YES: include filetype filter
             parms = parms + " --include-globbing-filelist " + configDir + "backupInclude.txt";
         }
@@ -656,7 +653,7 @@ void MainWindow::on_backupButton_clicked()
         source = backupDirList[i].value(1).replace("$HOME",getenv("HOME"));
         dest = targetDir + backupDirList[i].value(1).replace("$HOME",getenv("HOME"));
 
-        if ( path.exists(source) ) {
+        if ( QDir().exists(source) ) {
 
             //Need to check if source is a symlink or else backup will fail
             QFileInfo sourceInfo(source);
@@ -672,9 +669,8 @@ void MainWindow::on_backupButton_clicked()
             ui->messageOutput->append("<b>" + tr("Backing up:") + "</b> " + backupDirList[i].value(0));
 
             //ensure dest path exists
-            if ( !path.exists(dest) ) {
-                path.mkpath(dest);
-            }
+            QDir().mkpath(dest);
+
             // Adding extra check to ensure user didn't cancel BEFORE rdiff called
             if (processCanceled) {
                 break; // break out of backup loop
@@ -1333,7 +1329,7 @@ void MainWindow::on_restoreButton_clicked()
 
         // load up restItemList from backupDirs folder
         for (row = 0; row < backupDirList.count(); row++) {
-            // need to user restUser for backup name, but current user for dest name
+            // need to use restUser for backup name, but current user for dest name
             QString destDir = backupDirList[row].value(1).replace("$HOME",getenv("HOME"));
 
             // load up restItemList (for later undo)

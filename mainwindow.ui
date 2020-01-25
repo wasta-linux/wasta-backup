@@ -767,15 +767,24 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>Fi&amp;le</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionConfiguration_Guide"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
   <action name="actionAbout">
    <property name="text">
     <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="actionConfiguration_Guide">
+   <property name="text">
+    <string>&amp;Configuration Guide</string>
+   </property>
+   <property name="toolTip">
+    <string>Configuration Guide</string>
    </property>
   </action>
  </widget>

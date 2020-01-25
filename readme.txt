@@ -12,12 +12,25 @@ Restore possibilities include restoring previous versions of existing files or
 Additionally, a 'Restore ALL' option is available that will replace all data
     on the computer from the backup device.
 
-The following configurable settings are stored in a user's
-    ~/.config/wasta-backup/ directory:
-        - backupDirs.txt: specifies directories to backup and other parameters
-          such as number of versions to keep
-        - backupInclude.txt: specifies file extensions to backup (so files
-          with media extensions, etc., will be politely ignored)
+The following configuration files are used by Wasta-Backup:
+
+        - backupDirs.txt: specifies which folders to backup and other parameters
+          such as if backupInclude.txt should be used and the number of backup
+          versions to keep
+
+        - backupInclude.txt: specifies which file extensions to backup, so files
+          with media extensions, for example, will not be backed up
+          (to save space on the backup device)
+
+Default configuration files are stored in a user's ~/.config/wasta-backup/
+folder and will be used for new backup devices.
+
+After a backup device is used, it stores the configuration files. This allows
+each backup device to have its own configuration settings to allow for
+different storage capacities.
+
+Use the 'File' menu to edit either the default or the backup device
+'backupDirs.txt' configuration.
 
 Wasta-Backup Website:
     https://www.wastalinux.org/wasta-apps/wasta-backup/

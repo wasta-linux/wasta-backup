@@ -70,6 +70,8 @@ private slots:
 
     void on_machineCombo_currentIndexChanged(const QString machineValue);
 
+    void on_actionConfiguration_Guide_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

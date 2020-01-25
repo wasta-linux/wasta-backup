@@ -241,7 +241,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     ui->backupRestoreWidget->setCurrentIndex(0);
 
     // Default restore is for Previous Version: set defaults
-    //Disable Buttons
+    // Disable Buttons
     ui->restoreButton->setEnabled(0);
     ui->cancelRestoreButton->setEnabled(0);
     ui->undoLastRestoreButton->setEnabled(0);
@@ -295,23 +295,6 @@ MainWindow::~MainWindow()
 // ##########################################################################
 // #### MAIN INTERFACE PROCEDURES                                        ####
 // ##########################################################################
-
-void MainWindow::on_actionAbout_triggered()
-{
-    QMessageBox::about(this,tr("About Wasta-Backup"),"<h3>" + tr("Wasta-Backup") + "</h3>" +
-                       "<p>" + tr("Wasta-Backup is a simple backup GUI using rdiff-backup for version backups of data.") +
-                       "<p>" + tr("Wasta-Backup will auto-launch when a USB device with a previous Wasta-Backup on it is inserted.") +
-                       "<p>" + tr("Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup") + ". " +
-                       tr("In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time.") +
-                       "<p>" + tr("Additionally, a 'Restore ALL' option is available that will replace all data on the computer from the backup.") +
-                       "<p>" + tr("The following configurable settings are stored in a user's ~/.config/wasta-backup/ directory:") +
-                       "<ul>" +
-                       "<li><p><b>backupDirs.txt:</b> " + tr("This file specifies directories to backup and other parameters such as number of versions to keep") + "</li>" +
-                       "<li><p><b>backupInclude.txt:</b> " + tr("This file specifies file extensions to backup (so files with media extensions, etc., will be ignored)") +
-                       "</li></ul>" +
-                       "<p><b>" + tr("Wasta-Backup website:") + "</b>"
-                       "<p><a href=\"https://www.wastalinux.org/wasta-apps/wasta-backup\">https://www.wastalinux.org/wasta-apps/wasta-backup</a>");
-}
 
 void MainWindow::setPreferredDestination()
 {
@@ -579,7 +562,6 @@ void MainWindow::on_backupButton_clicked()
     ui->changeDeviceButton->setEnabled(0);
     ui->backupButton->setEnabled(0);
     ui->restoreTab->setEnabled(0);
-
     ui->cancelBackupButton->setEnabled(1);
 
     processCanceled = false;
@@ -1858,8 +1840,6 @@ QString MainWindow::shellRun(QString command, bool giveFeedback)
 
 void MainWindow::loadConfigFiles() {
 
-    writeLog("Loading Configuration Files from: " + configDir);
-
     QString line;
 
     // Load up prevBackupDev file
@@ -1869,8 +1849,8 @@ void MainWindow::loadConfigFiles() {
     prevBackupDevStream.flush();
     prevBackupDevFile.close();
 
-    //load backupDir file
-    //resize for safety
+    // load backupDir file
+    // resize for safety
     QString shellCommand;
     QString backupDirText;
     QString backupDir;
@@ -1928,6 +1908,8 @@ void MainWindow::loadConfigFiles() {
 
     // trim down vector
     backupDirList.resize(i);
+
+    writeLog("Configuration file loaded from: " + backupDirFile.fileName());
 }
 
 bool MainWindow::removeDir(const QString & dirName)
@@ -1990,4 +1972,30 @@ void MainWindow::on_machineCombo_currentIndexChanged(const QString machineValue)
             ui->openRestoreFolderButton->setEnabled(1);
         }
     }
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::about(this,tr("About Wasta-Backup"),
+                       "<p>" + tr("<i>Wasta-Backup</i> is a simple backup GUI using <i>rdiff-backup</i> for version backups of data.") +
+                       "<p>" + tr("<i>Wasta-Backup</i> will auto-launch when a USB device with a previous <i>Wasta-Backup</i> on it is inserted.") +
+                       "<p>" + tr("Restore possibilities include restoring previous versions of existing files or folders as well as restoring deleted files or folders from the backup") + ". " +
+                       tr("In the case of restoring previous versions of existing items, the current item is first renamed using the current date and time.") +
+                       "<p>" + tr("Additionally, a <i>'Restore ALL'</i> option is available that will replace all data on the computer from the backup.") +
+                       "<p><b>" + tr("Wasta-Backup website:") + "</b>"
+                       "<p><a href=\"https://www.wastalinux.org/wasta-apps/wasta-backup\">https://www.wastalinux.org/wasta-apps/wasta-backup</a>");
+}
+
+void MainWindow::on_actionConfiguration_Guide_triggered()
+{
+    QMessageBox::about(this,tr("Wasta-Backup Configuration Guide"),
+                       "<p>" + tr("The following configuration files are used by <i>Wasta-Backup:</i>") +
+                       "<ul>" +
+                       "<li><p><b>backupDirs.txt:</b> " + tr("specifies which folders to backup and other parameters such as if <i>'backupInclude.txt'</i> should be used and the number of backup versions to keep") + "</li>" +
+                       "<li><p><b>backupInclude.txt:</b> " + tr("specifies which file extensions to backup, so files with media extensions, for example, will not be backed up (to save space on the backup device)") +
+                       "</li></ul>" +
+                       "<p>" + tr("Default configuration files are stored in a user's <i>'~/.config/wasta-backup/'</i> folder and will be used for new backup devices.") +
+                       "<p>" + tr("After a backup device is used, it stores the configuration files. This allows each backup device to have its own configuration settings to allow for different storage capacities.") +
+                       "<p><a href=\"file://" + configDir + "backupDirs.txt\"> " + tr("Edit default <i>'backupDirs.txt'</i>") +
+                       "<p><a href=\"file://" + backupDirFile.fileName() + "\"> " + tr("Edit backup device <i>'backupDirs.txt'</i>"));
 }

@@ -33,6 +33,9 @@
 //      to define if filename extension filter should be used (default)
 //      or not. This allows the same source to have full backups for a large
 //      disk and also have filtered backups for a different smaller disk.
+// 2020-01-25 rik: rework 'About' and add 'Configuration Guide'
+//    - Reload config files before backup each time (in case user adjusted
+//      without restarting or re-selecting backup device).
 //
 // =============================================================================
 
@@ -595,13 +598,16 @@ void MainWindow::on_backupButton_clicked()
     output = shellRun(rSyncCmd + " \"" + configDir + "\" \"" + backupConfigDir + "\"", false);
 
     // sync back the config used. The timestamp will show the last time the backup was done to that device
-    // as well as easily allowing a comparision of the various backup configuration files used by the different devices.
+    // as well as easily allowing a comparison of the various backup configuration files used by the different devices.
     // It is also an easy way to re-create a backup config in case the backup device is lost.
     QString lastConfigsDir=configDir + "lastUsedConfigs/";
     if ( QDir().mkpath(lastConfigsDir) ) {
         output = shellRun("rsync " +backupIncludeFile.fileName()+ "  " +lastConfigsDir+ "backupInclude.txt_" +ui->targetDeviceDisp->text(), false);
         output = shellRun("rsync " +backupDirFile.fileName()+     "  " +lastConfigsDir+ "backupDirs.txt_" +ui->targetDeviceDisp->text(), false);
     }
+
+    // reload config files, since user could have changed them since previously loaded (on device change)
+    loadConfigFiles();
 
     //now proceed with backups
     int progress = 10;

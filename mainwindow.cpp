@@ -95,7 +95,7 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
     logFile.setFileName(logPath.absolutePath() + "/" + QDateTime::currentDateTime().date().toString("yyyy-MM-dd") +
                         "-wasta-backup.log");
     // legacy: remove .config/wasta-backup/logs/ directory (until version 0.9.2, but don't want going forward)
-    removeDir(configDir + "logs/");
+    QDir(configDir + "logs/").removeRecursively();
     writeLog("===========================================\n"
              "== wasta-backup started                  ==\n"
              "===========================================");
@@ -1609,7 +1609,7 @@ void MainWindow::on_undoLastRestoreButton_clicked()
 
                 } else {
                     // item exists and is folder
-                    if ( removeDir(origItemName) ) {
+                    if ( QDir(origItemName).removeRecursively() ) {
                         QDir directory;
                         directory.setPath(itemName);
                         // now rename
@@ -1683,7 +1683,7 @@ void MainWindow::on_undoLastRestoreButton_clicked()
                     }
                 } else {
                     // folder delete
-                    if ( removeDir(itemName) ) {
+                    if ( QDir(itemName).removeRecursively() ) {
                         // success deleting
                         ui->messageOutput->insertPlainText(". . " + tr("Done"));
                         ui->messageOutput->moveCursor(QTextCursor::End);
@@ -1724,8 +1724,7 @@ void MainWindow::on_undoLastRestoreButton_clicked()
             writeLog("Undoing restore of Config Files.  Will replace from: " + configSave);
 
             // delete current configDir, restore renameConfigDir to configDir and reload backupDirList
-            bool deleted = removeDir(configDir);
-            if (deleted) {
+            if ( QDir(configDir).removeRecursively() ) {
                 //rename configSave to configDir
                 bool checkRename = configSaveDir.rename(configSave, configDir);
                 if ( !checkRename ) {
@@ -1918,31 +1917,6 @@ void MainWindow::loadConfigFiles() {
     backupDirList.resize(i);
 
     writeLog("Configuration file loaded from: " + backupDirFile.fileName());
-}
-
-bool MainWindow::removeDir(const QString & dirName)
-{
-    // taken from web
-    bool result = false;
-    QDir dir(dirName);
-
-    if (dir.exists(dirName)) {
-        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden |
-                                                    QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-            if (info.isDir()) {
-                result = removeDir(info.absoluteFilePath());
-            }
-            else {
-                result = QFile::remove(info.absoluteFilePath());
-            }
-
-            if (!result) {
-                return result;
-            }
-        }
-        result = dir.rmdir(dirName);
-    }
-    return result;
 }
 
 void MainWindow::on_machineCombo_currentIndexChanged(const QString machineValue)

@@ -1964,6 +1964,11 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionConfiguration_Guide_triggered()
 {
+    QString linkOnlyIfBackupConfigFound="";
+    if ( configDir+"backupDirs.txt" != backupDirFile.fileName() ) {
+       linkOnlyIfBackupConfigFound="<p><a href=\"file://" + backupDirFile.fileName() + "\"> " + tr("Edit backup device <i>'backupDirs.txt'</i>");
+    }
+
     QMessageBox::about(this,tr("Wasta-Backup Configuration Guide"),
                        "<p>" + tr("The following configuration files are used by <i>Wasta-Backup:</i>") +
                        "<ul>" +
@@ -1973,5 +1978,5 @@ void MainWindow::on_actionConfiguration_Guide_triggered()
                        "<p>" + tr("Default configuration files are stored in a user's <i>'~/.config/wasta-backup/'</i> folder and will be used for new backup devices.") +
                        "<p>" + tr("After a backup device is used, it stores the configuration files. This allows each backup device to have its own configuration settings to allow for different storage capacities.") +
                        "<p><a href=\"file://" + configDir + "backupDirs.txt\"> " + tr("Edit default <i>'backupDirs.txt'</i>") +
-                       "<p><a href=\"file://" + backupDirFile.fileName() + "\"> " + tr("Edit backup device <i>'backupDirs.txt'</i>"));
+                       linkOnlyIfBackupConfigFound);
 }

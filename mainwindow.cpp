@@ -476,7 +476,8 @@ void MainWindow::setTargetDevice(QString inputDir)
     } else {
         // no newTarget found to be used.
         QTest::qWait(1);
-        QMessageBox::warning(this, tr("Choose Again"), "<b>" + tr("Chosen directory is not a valid backup location:") + "</b><p>" + inputDir);
+        QMessageBox::warning(this, tr("Choose Again"), "<b>" + tr("Chosen directory is not a valid backup location:") + "</b><p>" + inputDir
+                             + "<p>" + tr("[Create a wasta-backup subfolder if you want to backup here]"));
         writeLog(inputDir + " not a valid backup location.");
     }
 }

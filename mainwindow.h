@@ -64,8 +64,6 @@ private slots:
 
     void on_undoLastRestoreButton_clicked();
 
-    bool removeDir(const QString & dirName);
-
     void setTargetDevice(QString inputDir);
 
     void on_machineCombo_currentIndexChanged(const QString machineValue);

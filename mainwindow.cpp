@@ -193,7 +193,13 @@ MainWindow::MainWindow(QStringList arguments, QWidget *parent) :
                 "Publications,$HOME/Publications,NO,,1Y\n"
                 "Thunderbird,$HOME/.thunderbird,NO,--exclude ignorecase:**/Cache,1Y\n"
                 "display-name,xdg-user-dir DOCUMENTS,YES,,1Y\n"
-                "display-name,xdg-user-dir DESKTOP,YES,,1Y";
+                "display-name,xdg-user-dir DESKTOP,YES,,1Y\n"
+                "####display-name,xdg-user-dir PICTURES,NO,,1Y\n"
+                "####display-name,xdg-user-dir MUSIC,NO,,1Y\n"
+                "####display-name,xdg-user-dir VIDEOS,NO,,3M\n"
+                "####display-name,xdg-user-dir DOWNLOAD,NO,,3M\n"
+                "####display-name,xdg-user-dir TEMPLATES,NO,,1Y\n"
+                "####display-name,xdg-user-dir PUBLICSHARE,NO,,1Y\n";
         // open it
         backupDirFile.open(QIODevice::ReadWrite);
         writeLog("No " + configDir + "backupDirs.txt: creating it.");

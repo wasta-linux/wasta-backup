@@ -594,7 +594,9 @@ void MainWindow::on_backupButton_clicked()
     }
 
     //use rsync to fill in missing config files on backup drive from the user's $HOME/.config/
-    QString rSyncCmd = "rsync -rlt --ignore-existing --exclude prevBackupDevice.txt ";
+    QFile::remove(backupConfigDir+ "prevBackupDevice.txt");         //remove stale info
+    QDir(backupConfigDir+ "lastUsedConfigs").removeRecursively();   //remove stale info
+    QString rSyncCmd = "rsync -rlt --ignore-existing";
     output = shellRun(rSyncCmd + " \"" + configDir + "\" \"" + backupConfigDir + "\"", false);
 
     // sync back the config used. The timestamp will show the last time the backup was done to that device

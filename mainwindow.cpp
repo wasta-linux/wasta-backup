@@ -604,8 +604,8 @@ void MainWindow::on_backupButton_clicked()
     // It is also an easy way to re-create a backup config in case the backup device is lost.
     QString lastConfigsDir=configDir + "lastUsedConfigs/";
     if ( QDir().mkpath(lastConfigsDir) ) {
-        output = shellRun("rsync " +backupIncludeFile.fileName()+ "  " +lastConfigsDir+ "backupInclude.txt_" +ui->targetDeviceDisp->text(), false);
-        output = shellRun("rsync " +backupDirFile.fileName()+     "  " +lastConfigsDir+ "backupDirs.txt_" +ui->targetDeviceDisp->text(), false);
+        output = shellRun("rsync \"" +backupIncludeFile.fileName()+ "\" \"" +lastConfigsDir+ "backupInclude.txt_" +ui->targetDeviceDisp->text()+ "\"", false);
+        output = shellRun("rsync \"" +backupDirFile.fileName()+ "\"     \"" +lastConfigsDir+ "backupDirs.txt_"    +ui->targetDeviceDisp->text()+ "\"", false);
     }
 
     // reload config files, since user could have changed them since previously loaded (on device change)

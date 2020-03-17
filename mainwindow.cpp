@@ -626,7 +626,7 @@ void MainWindow::on_backupButton_clicked()
         QString notifyLimitedBackup="";
         if ( QString::compare(backupDirList[i].value(2), "YES", Qt::CaseInsensitive) == 0 ) {
             // value 2=YES: include filetype filter
-            parms = parms + " --include-globbing-filelist " +backupIncludeFile.fileName();
+            parms = parms + " --include-globbing-filelist \"" +backupIncludeFile.fileName()+ "\"";
             notifyLimitedBackup = tr(" [config limits backup to specified file-types]");
         }
 

@@ -29,18 +29,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.32"
-     inkscape:cx="-1952.6488"
-     inkscape:cy="68.58918"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="-759.21393"
+     inkscape:cy="-164.48944"
      inkscape:document-units="px"
      inkscape:current-layer="g1239"
      showgrid="false"
      units="px"
      inkscape:pagecheckerboard="true"
      inkscape:window-width="1920"
-     inkscape:window-height="999"
+     inkscape:window-height="1019"
      inkscape:window-x="0"
-     inkscape:window-y="28"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      scale-x="0.26458" />
   <metadata
@@ -67,7 +67,7 @@
        cx="135.46666"
        id="circle882"
        style="fill:#404756;fill-opacity:1;stroke:#404756;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       r="135.46666" />
+       r="118.53333" />
     <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,0,161.53331)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:arial;-inkscape-font-specification:arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
@@ -106,12 +106,12 @@
            width="661.6499"
            id="rect989" /></flowRegion><flowPara
          id="flowPara993" /></flowRoot>    <ellipse
-       cy="161.53342"
+       cy="161.5334"
        cx="135.46667"
        id="circle997"
        style="fill:#57a715;fill-opacity:1;stroke:#47b500;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       rx="122.76666"
-       ry="122.76665" />
+       rx="107.42083"
+       ry="107.42081" />
   </g>
   <g
      transform="translate(0,-26.066646)"
@@ -124,7 +124,7 @@
        sodipodi:nodetypes="csc"
        inkscape:connector-curvature="0"
        id="path1227"
-       d="m 135.46666,26.066641 c 74.81616,0 135.46664,60.650606 135.46665,135.466979 2e-5,74.81574 -60.65047,135.46635 -135.46665,135.46635"
+       d="m 135.46666,42.999976 c 65.46414,0 118.53331,53.069281 118.53332,118.533604 2e-5,65.46378 -53.06916,118.53306 -118.53332,118.53306"
        style="fill:#404756;fill-opacity:1;stroke:#404756;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,0,161.53331)"
@@ -149,7 +149,7 @@
        sodipodi:nodetypes="csc"
        inkscape:connector-curvature="0"
        id="path1241"
-       d="m 270.93331,161.53362 c 2e-5,74.81574 -60.65047,135.46635 -135.46665,135.46635 C 60.650482,296.99997 -5.8679152e-6,236.34936 5.1777795e-6,161.53362"
+       d="m 253.99998,161.53358 c 2e-5,65.46378 -53.06916,118.53306 -118.53332,118.53306 -65.464154,0 -118.533331,-53.06928 -118.533322,-118.53306"
        style="fill:#404756;fill-opacity:1;stroke:#404756;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,0,161.53331)"
@@ -172,7 +172,7 @@
      sodipodi:insensitive="true">
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 135.46666,26.066658 A 135.46665,135.46665 0 0 0 3.0000529e-6,161.53333 135.46665,135.46665 0 0 0 135.46666,296.99997 135.46665,135.46665 0 0 0 270.93333,161.53333 135.46665,135.46665 0 0 0 135.46666,26.066658 Z m 0,12.7 A 122.76666,122.76666 0 0 1 258.23333,161.53333 122.76666,122.76666 0 0 1 135.46666,284.29997 122.76666,122.76666 0 0 1 12.700002,161.53333 122.76666,122.76666 0 0 1 135.46666,38.766658 Z"
+       d="M 135.46666,42.999991 A 118.53332,118.53332 0 0 0 16.933337,161.53333 118.53332,118.53332 0 0 0 135.46666,280.06664 118.53332,118.53332 0 0 0 254,161.53333 118.53332,118.53332 0 0 0 135.46666,42.999991 Z m 0,11.1125 A 107.42083,107.42083 0 0 1 242.8875,161.53333 107.42083,107.42083 0 0 1 135.46666,268.95414 107.42083,107.42083 0 0 1 28.045836,161.53333 107.42083,107.42083 0 0 1 135.46666,54.112491 Z"
        id="circle1030"
        inkscape:connector-curvature="0" />
     <ellipse
@@ -204,7 +204,7 @@
     <path
        inkscape:connector-curvature="0"
        id="path922"
-       d="M 135.46666,26.066641 A 135.46665,135.46669 0 0 0 7.1777819e-6,161.53362 135.46665,135.46669 0 0 0 135.46666,296.99997 135.46665,135.46669 0 0 0 270.93333,161.53362 135.46665,135.46669 0 0 0 135.46666,26.066641 Z m 0,12.70017 A 122.76666,122.76669 0 0 1 258.23333,161.53362 122.76666,122.76669 0 0 1 135.46666,284.30012 122.76666,122.76669 0 0 1 12.700006,161.53362 122.76666,122.76669 0 0 1 135.46666,38.766811 Z"
+       d="M 135.46666,42.999976 A 118.53332,118.53336 0 0 0 16.93334,161.53358 118.53332,118.53336 0 0 0 135.46666,280.06664 118.53332,118.53336 0 0 0 254,161.53358 118.53332,118.53336 0 0 0 135.46666,42.999976 Z m 0,11.112649 A 107.42083,107.42086 0 0 1 242.8875,161.53358 107.42083,107.42086 0 0 1 135.46666,268.95427 107.42083,107.42086 0 0 1 28.045839,161.53358 107.42083,107.42086 0 0 1 135.46666,54.112625 Z"
        style="fill:#404756;fill-opacity:1;stroke:#ffffff;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,0,161.53331)"
@@ -227,16 +227,16 @@
      sodipodi:insensitive="true">
     <text
        id="text947"
-       y="41.838444"
-       x="32.421097"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:67.58725739px;line-height:1.25;font-family:arial;-inkscape-font-specification:arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4.23333311;stroke-miterlimit:4;stroke-dasharray:none"
+       y="34.814434"
+       x="44.654778"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:59.13885117px;line-height:1.25;font-family:arial;-inkscape-font-specification:arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4.23333311;stroke-miterlimit:4;stroke-dasharray:none"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:135.46665955px;font-family:'Ubuntu Condensed';-inkscape-font-specification:'Ubuntu Condensed, ';letter-spacing:0px;fill:#ffffff;stroke:#ffffff;stroke-width:4.23333311;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         y="41.838444"
-         x="32.421097"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:118.5333252px;font-family:'Ubuntu Condensed';-inkscape-font-specification:'Ubuntu Condensed, ';letter-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:4.23333311;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         y="34.814434"
+         x="44.654778"
          id="tspan945"
          sodipodi:role="line">w<tspan
-   style="font-size:135.46665955px;letter-spacing:-6.3499999px;stroke-width:4.23333311"
+   style="font-size:118.5333252px;letter-spacing:-5.5562501px;fill:#ffffff;fill-opacity:1;stroke-width:4.23333311;stroke-miterlimit:4;stroke-dasharray:none"
    id="tspan1113">[B]</tspan></tspan></text>
   </g>
 </svg>
